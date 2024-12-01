@@ -59,7 +59,7 @@ export default function Post(props) {
                         </div>
                         <div className='post-body-content'>
                             <h1>{fetchedPost.title}</h1>
-                            <ReactMarkdown escapeHtml={false}>{fetchedPost.content}</ReactMarkdown>
+                            <ReactMarkdown >{fetchedPost.content}</ReactMarkdown>
                         </div>
                     </div>
                 </center>

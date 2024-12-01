@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -6,18 +6,26 @@ import { logo_excel } from '../data/assets';
 
 export default function ExcelCustomerSupportAgentPerformance() {
 
-    const script = document.createElement("script");
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://onedrive.live.com/embed?resid=DA6E81822ACC224B%21116&authkey=%21AM967yoy5TdZEY8&em=3&wdItem=%22'Dashboard'!A%3AXFD%22&wdDivId=%22myExcelDiv%22&wdActiveCell=%22'Dashboard'!B10%22&wdAllowInteractivity=1&wdAllowTyping=1&action=embedview&wdbipreview=true";
+        script.async = true;
 
-    script.src = "https://onedrive.live.com/embed?resid=DA6E81822ACC224B%21116&authkey=%21AM967yoy5TdZEY8&em=3&wdItem=%22'Dashboard'!A%3AXFD%22&wdDivId=%22myExcelDiv%22&wdActiveCell=%22'Dashboard'!B10%22&wdAllowInteractivity=1&wdAllowTyping=1&action=embedview&wdbipreview=true";
-    script.async = true;
+        document.body.appendChild(script);
 
-    document.body.appendChild(script);
+        return () => {
+            // Cleanup the script when the component is unmounted
+            document.body.removeChild(script);
+        };
+    }, []); // Empty dependency array ensures it runs once on mount
 
     return (
         <div className='container'>
-       
             <div className="interface">
-                <Header mp3credit='♪♪♪ Now playing: Time Flows by Evgeny_Bardyuzha @ pixabay.com' mp3='https://github.com/makuharistudio/makuharistudio.github.io/raw/main/src/assets-theme/music-evgeny-bardyuzha-time-flows.mp3' />
+                <Header
+                    mp3credit='♪♪♪ Now playing: Time Flows by Evgeny_Bardyuzha @ pixabay.com'
+                    mp3='https://github.com/makuharistudio/makuharistudio.github.io/raw/main/src/assets-theme/music-evgeny-bardyuzha-time-flows.mp3'
+                />
 
                 <div className='post'>
                     <div className='post-panel'>
@@ -31,81 +39,76 @@ export default function ExcelCustomerSupportAgentPerformance() {
                             <p>20 June 2022</p>
                         </div>
                         <div className='post-body'>
-
-
-
                             <p>You can download this Excel report from here:</p>
-                                <ul>
-                                    <li>
-                                        <a href='https://github.com/makuharistudio/data-visualisation-datasets/raw/main/Support%20ticket%20updates/Customer%20Support%20Agent%20Performance%20Dashboard.xlsx?raw=true'>
+                            <ul>
+                                <li>
+                                    <a href='https://github.com/makuharistudio/data-visualisation-datasets/raw/main/Support%20ticket%20updates/Customer%20Support%20Agent%20Performance%20Dashboard.xlsx?raw=true'>
                                         https://github.com/makuharistudio/data-visualisation-datasets/raw/main/Support%20ticket%20updates/Customer%20Support%20Agent%20Performance%20Dashboard.xlsx
-                                        </a>
-                                    </li>
-                                </ul>
+                                    </a>
+                                </li>
+                            </ul>
 
-                                <p>It connects to my GitHub repository data, so please click "Enable content" to access that External Data Connection.</p>
+                            <p>It connects to my GitHub repository data, so please click "Enable content" to access that External Data Connection.</p>
 
-                                <p>
-                                    <img src='https://github.com/makuharistudio/makuharistudio.github.io/blob/main/src/assets-portfolio/img-2022-06-excel-customer-support-agent-performance.gif?raw=true' loading='lazy'></img>
-                                </p>
+                            <p>
+                                <img src='https://github.com/makuharistudio/makuharistudio.github.io/blob/main/src/assets-portfolio/img-2022-06-excel-customer-support-agent-performance.gif?raw=true' loading='lazy' alt="Excel Report" />
+                            </p>
 
-                                <p>This Excel report is a redux of my "Follow the sun customer support" Power BI report, the latter you can find here:</p>
+                            <p>This Excel report is a redux of my "Follow the sun customer support" Power BI report, the latter you can find here:</p>
 
-                                <ul>
-                                    <li>
-                                        <a href='https://community.powerbi.com/t5/Data-Stories-Gallery/Follow-the-sun-customer-service-support/m-p/2168279'>
+                            <ul>
+                                <li>
+                                    <a href='https://community.powerbi.com/t5/Data-Stories-Gallery/Follow-the-sun-customer-service-support/m-p/2168279'>
                                         https://community.powerbi.com/t5/Data-Stories-Gallery/Follow-the-sun-customer-service-support/m-p/2168279
-                                        </a>
-                                    </li>
-                                </ul>
+                                    </a>
+                                </li>
+                            </ul>
 
-                                <br></br>
+                            <br />
 
-                                <p>Most of the code used is similar to my Power BI report, except most of the DAX measures now include USERELATIONSHIP due to a data model improvement. You can find some of that code in my Github here:</p>
+                            <p>Most of the code used is similar to my Power BI report, except most of the DAX measures now include USERELATIONSHIP due to a data model improvement. You can find some of that code in my Github here:</p>
 
-                                <ul>
-                                    <li>
-                                        <a href='https://github.com/makuharistudio/data-visualisation-datasets/tree/main/Support%20ticket%20updates#excel-report-model'>
+                            <ul>
+                                <li>
+                                    <a href='https://github.com/makuharistudio/data-visualisation-datasets/tree/main/Support%20ticket%20updates#excel-report-model'>
                                         https://github.com/makuharistudio/data-visualisation-datasets/tree/main/Support%20ticket%20updates#excel-report-model
-                                        </a>
-                                    </li>
-                                </ul>
+                                    </a>
+                                </li>
+                            </ul>
 
-                                <br></br>
+                            <br />
 
-                                <p>The Excel report is also embedded below using the OneDrive free version.</p>
-                                <p>Due to OneDrive's restrictions with External Data Connections and Camera Tools, the report cannot dynamically display support agent images nor refresh its data connection.
+                            <p>The Excel report is also embedded below using the OneDrive free version.</p>
+                            <p>Due to OneDrive's restrictions with External Data Connections and Camera Tools, the report cannot dynamically display support agent images nor refresh its data connection.
                                 So it is recommended you download the file and open it from a desktop version of Excel.
-                                </p>
+                            </p>
 
-                                <br></br>
-                                <br></br>
+                            <br />
+                            <br />
 
-                                <p><b>References</b></p>
-                                <p>These resources were used to create this Excel report:</p>
-                                <ul>
-                                    <li>
-                                        <a href='https://www.youtube.com/watch?v=gK2yBpiITvI'>YouTube Tutorial on how to map an Excel cell value as an input parameter for Power Query by ExcelIsFun</a>
-                                    </li>
-                                    <li>
-                                        <a href='https://www.youtube.com/watch?v=6qOL69bIQz8'>YouTube Tutorial on how to create a Call Center Performance Dashboard in Excel by Other Level's</a>
-                                    </li>
-                                    <li>
-                                        <a href='https://www.youtube.com/watch?v=T4sZSXdQ4Vg&t=1395s'>YouTube Tutorial on how to dynamically display photos ased on slicer selection in Excel by Other Level's</a>
-                                    </li>
-                                    <li>
-                                        <a href='https://www.youtube.com/watch?v=uvA-U9FKgPw&t=385s'>YouTube Tutorial on how to embed Excel workbook to web via OneDrive Personal free version by MyOnlineTrainingHub</a>
-                                    </li>
-                                    <li>
-                                        <a href='https://stackoverflow.com/questions/34424845/adding-script-tag-to-react-jsx'>Stackoverflow Question on how to run HTML script tag equivalents inside a React component</a>
-                                    </li>
-                                </ul>
+                            <p><b>References</b></p>
+                            <p>These resources were used to create this Excel report:</p>
+                            <ul>
+                                <li>
+                                    <a href='https://www.youtube.com/watch?v=gK2yBpiITvI'>YouTube Tutorial on how to map an Excel cell value as an input parameter for Power Query by ExcelIsFun</a>
+                                </li>
+                                <li>
+                                    <a href='https://www.youtube.com/watch?v=6qOL69bIQz8'>YouTube Tutorial on how to create a Call Center Performance Dashboard in Excel by Other Level's</a>
+                                </li>
+                                <li>
+                                    <a href='https://www.youtube.com/watch?v=T4sZSXdQ4Vg&t=1395s'>YouTube Tutorial on how to dynamically display photos ased on slicer selection in Excel by Other Level's</a>
+                                </li>
+                                <li>
+                                    <a href='https://www.youtube.com/watch?v=uvA-U9FKgPw&t=385s'>YouTube Tutorial on how to embed Excel workbook to web via OneDrive Personal free version by MyOnlineTrainingHub</a>
+                                </li>
+                                <li>
+                                    <a href='https://stackoverflow.com/questions/34424845/adding-script-tag-to-react-jsx'>Stackoverflow Question on how to run HTML script tag equivalents inside a React component</a>
+                                </li>
+                            </ul>
 
-                                <br></br>
+                            <br />
 
-                                <div id="myExcelDiv" className='embedded-excel'></div>
-
-
+                            <div id="myExcelDiv" className='embedded-excel'></div>
 
                         </div>
                     </div>
@@ -124,5 +127,5 @@ export default function ExcelCustomerSupportAgentPerformance() {
             </div>
 
         </div>
-    )
+    );
 }

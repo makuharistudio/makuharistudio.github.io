@@ -14,7 +14,7 @@ export default function About() {
             <div className='post'>
                 <center>
                     <div className='post-body'>
-                        <ReactMarkdown escapeHTML={false}>{aboutText[0].content}</ReactMarkdown>
+                        <ReactMarkdown >{aboutText[0].content}</ReactMarkdown>
                     </div>
                 </center>
             </div>

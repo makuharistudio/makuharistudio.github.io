@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { logo_excel } from '../data/assets';
 
 export default function ExcelCustomerSupportAgentPerformance() {
+    useEffect(() => {
+        // Check if the script already exists to prevent duplication
+        if (!document.getElementById('onedrive-script')) {
+            const script = document.createElement("script");
+            script.src = "https://onedrive.live.com/embed?resid=DA6E81822ACC224B%21121&authkey=%21ACJCWZMy8qHCeeU&em=3&wdItem=%22'Report'!A1%3AX50%22&wdDivId=%22myExcelDiv%22&wdHideGridlines=1&wdActiveCell=%22'Report'!A1%22&wdAllowTyping=1&action=embedview&wdbipreview=true";
+            script.async = true;
+            script.id = 'onedrive-script';  // Set an id to identify the script
 
-    const script = document.createElement("script");
+            document.body.appendChild(script);
 
-    script.src = "https://onedrive.live.com/embed?resid=DA6E81822ACC224B%21121&authkey=%21ACJCWZMy8qHCeeU&em=3&wdItem=%22'Report'!A1%3AX50%22&wdDivId=%22myExcelDiv%22&wdHideGridlines=1&wdActiveCell=%22'Report'!A1%22&wdAllowTyping=1&action=embedview&wdbipreview=true";
-    script.async = true;
-
-    document.body.appendChild(script);
+            // Clean up the script when the component unmounts
+            return () => {
+                document.body.removeChild(script);
+            };
+        }
+    }, []); // Empty dependency array ensures this effect runs only once on mount
 
     return (
         <div className='container'>
-       
             <div className="interface">
                 <Header mp3credit='♪♪♪ Now playing: Time Flows by Evgeny_Bardyuzha @ pixabay.com' mp3='https://github.com/makuharistudio/makuharistudio.github.io/raw/main/src/assets-theme/music-evgeny-bardyuzha-time-flows.mp3' />
 
@@ -31,10 +39,7 @@ export default function ExcelCustomerSupportAgentPerformance() {
                             <p>26 October 2022</p>
                         </div>
                         <div className='post-body'>
-
-
-
-                        <p>You can download this Excel report from here:</p>
+                            <p>You can download this Excel report from here:</p>
                             <ul>
                                 <li>
                                     <a href='https://github.com/makuharistudio/data-visualisation-datasets/raw/main/International%20Marketplace%20sales/International%20Marketplace%20Profit%20Dashboard.xlsx?raw=true'>
@@ -90,9 +95,6 @@ export default function ExcelCustomerSupportAgentPerformance() {
                             <br></br>
 
                             <div id="myExcelDiv" className='embedded-excel'></div>
-
-
-
                         </div>
                     </div>
                 </div>
@@ -108,7 +110,6 @@ export default function ExcelCustomerSupportAgentPerformance() {
                     </center>
                 </div>
             </div>
-
         </div>
-    )
+    );
 }

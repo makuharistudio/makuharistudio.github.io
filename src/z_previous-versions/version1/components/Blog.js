@@ -33,7 +33,7 @@ export default function Blog() {
                                         <div className='blog-meta'>
                                             <small>{post.date}</small>
                                         </div>
-                                        <ReactMarkdown className='blog-desc' escapeHtml={false}>{excerptList[i]}</ReactMarkdown>
+                                        <ReactMarkdown className='blog-desc' >{excerptList[i]}</ReactMarkdown>
                                         <div className='blog-meta'>
                                             <small>
                                                 <Link to={`/post/${post.id}`}>Read more...</Link>

@@ -58,7 +58,7 @@ export default function BlogPreview() {
                                                 <Link to={`/post/${post.id}`}>{post.title}</Link>
                                             </div>
 
-                                            <ReactMarkdown className='blog-desc-preview' escapeHtml={false}>{excerptList[i]}</ReactMarkdown>
+                                            <ReactMarkdown className='blog-desc-preview' >{excerptList[i]}</ReactMarkdown>
                                             <div className='blog-meta-preview'>
                                                 <small>
                                                     <Link to={`/post/${post.id}`}>Read more...</Link>
