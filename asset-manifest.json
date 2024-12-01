@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.5cfadb3d.css",
-    "main.js": "/static/js/main.2928d88d.js",
+    "main.js": "/static/js/main.5eae83f1.js",
     "static/js/453.3fb6c2de.chunk.js": "/static/js/453.3fb6c2de.chunk.js",
     "static/media/img-2023-07-portfolio-website-react-v4.gif": "/static/media/img-2023-07-portfolio-website-react-v4.e57d1cae364ed1a3ab47.gif",
     "static/media/music-evgeny-bardyuzha-time-flows.mp3": "/static/media/music-evgeny-bardyuzha-time-flows.cff00243002340350176.mp3",
@@ -35,11 +35,11 @@
     "static/media/flaticon-circle-right-orange.svg": "/static/media/flaticon-circle-right-orange.de3c1251477350822dd412c26452dd4b.svg",
     "static/media/logo-azure.svg": "/static/media/logo-azure.e88b515dc44062c9fc0b92736d891ae1.svg",
     "main.5cfadb3d.css.map": "/static/css/main.5cfadb3d.css.map",
-    "main.2928d88d.js.map": "/static/js/main.2928d88d.js.map",
+    "main.5eae83f1.js.map": "/static/js/main.5eae83f1.js.map",
     "453.3fb6c2de.chunk.js.map": "/static/js/453.3fb6c2de.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.5cfadb3d.css",
-    "static/js/main.2928d88d.js"
+    "static/js/main.5eae83f1.js"
   ]
 }
