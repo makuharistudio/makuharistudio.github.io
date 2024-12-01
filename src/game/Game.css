@@ -1,0 +1,85 @@
+.container {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: skyblue;
+    font-family: Arial, sans-serif;
+}
+
+#start-screen, #game-screen, #stage-screen, #game-over-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#start-screen {
+    background-color: skyblue;
+    position: relative;
+}
+
+#start-button {
+    padding: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#game-screen {
+    display: none;
+    position: relative;
+    background-color: black;
+}
+
+#stage-screen, #game-over-screen {
+    display: none;
+    background-color: black;
+    color: white;
+    font-size: 48px;
+    text-align: center;
+}
+
+#avatar {
+    width: 5vw;
+    height: 5vh;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.alien {
+    width: 2vw;
+    height: 2vh;
+    background-color: green;
+    position: absolute;
+}
+
+#health-bar, #score, #hi-score {
+    position: absolute;
+    color: white;
+    font-size: 18px;
+}
+#health-bar {
+    top: 10px;
+    left: 10px;
+}
+
+#score {
+    top: 10px;
+    right: 10px;
+}
+
+#hi-score {
+    top: 10px;
+    right: 150px;
+}
+
+#start-hi-score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    color: black;
+}
