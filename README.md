@@ -1,4 +1,4 @@
-# @data_messe portfolio and blog site
+# Portfolio and blog site
 
 This is the code for my personal website **[https://makuharistudio.github.io](https://makuharistudio.github.io/)**, designed by me using HTML, CSS, Markdown, and JavaScript with React.js and GitHub Pages. No boiler site templates like Jekyll are used.
 
@@ -199,9 +199,30 @@ npm run deploy
 
 5. From GitHub, change the GitHub Pages setting to deploy from branch gh-pages.
 
-6. From GitHub Desktop, push the changes (the Current branch selected should still be main by default, do not change this).
+6. From GitHub Desktop, push the changes (the Current branch selected should still be main by default, do NOT change this, otherwise you're in for trouble).
 
 **Note:** You will only see the changes you applied to the source files in GitHub Desktop for the push, not the compiled file changes that will end up deployed to gh-pages branch. This is normal.
+
+If you accidentally switch Current branch from main to gh-pages, you will find 10s of 1000s of non-commited files. If in this situation, before terminate GitHub pages whilst it is still processing the outstanding non-commits.
+
+Then run the following in Command Promt to store those outstanding commits.
+
+```
+git stash
+```
+
+Wait until your prompt becomes available.
+
+```
+rd /s /q node_modules
+del package-lock.json
+npm install
+```
+
+Reinstall all the other dependenceies. Then try npm start again to ensure it's working.
+
+**End of Note**
+
 
 7. From the GitHub repository's Settings, change Source branch from main to gh-pases. Remember from GitHub Desktop, that main should remain selected as the branch for pushes.
 
