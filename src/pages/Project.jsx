@@ -16,26 +16,23 @@ export default function Project() {
   // Helper function to dynamically import images from blog or portfolio
   const importImage = (path) => {
     try {
-      // Determine the directory based on the path
-      const isExternalUrl = path.startsWith('http');
-      if (isExternalUrl) {
-        return path;
-      }
-
+      if (path.startsWith('http')) return path; // Return as-is if external
+  
+      const filename = path.split('/').pop().trim(); // Extract filename
       const isBlog = path.includes('/blog/') || path.startsWith('blog/');
       const isPortfolio = path.includes('/portfolio/') || path.startsWith('portfolio/');
-
-      let basePath = '../assets/';
-      if (isBlog) basePath += 'blog/';
-      else if (isPortfolio) basePath += 'portfolio/';
-      else return ''; // Return empty if it doesn't match either
-
-      return new URL(`${basePath}${path.split('/').pop()}`, import.meta.url).href;
+  
+      let folder = isBlog ? 'blog' : isPortfolio ? 'portfolio' : '';
+  
+      if (!folder) return ''; // If no match, return empty
+  
+      return new URL(`../assets/${folder}/${filename}`, import.meta.url).href;
     } catch (err) {
       console.error(`Error loading image: ${path}`, err);
       return '';
     }
   };
+  
 
   // Function to replace image paths with importImage
   const replaceImagePaths = (markdown) => {
