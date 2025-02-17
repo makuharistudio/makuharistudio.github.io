@@ -1,0 +1,61 @@
+<svg viewBox="0 0 100 100" role="img" xmlns="http://www.w3.org/2000/svg" aria-labelledby="octagonIconTitle" fill="none">
+  <!-- Define the gradient and shadow filters -->
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="gradientpolygon" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#21C4FF" stop-opacity="0.6" />
+      <stop offset="30%" stop-color="#21C4FF" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#21C4FF" stop-opacity="0.15" />
+    </linearGradient>
+
+    <linearGradient id="gradientcircle" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="black" stop-opacity="0.45" />
+      <stop offset="79%" stop-color="black" stop-opacity="0.05" />
+      <stop offset="80%" stop-color="black" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="black" stop-opacity="0.5" />
+    </linearGradient>
+
+    <!-- Glow -->
+    <filter id="glowpolygon" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="rgba(255, 255, 255, 0.35)" result="dropShadow">
+        <animate attributeName="stdDeviation" values="0;2;4;3;" dur="2s" repeatCount="indefinite" />
+      </feDropShadow>
+    </filter>
+  </defs>
+
+  <!-- Polygon -->
+  <polygon points="90 5 95 10 95 90 90 95 10 95 5 90 5 10 10 5" 
+           fill="url(#gradientpolygon)" 
+           filter="url(#glowpolygon)" 
+           stroke="#84FFFF" 
+           stroke-width="1" 
+           stroke-opacity="0.6"
+           stroke-linejoin="miter">
+  </polygon>
+
+  <!-- Corners top right, bottom right, bottom left, top left -->
+  <line x1="87" y1="8" x2="92" y2="13" stroke="#84FFFF" stroke-width="4" stroke-opacity="0.6" stroke-linejoin="miter"></line>
+  <line x1="92" y1="87" x2="87" y2="92" stroke="#84FFFF" stroke-width="4" stroke-opacity="0.6" stroke-linejoin="miter"></line>
+  <line x1="13" y1="92" x2="8" y2="87" stroke="#84FFFF" stroke-width="4" stroke-opacity="0.6" stroke-linejoin="miter"></line>
+  <line x1="8" y1="13" x2="13" y2="8" stroke="#84FFFF" stroke-width="4" stroke-opacity="0.6" stroke-linejoin="miter"></line>
+
+  <!-- Lines top, right, bottom, left -->
+  <line x1="12" y1="8" x2="88" y2="8" stroke="#84FFFF" stroke-width="2" stroke-opacity="0.6" stroke-linejoin="miter"></line>
+  <line x1="92" y1="12" x2="92" y2="88" stroke="#84FFFF" stroke-width="2" stroke-opacity="0.6" stroke-linejoin="miter"></line>
+  <line x1="88" y1="92" x2="12" y2="92" stroke="#84FFFF" stroke-width="2" stroke-opacity="0.6" stroke-linejoin="miter"></line>
+  <line x1="8" y1="88" x2="8" y2="12" stroke="#84FFFF" stroke-width="2" stroke-opacity="0.6" stroke-linejoin="miter"></line>
+
+  <!-- Diagonal line -->
+  <line x1="12" y1="12" x2="88" y2="88" stroke="#84FFFF" stroke-width="1" stroke-opacity="0.1" stroke-linejoin="miter"></line>
+
+  <!-- Circle -->
+  <circle 
+    cx="50" 
+    cy="50" 
+    r="35" 
+    fill="url(#gradientcircle)"
+    stroke="black"
+    stroke-width="4"
+    stroke-opacity="0.3"
+  />
+</svg>

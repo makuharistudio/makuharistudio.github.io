@@ -1,60 +1,50 @@
 /* ASSET FILES FOR SITE THEME */
 
-/* Theme */
-import avatar from '../assets-theme/avatar-vertical-transparent-bg.png';
+import avatar from '../assets/theme/avatar/avatar-vertical-transparent-bg.png'
+import title_a from '../assets/theme/avatar/title-y-a.png'
+import title_b from '../assets/theme/avatar/title-y-b.png'
+import title_c from '../assets/theme/avatar/title-y-c.png'
 
 /* Icons */
-import icon_charthistogram from '../assets-theme/flaticon-chart-histogram-white-glow.svg';
-import icon_circleright from '../assets-theme/flaticon-circle-right-orange.svg';
-import icon_edit from '../assets-theme/flaticon-edit-white-glow.svg';
-import icon_modeportrait from '../assets-theme/flaticon-mode-portrait-white-glow.svg';
-import icon_joystick from '../assets-theme/flaticon-mode-joystick-white-glow.svg';
+import icon_charthistogram from '../assets/theme/icon/chart-histogram-blue-glow.svg'
+import icon_edit from '../assets/theme/icon/edit-blue-glow.svg'
+import icon_modeportrait from '../assets/theme/icon/mode-portrait-blue-glow.svg'
+import icon_bookopen from '../assets/theme/icon/book-open-cover-blue-glow.svg'
+
+import icon_charthistogram_highlight from '../assets/theme/icon/chart-histogram-white-glow.svg'
+import icon_edit_highlight from '../assets/theme/icon/edit-white-glow.svg'
+import icon_modeportrait_highlight from '../assets/theme/icon/mode-portrait-white-glow.svg'
+import icon_bookopen_highlight from '../assets/theme/icon/book-open-cover-white-glow.svg'
 
 /* Logos */
-import logo_aws from '../assets-theme/logo-aws.svg';
-import logo_azure from '../assets-theme/logo-azure.svg';
-import logo_css from '../assets-theme/logo-css.svg';
-import logo_excel from '../assets-theme/logo-excel.svg';
-import logo_github from '../assets-theme/logo-github.svg';
-import logo_neo4j from '../assets-theme/logo-neo4j.svg';
-import logo_powerbi from '../assets-theme/logo-powerbi.svg';
-import logo_python from '../assets-theme/logo-python.svg';
-import logo_sqlserver from '../assets-theme/logo-sqlserver.svg';
-import logo_tableau from '../assets-theme/logo-tableau.svg';
+import logo_aws from '../assets/theme/logo/aws.svg'
+import logo_azure from '../assets/theme/logo/azure.svg'
+import logo_css from '../assets/theme/logo/css.svg'
+import logo_excel from '../assets/theme/logo/excel.svg'
+import logo_github from '../assets/theme/logo/github.svg'
+import logo_linkedin from '../assets/theme/logo/linkedin.svg'
+import logo_neo4j from '../assets/theme/logo/neo4j.svg'
+import logo_powerbi from '../assets/theme/logo/powerbi.svg'
+import logo_python from '../assets/theme/logo/python.svg'
+import logo_sqlserver from '../assets/theme/logo/sqlserver.svg'
+import logo_tableau from '../assets/theme/logo/tableau.svg'
+import logo_x from '../assets/theme/logo/x.svg'
 
-/* Title */
-import title_e from '../assets-theme/title-y-a.png';
-import title_d from '../assets-theme/title-y-b.png';
-import title_c from '../assets-theme/title-y-c.png';
-import title_b from '../assets-theme/title-z-d.png';
-import title_a from '../assets-theme/title-z-e.png';
+/* Background */
+import mars_mosaic_1 from '../assets/theme/background/images/planets/planetary-mosaic-mars-1.jpg'
+import earth_mosaic_1 from '../assets/theme/background/images/planets/planetary-mosaic-earth-1.jpg'
+import earth_mosaic_2_specular from '../assets/theme/background/images/planets/planetary-mosaic-earth-2-specular.jpg'
+import earth_mosaic_3_bump from '../assets/theme/background/images/planets/planetary-mosaic-earth-3-bump.jpg'
+import earth_mosaic_4_lights from '../assets/theme/background/images/planets/planetary-mosaic-earth-4-lights.jpg'
+import earth_mosaic_5_clouds from '../assets/theme/background/images/planets/planetary-mosaic-earth-5-clouds.jpg'
+import earth_mosaic_6_clouds_transparent from '../assets/theme/background/images/planets/planetary-mosaic-earth-6-cloudstransparent.jpg'
+import star from '../assets/theme/background/images/star.png'
 
-/* Music */
-import music_home from '../assets-theme/music-evgeny-bardyuzha-dreamy-inspiring-electronic.mp3';
-import music_portfolio from '../assets-theme/music-evgeny-bardyuzha-time-flows.mp3';
-import music_blog from '../assets-theme/music-evgeny-bardyuzha-small-discoveries.mp3';
-
-/* Sound effects */
-import sound_menubutton from '../assets-theme/mixkit-high-tech-bleep-confirmation-2520.wav';
-import sound_projectlink from '../assets-theme/mixkit-technology-notification-3123.wav';
-
-/* Portfolio */
-import img_portfoliowebsitereact from '../assets-portfolio/img-2023-07-portfolio-website-react-v4.gif';
-import img_singaporerentpowerbi from '../assets-portfolio/img-2021-10-power-bi-quarterly-singapore-rental-prices-by-currency.gif';
-import img_followthesunpowerbi from  '../assets-portfolio/img-2021-11-power-bi-follow-the-sun-customer-support.gif';
-import img_internationalmarketplacessis from '../assets-portfolio/img-2022-01-sql-server-integration-services-international-marketplace-trimmed.png';
-import img_internationalmarketplacepowerbi from '../assets-portfolio/img-2022-04-power-bi-international-marketplace-python-deneb.gif';
-import img_customersupportagentperformance from '../assets-portfolio/img-2022-06-excel-customer-support-agent-performance.gif';
-import img_satellitelaunchoverview from '../assets-portfolio/img-2022-08-satellite-launch-overview.gif';
-import img_internationalmarketplaceexcel from '../assets-portfolio/img-2022-10-excel-international-marketplace-profit-forecast.gif';
-import img_appsourcedenebmaps from '../assets-portfolio/img-2022-11-power-bi-appsource-deneb-maps.gif';
-
-
-export { avatar, icon_charthistogram, icon_circleright, icon_edit, icon_modeportrait, icon_joystick,
-         logo_aws, logo_azure, logo_css, logo_excel, logo_github, logo_neo4j, logo_powerbi, logo_python, logo_sqlserver, logo_tableau,
-         title_e, title_d, title_c, title_b, title_a,
-         sound_menubutton, sound_projectlink,
-         music_home, music_portfolio, music_blog,
-         img_portfoliowebsitereact, img_singaporerentpowerbi, img_followthesunpowerbi, img_internationalmarketplacessis,
-         img_internationalmarketplacepowerbi, img_customersupportagentperformance, img_satellitelaunchoverview, 
-         img_internationalmarketplaceexcel, img_appsourcedenebmaps }
+export { avatar, title_a, title_b, title_c,
+         icon_modeportrait, icon_charthistogram, icon_edit, icon_bookopen,
+         icon_modeportrait_highlight, icon_charthistogram_highlight, icon_edit_highlight, icon_bookopen_highlight,
+         logo_aws, logo_azure, logo_css, logo_excel, logo_github, logo_linkedin, logo_neo4j, logo_powerbi, logo_python, logo_sqlserver, logo_tableau, logo_x,
+         mars_mosaic_1, 
+         earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent,
+         star
+       }
