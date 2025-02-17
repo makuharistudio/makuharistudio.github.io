@@ -8,24 +8,22 @@ import { mars_mosaic_1, earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_
 /* The shuttle that flies from Earth was created using ChatGPT */
 
 function initSpaceBackground(container) {
-  const w = container.offsetWidth;
-  const h = container.offsetHeight;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(-1, -5.5, 1.25);
   camera.up.set(0, 0, 1);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(w, h);
-  container.appendChild(renderer.domElement);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);  
 
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.25;
+  controls.enabled = false; // Completely disable user interaction
+  
 
 
 
@@ -297,6 +295,13 @@ function initSpaceBackground(container) {
     window.removeEventListener('resize', handleWindowResize);
     container.removeChild(renderer.domElement);
   };
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
 }
 
 export { initSpaceBackground };
