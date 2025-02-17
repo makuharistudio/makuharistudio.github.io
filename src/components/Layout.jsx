@@ -35,7 +35,7 @@ export default function Layout() {
           <Outlet />
         </div>
         <MenuFooter />
-        <div id="bg-space" ref={containerRef}></div>
+        <div id="bgspace" ref={containerRef}></div>
       </>
     )
 
