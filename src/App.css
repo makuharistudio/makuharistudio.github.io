@@ -72,6 +72,9 @@ a {
   color: var(--button-font-color-highlight);
   font-family: 'Cambay', Helvetica, Verdana;
   text-decoration: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 nav {
@@ -122,7 +125,7 @@ content { background: var(--text-background); }
 
 #menu-header ul {
   height: auto;
-  margin: calc(var(--content-font-size) / 1.5) calc(var(--content-font-size) / 2) auto auto;
+  margin: calc(var(--content-font-size) / 2) calc(var(--content-font-size) / 2) auto auto;
   padding: 0px;
   display: flex;
   list-style-type: none;
@@ -168,14 +171,15 @@ content { background: var(--text-background); }
   margin: 0px;
   padding: 0px;
   width: var(--menu-footer-width);
+  position: fixed;
   left: 0;
   bottom: 0;
-  position: fixed;
   font-family: 'Audiowide', Helvetica, Verdana;
   display: grid;
   grid-template-columns: repeat(6, auto);
   place-items: center;
   text-align: center;
+  z-index: 998;
 }
 
 #menu-footer a {

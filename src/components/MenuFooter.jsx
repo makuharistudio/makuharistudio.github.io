@@ -37,20 +37,20 @@ export default function MenuFooter() {
         <Link to='/'>
             <div className='menu-footer-button-border menu-footer-button-border'></div>
             <div className='menu-footer-button-light menu-footer-button-light-white'></div>
-            <h6>IN PROGRESS</h6>
+            <h6>- - - - -</h6>
         </Link>
 
 
         <Link to='/'>
             <div className='menu-footer-button-border menu-footer-button-border'></div>
             <div className='menu-footer-button-light menu-footer-button-light-white'></div>
-            <h6>IN PROGRESS</h6>
+            <h6>- - - - -</h6>
         </Link>
 
         <Link to='/'>
             <div className='menu-footer-button-border menu-footer-button-border'></div>
             <div className='menu-footer-button-light menu-footer-button-light-white'></div>
-            <h6>IN PROGRESS</h6>
+            <h6>- - - - -</h6>
         </Link>
 
     </nav>
