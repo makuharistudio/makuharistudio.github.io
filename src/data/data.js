@@ -1,4 +1,4 @@
-import { logo_linkedin, logo_x, logo_github, logo_powerbi, logo_tableau } from './assets';
+import { link_linkedin, link_x, link_github, link_powerbi, link_tableau, link_linkedin_hover, link_x_hover, link_github_hover, link_powerbi_hover, link_tableau_hover } from './assets';
 
 /* GENERAL */
 const displayName = 'ｍａｋｕｈａｒｉｓｔｕｄｉｏ';
@@ -15,27 +15,32 @@ const ascii3 = String.fromCharCode(72,65,82,73);
 export const LinkData = [
     {
         name: 'LINKEDIN',
-        icon: logo_linkedin,
+        icon: link_linkedin,
+        hover: link_linkedin_hover,
         link: ascii1 + ascii2 + ascii3 
     },
     {
         name: '𝕏',
-        icon: logo_x,
+        icon: link_x,
+        hover: link_x_hover,
         link: xURL
     },  
     {
         name: 'GITHUB',
-        icon: logo_github,
+        icon: link_github,
+        hover: link_github_hover,
         link: githubURL 
     },
     {
         name: 'POWER BI',
-        icon: logo_powerbi,
+        icon: link_powerbi,
+        hover: link_powerbi_hover,
         link: powerbiURL
     },
     {
         name: 'TABLEAU',
-        icon: logo_tableau,
+        icon: link_tableau,
+        hover: link_tableau_hover,
         link: tableauURL
     }
 ];

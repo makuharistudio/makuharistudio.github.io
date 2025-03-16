@@ -16,6 +16,19 @@ import icon_edit_highlight from '../assets/theme/icon/edit-white-glow.svg'
 import icon_modeportrait_highlight from '../assets/theme/icon/mode-portrait-white-glow.svg'
 import icon_bookopen_highlight from '../assets/theme/icon/book-open-cover-white-glow.svg'
 
+/* Links */
+import link_linkedin from '../assets/theme/logo/linkedin-teal.svg'
+import link_x from '../assets/theme/logo/x-teal.svg'
+import link_github from '../assets/theme/logo/github-teal.svg'
+import link_powerbi from '../assets/theme/logo/powerbi-teal.svg'
+import link_tableau from '../assets/theme/logo/tableau-teal.svg'
+
+import link_linkedin_hover from '../assets/theme/logo/linkedin-white.svg'
+import link_x_hover from '../assets/theme/logo/x-white.svg'
+import link_github_hover from '../assets/theme/logo/github-white.svg'
+import link_powerbi_hover from '../assets/theme/logo/powerbi-white.svg'
+import link_tableau_hover from '../assets/theme/logo/tableau-white.svg'
+
 /* Logos */
 import logo_aws from '../assets/theme/logo/aws.svg'
 import logo_azure from '../assets/theme/logo/azure.svg'
@@ -44,6 +57,8 @@ export { avatar, title_a, title_b, title_c,
          icon_modeportrait, icon_charthistogram, icon_edit, icon_bookopen,
          icon_modeportrait_highlight, icon_charthistogram_highlight, icon_edit_highlight, icon_bookopen_highlight,
          logo_aws, logo_azure, logo_css, logo_excel, logo_github, logo_linkedin, logo_neo4j, logo_powerbi, logo_python, logo_sqlserver, logo_tableau, logo_x,
+         link_linkedin, link_x, link_github, link_powerbi, link_tableau,
+         link_linkedin_hover, link_x_hover, link_github_hover, link_powerbi_hover, link_tableau_hover,
          mars_mosaic_1, 
          earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent,
          star

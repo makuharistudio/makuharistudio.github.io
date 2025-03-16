@@ -125,7 +125,7 @@ content { background: var(--text-background); }
 
 #menu-header ul {
   height: auto;
-  margin: calc(var(--content-font-size) / 2) calc(var(--content-font-size) / 2) auto auto;
+  margin: calc(var(--content-font-size) / 1.5) calc(var(--content-font-size) / 2) auto auto;
   padding: 0px;
   display: flex;
   list-style-type: none;
@@ -262,8 +262,8 @@ content ul, content ol {
   padding-right: 1rem;
 }
 
-content a { color: var(--content-font-color-highlight); }
-content a:hover { text-decoration: underline; }
+content a { color: var(--button-font-color); }
+content a:hover { color: var(--content-font-color-highlight); }
 
 content img {
   display: block;
@@ -341,7 +341,7 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   padding: 0px;
 }
 
-#link-list a:hover h6 { color: var(--button-font-color-highlight) }
+#link-list a:hover h6 { color: var(--content-font-color-highlight) }
 
 #certification-list {
   display: grid;

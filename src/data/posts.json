@@ -1,6 +1,6 @@
 [
   {
-    "id": 1728230400,
+    "id": 1728219600,
     "title": "Create a machine learning Windows server using AWS EC2, TensorFlow, and Python\r",
     "name": "create-a-machine-learning-windows-server-using-aws-ec2-tensorflow-and-python",
     "tech": "logo-aws\r",
@@ -10,7 +10,7 @@
     "photo": ""
   },
   {
-    "id": 1711555200,
+    "id": 1711544400,
     "title": "Using ChatGPT to create a plain text Python encryption tool for password protection\r",
     "name": "using-chatgpt-to-create-a-plain-text-python-encryption-tool-for-password-protection",
     "tech": "logo-python\r",
@@ -20,7 +20,7 @@
     "photo": ""
   },
   {
-    "id": 1696608000,
+    "id": 1696597200,
     "title": "CSS development notes from my website revamp\r",
     "name": "css-development-notes-from-my-website-revamp",
     "tech": "logo-css\r",
@@ -30,7 +30,7 @@
     "photo": ""
   },
   {
-    "id": 1678464000,
+    "id": 1678453200,
     "title": "Setting up a Python environment for AWS S3 bucket interaction\r",
     "name": "setting-up-a-python-environment-for-aws-s3-bucket-interaction",
     "tech": "logo-aws\r",
@@ -40,7 +40,7 @@
     "photo": ""
   },
   {
-    "id": 1669392000,
+    "id": 1669381200,
     "title": "How to use geographic maps in Power BI with AppSource Deneb\r",
     "name": "how-to-use-geographic-maps-in-power-bi-with-appsource-deneb",
     "tech": "logo-powerbi\r",
@@ -50,7 +50,7 @@
     "photo": ""
   },
   {
-    "id": 1666972800,
+    "id": 1666962000,
     "title": "Comparing manual forecasting with Excel's built-in FORECAST.ETS function\r",
     "name": "comparing-manual-forecasting-with-excels-built-in-forecastets-function",
     "tech": "logo-excel\r",
@@ -60,7 +60,7 @@
     "photo": ""
   },
   {
-    "id": 1663516800,
+    "id": 1663509600,
     "title": "How to webscrape a YouTube channel's video titles using Python and Visual Studio Code\r",
     "name": "how-to-webscrape-a-youtube-channels-video-titles-using-python-and-visual-studio-code",
     "tech": "logo-python\r",
@@ -70,7 +70,7 @@
     "photo": ""
   },
   {
-    "id": 1661529600,
+    "id": 1661522400,
     "title": "Creating a decorated scatterplot visual using Deneb and Power BI\r",
     "name": "creating-a-decorated-scatterplot-visual-using-deneb-and-power-bi",
     "tech": "logo-powerbi\r",
@@ -80,7 +80,7 @@
     "photo": ""
   },
   {
-    "id": 1659196800,
+    "id": 1659189600,
     "title": "How to webscrape recent Twitter posts by keyword using Python and Visual Studio Code\r",
     "name": "how-to-webscrape-recent-twitter-posts-by-keyword-using-python-and-visual-studio-code",
     "tech": "logo-python\r",
@@ -90,7 +90,7 @@
     "photo": ""
   },
   {
-    "id": 1655827200,
+    "id": 1655820000,
     "title": "How to embed an Excel workbook into a React.js application\r",
     "name": "how-to-embed-an-excel-workbook-into-a-reactjs-application",
     "tech": "logo-react\r",
@@ -100,7 +100,7 @@
     "photo": ""
   },
   {
-    "id": 1650988800,
+    "id": 1650981600,
     "title": "Creating custom visuals using Deneb and Vega-Lite in Power BI\r",
     "name": "creating-custom-visuals-using-deneb-and-vega-lite-in-power-bi",
     "tech": "logo-powerbi\r",
@@ -110,7 +110,7 @@
     "photo": ""
   },
   {
-    "id": 1650124800,
+    "id": 1650117600,
     "title": "Add forecasts from Python using Visual Studio Code to Power BI\r",
     "name": "add-forecasts-from-python-using-visual-studio-code-to-power-bi",
     "tech": "logo-python\r",
@@ -120,7 +120,7 @@
     "photo": ""
   },
   {
-    "id": 1645891200,
+    "id": 1645880400,
     "title": "Find grouped records with a date that matches another date column using DAX\r",
     "name": "find-grouped-records-with-a-date-that-matches-another-date-column-using-dax",
     "tech": "logo-powerbi\r",
@@ -130,7 +130,7 @@
     "photo": ""
   },
   {
-    "id": 1641916800,
+    "id": 1641906000,
     "title": "International Marketplace dataset created with Integration Services\r",
     "name": "international-marketplace-dataset-created-with-integration-services",
     "tech": "logo-sqlserver\r",
@@ -140,7 +140,7 @@
     "photo": ""
   },
   {
-    "id": 1639756800,
+    "id": 1639746000,
     "title": "How to create a free Azure account to post reports to the Power BI Gallery\r",
     "name": "how-to-create-a-free-azure-account-to-post-reports-to-the-power-bi-gallery",
     "tech": "logo-azure\r",
@@ -150,7 +150,7 @@
     "photo": ""
   },
   {
-    "id": 1635609600,
+    "id": 1635598800,
     "title": "Customer support ticket update generator and sample dataset\r",
     "name": "customer-support-ticket-update-generator-and-sample-dataset",
     "tech": "logo-excel\r",
@@ -160,7 +160,7 @@
     "photo": ""
   },
   {
-    "id": 1635004800,
+    "id": 1634994000,
     "title": "Calculate aggregate for grouped rows based on column value, DAX version\r",
     "name": "calculate-aggregate-for-grouped-rows-based-on-column-value-dax-version",
     "tech": "logo-powerbi\r",
@@ -170,7 +170,7 @@
     "photo": ""
   },
   {
-    "id": 1634400000,
+    "id": 1634389200,
     "title": "Find aggregate value for grouped rows based on column value\r",
     "name": "find-aggregate-value-for-grouped-rows-based-on-column-value",
     "tech": "logo-powerbi\r",
@@ -180,7 +180,7 @@
     "photo": ""
   },
   {
-    "id": 1633795200,
+    "id": 1633784400,
     "title": "Dynamically apply time zone and daylight savings on date/times in Power BI\r",
     "name": "dynamically-apply-time-zone-and-daylight-savings-on-datetimes-in-power-bi",
     "tech": "logo-powerbi\r",
@@ -190,7 +190,7 @@
     "photo": ""
   },
   {
-    "id": 1633190400,
+    "id": 1633183200,
     "title": "Import time zone offsets and observations from Wikipedia in Power BI\r",
     "name": "import-time-zone-offsets-and-observations-from-wikipedia-in-power-bi",
     "tech": "logo-powerbi\r",
@@ -200,7 +200,7 @@
     "photo": ""
   },
   {
-    "id": 1632585600,
+    "id": 1632578400,
     "title": "Find date for the nth day of a month in Power BI\r",
     "name": "find-date-for-the-nth-day-of-a-month-in-power-bi",
     "tech": "logo-powerbi\r",

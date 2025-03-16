@@ -34,12 +34,13 @@ export default function MenuFooter() {
             <h6 className={currentPath.includes('/blog') ? 'menu-footer' : ''}>BLOG</h6>
         </Link>
 
-        <Link to='/'>
-            <div className='menu-footer-button-border menu-footer-button-border'></div>
-            <div className='menu-footer-button-light menu-footer-button-light-white'></div>
-            <h6>- - - - -</h6>
+        <Link to='/readings'>
+            <div className={`menu-footer-button-border ${currentPath.includes('/readings') ? 'menu-footer-button-border-highlight' : 'menu-footer-button-border'}`}>
+                <img src={currentPath.includes('/readings') ? icon_bookopen_highlight : icon_bookopen} alt='Readings'/>
+            </div>
+            <div className={`menu-footer-button-light ${currentPath.includes('/readings') ? 'menu-footer-button-light-highlight' : 'menu-footer-button-light-white'}`}></div>
+            <h6 className={currentPath.includes('/readings') ? 'menu-footer' : ''}>READINGS</h6>
         </Link>
-
 
         <Link to='/'>
             <div className='menu-footer-button-border menu-footer-button-border'></div>

@@ -12,6 +12,7 @@ export default function MenuHeader() {
             <li className={currentPath === '/' ? 'menu-header-highlight' : 'menu-header'}><Link to='/'>ABOUT</Link></li>
             <li className={currentPath.includes('/portfolio') ? 'menu-header-highlight' : 'menu-header'}><Link to='/portfolio'>PORTFOLIO</Link></li>
             <li className={currentPath.includes('/blog') ? 'menu-header-highlight' : 'menu-header'}><Link to='/blog'>BLOG</Link></li>
+            <li className={currentPath.includes('/readings') ? 'menu-header-highlight' : 'menu-header'}><Link to='/readings'>READINGS</Link></li>
         </ul>
     </nav>
   )
