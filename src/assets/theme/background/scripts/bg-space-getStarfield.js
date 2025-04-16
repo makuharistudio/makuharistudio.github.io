@@ -1,3 +1,4 @@
+// bg-space-getStarfield.js
 import * as THREE from "three";
 import { star } from '../../../../data/assets.js';
 
@@ -39,11 +40,20 @@ export default function getStarfield({ numStars = 500, radius = 250, exclusionRa
   const geo = new THREE.BufferGeometry();
   geo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
   geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+
+  // Load the texture and create the material
+  const texture = new THREE.TextureLoader().load(star);
+  texture.colorSpace = THREE.SRGBColorSpace; // Ensure correct color space
+
   const mat = new THREE.PointsMaterial({
     size: 0.2,
     vertexColors: true,
-    map: new THREE.TextureLoader().load(star),
+    map: texture,
+    transparent: true, // Enable transparency
+    alphaTest: 0.1, // Discard pixels with alpha < 0.1
+    blending: THREE.AdditiveBlending, // Use additive blending for a glowing star effect
   });
+
   const points = new THREE.Points(geo, mat);
   return points;
 }

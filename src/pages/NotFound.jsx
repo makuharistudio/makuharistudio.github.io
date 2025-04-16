@@ -6,7 +6,7 @@ export default function NotFound() {
             <br />
             <center>
                 <h2>Page not found</h2>
-                <h4>Please double-check the URL or return to the <u><a href='/' target='_blank'>main page</a></u>.</h4>
+                <h4>Please double-check the URL or return to the <u><a href='/'>main page</a></u>.</h4>
             </center>
         </>
     );

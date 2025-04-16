@@ -52,7 +52,7 @@
   <circle 
     cx="50" 
     cy="50" 
-    r="35" 
+    r="36" 
     fill="url(#gradientcircle)"
     stroke="black"
     stroke-width="4"

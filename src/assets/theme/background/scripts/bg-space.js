@@ -1,18 +1,21 @@
+// bg-space.js
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import getStarfield from './bg-space-getStarfield.js';
+import getBackground from './bg-space-getBackground.js';
 import { getFresnelMat } from './bg-space-getFresnelMat.js';
-import { mars_mosaic_1, earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds,earth_mosaic_6_clouds_transparent } from '../../../../data/assets.js';
-
-/* Based on YouTube tutorial "Create the Earth with THREE.js" by Robot Bobby https://www.youtube.com/watch?v=FntV9iEJ0tU */
-/* The shuttle that flies from Earth was created using ChatGPT */
+import { mars_mosaic_1, earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent } from '../../../../data/assets.js';
 
 function initSpaceBackground(container) {
-
   const scene = new THREE.Scene();
+  scene.background = null; // Set the scene background to transparent to avoid black areas
+
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(-1, -5.5, 1.25);
   camera.up.set(0, 0, 1);
+
+  camera.far = 1000; // The background sphere's radius is 500 (or 1000 if increased)
+  camera.updateProjectionMatrix();
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -23,9 +26,11 @@ function initSpaceBackground(container) {
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enabled = false; // Completely disable user interaction
-  
 
-
+  // Add the procedural background (now a sphere)
+  const background = getBackground();
+  scene.add(background.mesh);
+  console.log("Background sphere added to scene:", background.mesh);
 
   // Sun
   const sunGroup = new THREE.Group();
@@ -42,12 +47,10 @@ function initSpaceBackground(container) {
   sunGroup.add(sunMesh);
 
   // Sun's light
-  const sunLight = new THREE.PointLight(0xffffee, 1350.0, 9999999999999999999999); // Color, intensity, and distance
+  const sunLight = new THREE.PointLight(0xffffee, 1350.0, 9999999999999999999999);
   sunLight.position.set(0, 0, 0);
   sunLight.castShadow = true;
   scene.add(sunLight);
-
-
 
   // Earth
   const earthGroup = new THREE.Group();
@@ -79,15 +82,15 @@ function initSpaceBackground(container) {
     alphaMap: earthLoader.load(earth_mosaic_6_clouds_transparent),
   });
   const earthCloudMesh = new THREE.Mesh(earthGeometry, earthClouds);
-  earthCloudMesh.scale.setScalar(0.5015); // Previously (1.003), reduced to half for distance illusion
+  earthCloudMesh.scale.setScalar(0.5015);
   earthGroup.add(earthCloudMesh);
   earthCloudMesh.rotation.x = Math.PI / 2;
   const earthFresnel = getFresnelMat({ rimHex: 0x0000ff });
   const earthGlowMesh = new THREE.Mesh(earthGeometry, earthFresnel);
-  earthGlowMesh.scale.setScalar(1.01); // Previously (1.01), reduced to half for distance illusion
+  earthGlowMesh.scale.setScalar(1.01);
   earthGroup.add(earthGlowMesh);
   earthGlowMesh.rotation.x = Math.PI / 2;
-  earthGroup.scale.set(0.5, 0.5, 0.5); // Previously (1, 1, 1), reduced to half for distance illusion
+  earthGroup.scale.set(0.5, 0.5, 0.5);
   let earthOrbitSpeed = 0.00075;
   let earthOrbitAngle = 0;
 
@@ -116,10 +119,8 @@ function initSpaceBackground(container) {
   });
 
   const earthOrbitLine = new THREE.Line(earthOrbitPath, earthOrbitMaterial);
-  earthOrbitLine.computeLineDistances(); // Required for dashed lines
+  earthOrbitLine.computeLineDistances();
   scene.add(earthOrbitLine);
-
-
 
   // Mars
   const marsGroup = new THREE.Group();
@@ -128,34 +129,11 @@ function initSpaceBackground(container) {
   const marsLoader = new THREE.TextureLoader();
   const marsGeometry = new THREE.IcosahedronGeometry(1, marsDetail);
   const marsMaterial = new THREE.MeshPhongMaterial({
-    map: marsLoader.load(mars_mosaic_1) /* ,
-    specularMap: marsLoader.load('02_marsspec1k.jpg'),
-    bumpMap: marsLoader.load('01_marsbump1k.jpg'),
-    bumpScale: 0.04, */
+    map: marsLoader.load(mars_mosaic_1)
   });
   const marsMesh = new THREE.Mesh(marsGeometry, marsMaterial);
   marsGroup.add(marsMesh);
   marsMesh.rotation.x = Math.PI / 2;
-  /*
-  const marsLight = new THREE.MeshBasicMaterial({
-    map: marsLoader.load('03_marslights1k.jpg'),
-    blending: THREE.AdditiveBlending,
-  });
-  const marsLightMesh = new THREE.Mesh(marsGeometry, marsLight);
-  marsGroup.add(marsLightMesh);
-  marsLightMesh.rotation.x = Math.PI / 2;
-  const marsClouds = new THREE.MeshStandardMaterial({
-    map: marsLoader.load('04_marscloudmap.jpg'),
-    transparent: true,
-    opacity: 0.8,
-    blending: THREE.AdditiveBlending,
-    alphaMap: marsLoader.load('05_marscloudmaptrans.jpg'),
-  });
-  const marsCloudMesh = new THREE.Mesh(marsGeometry, marsClouds);
-  marsCloudMesh.scale.setScalar(1.003);
-  marsGroup.add(marsCloudMesh);
-  marsCloudMesh.rotation.x = Math.PI / 2;
-  */
   const marsFresnel = getFresnelMat({ rimHex: 0xff0000 });
   const marsGlowMesh = new THREE.Mesh(marsGeometry, marsFresnel);
   marsGlowMesh.scale.setScalar(1.01);
@@ -165,7 +143,7 @@ function initSpaceBackground(container) {
   let marsOrbitSpeed = 0.00025;
   let marsOrbitAngle = 0;
 
-  // mars's elliptical orbit path
+  // Mars's elliptical orbit path
   const marsOrbitRadiusX = 30.4;
   const marsOrbitRadiusY = 32.0;
   const marsOrbitPoints = [];
@@ -193,14 +171,10 @@ function initSpaceBackground(container) {
   marsOrbitLine.computeLineDistances();
   scene.add(marsOrbitLine);
 
-
-
   // Stars
   const marsOrbitMaxRadius = Math.max(marsOrbitRadiusX, marsOrbitRadiusY);
-  const stars = getStarfield({ numStars: 2000, radius: 100, exclusionRadius: marsOrbitMaxRadius });
+  const stars = getStarfield({ numStars: 2000, radius: 50, exclusionRadius: marsOrbitMaxRadius }); // Reduced radius to 50
   scene.add(stars);
-
-
 
   // Shuttle
   const shuttleGeometry = new THREE.ConeGeometry(0.025, 0.1, 10);
@@ -213,7 +187,7 @@ function initSpaceBackground(container) {
     const start = earthGroup.position.clone();
   
     function animateShuttle() {
-      progress += 0.003; // Slower increment for smoother animation
+      progress += 0.003;
       if (progress > 1) {
         scene.remove(shuttle);
         shuttle.geometry.dispose();
@@ -226,7 +200,6 @@ function initSpaceBackground(container) {
   
       shuttle.position.copy(position);
   
-      // Align shuttle's cone tip to face Mars (target)
       const direction = new THREE.Vector3().subVectors(marsGroup.position, shuttle.position).normalize();
       shuttle.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
   
@@ -238,24 +211,22 @@ function initSpaceBackground(container) {
   }  
   setInterval(() => createShuttle(), Math.random() * (25000 - 10000) + 10000);
 
-
-
   // ANIMATION
+  let clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
 
-    // Rotate sun and planets
+    const elapsedTime = clock.getElapsedTime();
+    background.update(elapsedTime);
+
     sunMesh.rotation.y += 0.002;
     earthMesh.rotation.y += 0.007;
     earthLightMesh.rotation.y += 0.007;
     earthCloudMesh.rotation.y += 0.0073;
     earthGlowMesh.rotation.y += 0.007;
     marsMesh.rotation.y += 0.007;
-    // marsLightMesh.rotation.y += 0.007;
-    // marsCloudMesh.rotation.y += 0.0073;
     marsGlowMesh.rotation.y += 0.007;
 
-    // Orbit of planets
     earthOrbitAngle += earthOrbitSpeed;
     earthGroup.position.set(
       sunGroup.position.x + earthOrbitRadiusX * Math.cos(earthOrbitAngle),
@@ -269,20 +240,16 @@ function initSpaceBackground(container) {
       0
     );
 
-    // Update camera position to follow Mars
-    const cameraOffset = new THREE.Vector3(-1, -5, 2); // Adjust the offset as needed 4, -6, 8
-    camera.position.copy(marsGroup.position).add(cameraOffset);
-    camera.lookAt(marsGroup.position);
-    controls.target.copy(marsGroup.position); // Update controls target to Mars position
+    const cameraOffset = new THREE.Vector3(-7, 1, 2); // (-1, -5, 2)
+    camera.position.copy(earthGroup.position).add(cameraOffset);
+    camera.lookAt(earthGroup.position);
+    controls.target.copy(earthGroup.position);
 
-    // Star animation
     stars.rotation.y -= 0.0002;
     controls.update();
     renderer.render(scene, camera);
   }
   animate();
-
-
 
   function handleWindowResize() {
     camera.aspect = container.offsetWidth / container.offsetHeight;
@@ -301,7 +268,6 @@ function initSpaceBackground(container) {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
-
 }
 
 export { initSpaceBackground };

@@ -1,0 +1,79 @@
+<svg width="600" height="1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow" filterUnits="userSpaceOnUse" x="-10" y="-10" width="610" height="70">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+    </filter>
+
+    <clipPath id="dark-blue-clip">
+        <polygon points="13 8 587 8 592 13 592 1187 587 1192 13 1192 8 1187 8 13"/>
+    </clipPath>
+
+    <!-- Scanline animation -->
+    <pattern id="scanline-pattern" patternUnits="userSpaceOnUse" width="584" height="8" patternTransform="translate(8,8)">
+        <line x1="0" y1="0" x2="584" y2="0" stroke="#2B94FF" stroke-width="6" stroke-opacity="0.05" filter="url(#glow)" />
+        <animateTransform attributeName="patternTransform" type="translate" from="0,0" to="0,8" dur="1s" repeatCount="indefinite"/>
+    </pattern>
+
+    <!-- Inner Glow Gradients -->
+    <!-- Top: fade down -->
+    <linearGradient id="glow-top" x1="0%" y1="0%" x2="0%" y2="60%">
+        <stop offset="0%" stop-color="#60BEFF" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#33BBFF" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- Right: fade left -->
+    <linearGradient id="glow-right" x1="100%" y1="0%" x2="40%" y2="0%">
+        <stop offset="0%" stop-color="#60BEFF" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#33BBFF" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- Bottom: fade up -->
+    <linearGradient id="glow-bottom" x1="0%" y1="100%" x2="0%" y2="40%">
+        <stop offset="0%" stop-color="#60BEFF" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#33BBFF" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- Left: fade right -->
+    <linearGradient id="glow-left" x1="0%" y1="0%" x2="60%" y2="0%">
+        <stop offset="0%" stop-color="#60BEFF" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#33BBFF" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Cyan border -->
+  <path d="M5 0 L55 0 L60 5 L540 5 L545 0 L595 0 L600 5 L600 55 L595 60 L595 1140 L600 1145 L600 1195 L595 1200 L545 1200 L540 1195 L60 1195 L55 1200 L5 1200 L0 1195 L0 1145 L5 1140 L5 60 L0 55 L0 5 Z
+           M13 8 L587 8 L592 13 L592 1187 L587 1192 L13 1192 L8 1187 L8 13 Z"
+        fill="#FFFFFF"
+        stroke="#DBF9FF"
+        stroke-width="1"
+        stroke-opacity="1"
+        stroke-linejoin="miter"
+        fill-rule="evenodd" />
+
+  <!-- Dark blue background -->
+  <polygon points="13 8 587 8 592 13 592 1187 587 1192 13 1192 8 1187 8 13"
+           fill="#11294D"
+           fill-opacity="0.9"
+           stroke="#000000"
+           stroke-width="1"
+           stroke-linejoin="miter" />
+
+  <!-- Scanline overlay -->
+  <rect x="8" y="8" width="584" height="1184" fill="url(#scanline-pattern)" clip-path="url(#dark-blue-clip)" />
+
+  <!-- Inner Glow: Top edge -->
+  <polygon points="11 11 13 9 587 9 589 11 564 36 36 36" fill="url(#glow-top)" />
+
+  <!-- Inner Glow: Right edge -->
+  <polygon points="589 11 591 13 591 1187 589 1189 564 1164 564 36" fill="url(#glow-right)" />
+
+  <!-- Inner Glow: Bottom edge -->
+  <polygon points="589 1189 587 1191 13 1191 11 1189 36 1164 564 1164" fill="url(#glow-bottom)" />
+
+  <!-- Inner Glow: Left edge -->
+  <polygon points="11 1189 9 1187 9 13 11 11 36 36 36 1164" fill="url(#glow-left)" />
+</svg>

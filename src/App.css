@@ -8,6 +8,8 @@
   /* Shared for all resolutions */
   --scrollbar-width: 4px;
   --content-font-size: 1rem;
+
+  /* satellite colour scheme */
   --content-font-color-highlight: rgba(132, 255, 255, 1);
 
   --button-font: Consolas, Helvetica, Verdana; 
@@ -18,10 +20,22 @@
   --text-background: rgba(31, 152, 237, 0.15);
   --text-background-border: 1px solid rgba(0, 0, 0, 0.6);
   --border: 1px solid rgba(104, 229, 255, 0.4);
+  
+  /* dark blue colour scheme 
+  --content-font-color-highlight: rgba(132, 179, 255, 1);
+
+  --button-font: Consolas, Helvetica, Verdana; 
+  --button-font-color: rgba(83, 168, 255, 1);
+  --button-font-color-highlight: rgba(255, 255, 255, 1);
+  --button-border-highlight: 1px solid rgba(51, 160, 255, 1);
+
+  --text-background: rgba(22, 106, 237, 0.15);
+  --text-background-border: 1px solid rgba(0, 0, 0, 0.6);
+  --border: 1px solid rgba(73, 160, 255, 0.4);
+  */
 
   --portfolio-padding: 5px;
-  --portfolio-radius-perc-of-font-size: 0.75; 
-
+  --portfolio-radius-perc-of-font-size: 0.75;
 
   /* Mobile view 1 columns */
   --menu-footer-width: calc(100vw - var(--scrollbar-width));
@@ -34,7 +48,7 @@
 }
 
 ::-webkit-scrollbar { width: var(--scrollbar-width); }
-::-webkit-scrollbar-thumb { border-radius: calc(var(--scrollbar-width / 2));
+::-webkit-scrollbar-thumb { /* border-radius: calc(var(--scrollbar-width / 2)); */
                             background: #FFF; }
 
 
@@ -209,8 +223,8 @@ content { background: var(--text-background); }
 
 .menu-footer-button-light {
   background-image: 
-  linear-gradient(90deg, transparent, #84FFFF, transparent),
-  linear-gradient(90deg, rgba(76, 89, 150, 0) 0%, rgba(78, 147, 242, 0.6) 25%, #84FFFF 50%, rgba(146, 226, 255, 0.9) 60%, rgba(78, 147, 242, 0.6) 75%, rgba(76, 89, 150, 0) 100%);
+  linear-gradient(90deg, transparent, #B4FFFF, transparent),
+  linear-gradient(90deg, rgba(76, 89, 150, 0) 0%, rgba(78, 147, 242, 0.6) 25%, #B4FFFF 50%, rgba(146, 226, 255, 0.9) 60%, rgba(78, 147, 242, 0.6) 75%, rgba(76, 89, 150, 0) 100%);
 }
 
 .menu-footer-button-light-highlight {
@@ -350,28 +364,25 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
 
 #certification-list a {
   color: var(--button-font-color);
-  display: grid;
-  padding: calc(var(--portfolio-padding) * 2);
-  border: var(--border); 
+  padding: calc(var(--portfolio-padding) * 3);
   text-decoration: none;
-  word-wrap: normal;
+  display: grid;
   grid-template-rows: auto auto auto auto;
-  border-radius: calc(var(--content-font-size) * var(--portfolio-radius-perc-of-font-size));
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #certification-list a h3, #certification-list a h4, #certification-list a h5, #certification-list a p {
   width: inherit;
   margin: 0px;
   padding: 0px;
-  line-height: 2;
-  word-wrap: break-word;
+  line-height: 1;
 }
 
 #certification-list a h5 { text-align: right; }
 
 #certification-list a:hover {
   color: var(--button-font-color-highlight);
-  border: var(--button-border-highlight);
 }
 
 #certification-list a:hover p { 
@@ -422,14 +433,12 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   color: var(--button-font-color);
   display: grid;
   grid-template-rows: auto auto auto 1fr;
-  padding: var(--portfolio-padding);
-  border: var(--border);
-  border-radius: calc(var(--content-font-size) * var(--portfolio-radius-perc-of-font-size));
+  padding: calc(var(--portfolio-padding) * 3);
+  overflow: hidden;
 } 
 
 #portfolio-list a:hover, #readings-list a:hover { 
   color: var(--button-font-color-highlight);
-  border: var(--button-border-highlight);
 }
 
 #portfolio-list a:hover img, #readings-list a:hover img { opacity: 1; }
@@ -442,14 +451,10 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   white-space: normal;
   line-clamp: 2;
   overflow: hidden;
-  border: var(--text-background-border);
-  border-bottom: none;
-  background-color: var(--text-background);
   padding-left: var(--portfolio-padding);
   padding-right: var(--portfolio-padding);
   height: calc(var(--content-font-size) * 3.25);
   margin-bottom: 0px;
-  border-radius: calc((var(--content-font-size) * var(--portfolio-radius-perc-of-font-size)) - var(--portfolio-padding)) calc((var(--content-font-size) * var(--portfolio-radius-perc-of-font-size)) - var(--portfolio-padding)) 0px 0px;
 }
 
 #portfolio-list h5, #readings-list h5 {
@@ -458,9 +463,7 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   text-align: right;
   line-clamp: 1;
   overflow: hidden;
-  border: var(--text-background-border);
   border-top: none;
-  background-color: var(--text-background);
   padding-right: var(--portfolio-padding);
 }
 
@@ -474,9 +477,8 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   margin: var(--portfolio-padding) 0px 0px 0px;
   padding: var(--portfolio-padding);
   overflow: hidden;
-  border: var(--text-background-border);
-  background-color: var(--text-background);
-  border-radius: 0px 0px calc((var(--content-font-size) * var(--portfolio-radius-perc-of-font-size)) - var(--portfolio-padding)) calc((var(--content-font-size) * var(--portfolio-radius-perc-of-font-size)) - var(--portfolio-padding));
+  word-wrap: normal;
+  white-space: initial;
 }
 
 
@@ -493,14 +495,12 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   color: var(--button-font-color);
   display: grid;
   grid-template-rows: auto auto 1fr;
-  padding: var(--portfolio-padding);
-  border: var(--border);
-  border-radius: calc(var(--content-font-size) * var(--portfolio-radius-perc-of-font-size));
+  padding: calc(var(--portfolio-padding) * 3);
+  overflow: hidden;
 } 
 
 #blog-list a:hover { 
   color: var(--button-font-color-highlight);
-  border: var(--button-border-highlight);
 } 
 
 #blog-list h4 {
@@ -511,13 +511,9 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   white-space: normal;
   line-clamp: 2;
   overflow: hidden;
-  border: var(--text-background-border);
-  border-bottom: none;
-  background-color: var(--text-background);
   padding-left: var(--portfolio-padding);
   padding-right: var(--portfolio-padding);
   height: calc(var(--content-font-size) * 3.25);
-  border-radius: calc((var(--content-font-size) * var(--portfolio-radius-perc-of-font-size)) - var(--portfolio-padding)) calc((var(--content-font-size) * var(--portfolio-radius-perc-of-font-size)) - var(--portfolio-padding)) 0px 0px;
 }
 
 #blog-list h5 {
@@ -526,9 +522,6 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   text-align: right;
   line-clamp: 1;
   overflow: hidden;
-  border-left: var(--text-background-border);
-  border-right: var(--text-background-border);
-  background-color: var(--text-background);
   padding-right: var(--portfolio-padding);
 }
 
@@ -536,10 +529,7 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   margin: 0px;
   padding: var(--portfolio-padding);
   overflow: hidden;
-  border: var(--text-background-border);
   border-top: none;
-  background-color: var(--text-background);
-  border-radius: 0px 0px calc((var(--content-font-size) * var(--portfolio-radius-perc-of-font-size)) - var(--portfolio-padding)) calc((var(--content-font-size) * var(--portfolio-radius-perc-of-font-size)) - var(--portfolio-padding));
 }
 
 
@@ -602,7 +592,19 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     column-gap: 0px;
   }
   
-  #certification-list a { width: 90vw }
+  #certification-list a { 
+    width: 90vw;
+    height: 22vw;
+    background: url('./assets/theme/accent/prompt-4-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+    word-wrap: break-word;
+    white-space: nowrap;
+  }
+
+  #certification-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-4-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
   #portfolio-list, #readings-list  { 
     grid-template-columns: repeat(1, 1fr); 
@@ -610,7 +612,18 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     row-gap: 4rem;
   }
 
-  #portfolio-list a, #readings-list a { width: 90vw; }
+  #portfolio-list a { 
+    width: 90vw; 
+    height: 90vw;
+    background: url('./assets/theme/accent/prompt-1-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #portfolio-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-1-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
   #portfolio-list p, #readings-list p { height: calc(var(--content-font-size) * 4); }
 
   #blog-list { 
@@ -618,8 +631,31 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     column-gap: 0px;
   }
 
-  #blog-list a { width: 90vw; }
+  #blog-list a { 
+    width: 90vw; 
+    height: 30vw;
+    background: url('./assets/theme/accent/prompt-3-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #blog-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-3-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
   #blog-list p { height: calc(var(--content-font-size) * 6); }
+
+  #readings-list a { 
+    width: 90vw; 
+    height: 180vw;
+    background: url('./assets/theme/accent/prompt-1-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #readings-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-1-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
 }
 
@@ -683,7 +719,19 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     column-gap: auto;
   }
   
-  #certification-list a { width: 40vw }
+  #certification-list a { 
+    width: 40vw;
+    height: 20vw;
+    background: url('./assets/theme/accent/prompt-2-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+    word-wrap: normal;
+    white-space: initial;
+  }
+
+  #certification-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-2-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
   #portfolio-list, #readings-list { 
     grid-template-columns: repeat(2, 1fr); 
@@ -691,7 +739,17 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     row-gap: 3rem;
   }
 
-  #portfolio-list a, #readings-list a { width: 45vw; }
+  #portfolio-list a { 
+    width: 43vw; 
+    height: 57vw;
+    background: url('./assets/theme/accent/prompt-3-4.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #portfolio-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-3-4.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
   #portfolio-list p, #readings-list p { 
     font-size: calc(var(--content-font-size) * 0.9); 
@@ -703,8 +761,31 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     column-gap: 0px;
   }
 
-  #blog-list a { width: 90vw; }
+  #blog-list a { 
+    width: 90vw; 
+    height: 23vw;
+    background: url('./assets/theme/accent/prompt-4-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #blog-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-4-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
   #blog-list p { height: calc(var(--content-font-size) * 6); }
+
+  #readings-list a { 
+    width: 43vw; 
+    height: 86vw;
+    background: url('./assets/theme/accent/prompt-1-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #readings-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-1-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
 }
 
@@ -752,8 +833,20 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     grid-template-columns: repeat(2, 1fr); 
     column-gap: auto;
   }
-  
-  #certification-list a { width: 28vw; }
+
+  #certification-list a { 
+    width: 28vw;
+    height: 14vw;
+    background: url('./assets/theme/accent/prompt-2-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+    word-wrap: normal;
+    white-space: initial;
+  }
+
+  #certification-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-2-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
   #portfolio-list, #readings-list {
     grid-template-columns: repeat(3, 1fr); 
@@ -761,9 +854,19 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     row-gap: 4rem;
   }
 
-  #portfolio-list a, #readings-list a { width: 30vw; }
+  #portfolio-list a { 
+    width: 29vw; 
+    height: 39vw;
+    background: url('./assets/theme/accent/prompt-3-4.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
-  #portfolio-list p, #readings-list p { 
+  #portfolio-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-3-4.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #portfolio-list p { 
     font-size: calc(var(--content-font-size) * 0.9); 
     height: calc(var(--content-font-size) * 4);
   }
@@ -773,9 +876,36 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     column-gap: auto;
   }
 
-  #blog-list a { width: 45vw; }
+  #blog-list a { 
+    width: 45vw; 
+    height: 15vw;
+    background: url('./assets/theme/accent/prompt-3-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #blog-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-3-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
   #blog-list p { 
+    font-size: calc(var(--content-font-size) * 0.9); 
+    height: calc(var(--content-font-size) * 6);
+  }
+
+  #readings-list a { 
+    width: 29vw; 
+    height: 58vw;
+    background: url('./assets/theme/accent/prompt-1-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #readings-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-1-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #readings-list p { 
     font-size: calc(var(--content-font-size) * 0.9); 
     height: calc(var(--content-font-size) * 6);
   }
@@ -826,8 +956,20 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     grid-template-columns: repeat(3, 1fr); 
     column-gap: auto;
   }
-  
-  #certification-list a { width: 15vw; }
+
+  #certification-list a { 
+    width: 15vw;
+    height: 10vw;
+    background: url('./assets/theme/accent/prompt-3-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+    word-wrap: normal;
+    white-space: initial;
+  }
+
+  #certification-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-3-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
   #portfolio-list, #readings-list {
     grid-template-columns: repeat(4, 1fr); 
@@ -835,7 +977,19 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     row-gap: 4rem;
   }
 
-  #portfolio-list a, #readings-list a { width: 22vw; }
+  #portfolio-list a { 
+    width: 21vw; 
+    height: 28vw;
+    background: url('./assets/theme/accent/prompt-3-4.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #portfolio-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-3-4.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+
   #portfolio-list p, #readings-list p { height: calc(var(--content-font-size) * 5.5); }
 
   #blog-list {
@@ -843,8 +997,31 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
     column-gap: auto;
   }
 
-  #blog-list a { width: 30vw; }
+  #blog-list a { 
+    width: 30vw; 
+    height: 10vw;
+    background: url('./assets/theme/accent/prompt-3-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #blog-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-3-1.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
   #blog-list p { height: calc(var(--content-font-size) * 5.5); }
+
+  #readings-list a { 
+    width: 21vw; 
+    height: 42vw;
+    background: url('./assets/theme/accent/prompt-1-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
+
+  #readings-list a:hover { 
+    background: url('./assets/theme/accent/prompt-hover-1-2.svg') no-repeat right top;
+    background-size: 100% 100%;
+  }
 
 }
 
