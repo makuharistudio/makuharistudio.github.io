@@ -173,7 +173,7 @@ function initSpaceBackground(container) {
 
   // Stars
   const marsOrbitMaxRadius = Math.max(marsOrbitRadiusX, marsOrbitRadiusY);
-  const stars = getStarfield({ numStars: 17500, radius: 50, exclusionRadius: marsOrbitMaxRadius });
+  const stars = getStarfield({ numStars: 15000, radius: 50, exclusionRadius: marsOrbitMaxRadius });
   scene.add(stars);
 
   // Shuttle
