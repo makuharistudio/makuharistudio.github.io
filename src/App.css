@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Saira:wght@600&display=swap'); /* Body title */
 @import url('https://fonts.googleapis.com/css2?family=Cambay&display=swap'); /* Body text */
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap'); /* Label design */
+@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+
 
 :root {
   /* VARIABLES */
@@ -10,9 +12,15 @@
   --content-font-size: 1rem;
 
   /* satellite colour scheme */
+
+  --title-font: 'Anta', Helvetica, Verdana;
+  --content-font: 'Cambay', Helvetica, Verdana;
+  --menu-footer-font: 'Saira', Helvetica, Verdana;
+
+
   --content-font-color-highlight: rgba(132, 255, 255, 1);
 
-  --button-font: Consolas, Helvetica, Verdana; 
+  --button-font: 'Anta', 'Consolas', Helvetica, Verdana; 
   --button-font-color: rgba(169, 240, 255, 1);
   --button-font-color-highlight: rgba(255, 255, 255, 1);
   --button-border-highlight: 1px solid rgba(104, 229, 255, 1);
@@ -59,7 +67,7 @@ html {
   margin: 0px;
   padding: 0px;
   color: #fff;
-  font-family: 'Cambay', Helvetica, Verdana;
+  font-family: var(--content-font);
   font-size: 18px;
   line-height: 1.5;
   font-synthesis: none;
@@ -80,11 +88,11 @@ body {
   height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6 { font-family: 'Saira', Helvetica, Verdana; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--title-font); }
 
 a {
   color: var(--button-font-color-highlight);
-  font-family: 'Cambay', Helvetica, Verdana;
+  font-family: var(--content-font);
   text-decoration: none;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -152,7 +160,7 @@ content { background: var(--text-background); }
 }
 
 #menu-header ul li a {
-  font-family: 'Saira', Helvetica, Verdana;
+  font-family: var(--title-font);
   width: 100%;
   height: 100%;
   padding:
@@ -188,7 +196,6 @@ content { background: var(--text-background); }
   position: fixed;
   left: 0;
   bottom: 0;
-  font-family: 'Audiowide', Helvetica, Verdana;
   display: grid;
   grid-template-columns: repeat(6, auto);
   place-items: center;
@@ -240,6 +247,7 @@ content { background: var(--text-background); }
 }
 
 #menu-footer a h6 {
+  font-family: var(--menu-footer-font);
   width: 90%;
   margin: 0px auto 1rem auto;
   background-color: rgba(0, 0, 0, 0.4);
