@@ -1,6 +1,6 @@
 {
   "name": "makuharistudio.github.io",
-  "homepage": "http://makuharistudio.github.io/",
+  "homepage": "https://makuharistudio.github.io",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "parser": "node src/scripts/parser.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist -r https://github.com/makuharistudio/makuharistudio.github.io.git"
   },
   "dependencies": {
     "marked": "^15.0.7",
