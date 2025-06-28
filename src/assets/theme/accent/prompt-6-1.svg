@@ -14,7 +14,7 @@
 
     <!-- Scanline animation -->
     <pattern id="scanline-pattern" patternUnits="userSpaceOnUse" width="884" height="8" patternTransform="translate(8,8)">
-        <line x1="0" y1="0" x2="884" y2="0" stroke="#2B94FF" stroke-width="6" stroke-opacity="0.05" filter="url(#glow)" />
+        <line x1="0" y1="0" x2="884" y2="0" stroke="#2B94FF" stroke-width="1" stroke-opacity="0.1" filter="url(#glow)" />
         <animateTransform attributeName="patternTransform" type="translate" from="0,0" to="0,8" dur="1s" repeatCount="indefinite"/>
     </pattern>
 

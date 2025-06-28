@@ -2,26 +2,13 @@ import { Outlet } from 'react-router-dom'
 import MenuHeader from './MenuHeader'
 import MenuFooter from './MenuFooter'
 import useScrollToTop from '../scripts/useScrollToTop'
-import scrollIntoView from '../scripts/scrollIntoView.js'
 
 /* Space background */
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { initSpaceBackground } from '../assets/theme/background/scripts/bg-space.js';
 
 export default function Layout() {
   useScrollToTop();
-
-  // Detect if the device is a desktop/laptop
-  const isDesktop = () => {
-    return (
-      !/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) &&
-      window.matchMedia('(min-width: 1024px)').matches
-    );
-  };
-
-  if (isDesktop()) {
-    scrollIntoView();
-  }
 
   const containerRef = useRef();
 

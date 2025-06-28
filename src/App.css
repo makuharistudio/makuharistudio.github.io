@@ -11,36 +11,25 @@
   --scrollbar-width: 4px;
   --content-font-size: 1rem;
 
-  /* satellite colour scheme */
-
   --title-font: 'Anta', Helvetica, Verdana;
   --content-font: 'Cambay', Helvetica, Verdana;
   --menu-footer-font: 'Saira', Helvetica, Verdana;
 
+  /* Colour scheme */
+  --content-font-color: rgba(255, 255, 255, 1);
+  --content-font-color-hover: rgba(130, 225, 255, 1);
+  --content-background: rgba(0, 0, 0, 1);
 
-  --content-font-color-highlight: rgba(132, 255, 255, 1);
+  --code-background: rgba(255, 255, 255, 0.1);
 
-  --button-font: 'Anta', 'Consolas', Helvetica, Verdana; 
-  --button-font-color: rgba(169, 240, 255, 1);
-  --button-font-color-highlight: rgba(255, 255, 255, 1);
-  --button-border-highlight: 1px solid rgba(104, 229, 255, 1);
-
-  --text-background: rgba(31, 152, 237, 0.15);
-  --text-background-border: 1px solid rgba(0, 0, 0, 0.6);
-  --border: 1px solid rgba(104, 229, 255, 0.4);
-  
-  /* dark blue colour scheme 
-  --content-font-color-highlight: rgba(132, 179, 255, 1);
-
-  --button-font: Consolas, Helvetica, Verdana; 
+  --button-font: 'Anta', 'Consolas', Helvetica, Verdana;
   --button-font-color: rgba(83, 168, 255, 1);
-  --button-font-color-highlight: rgba(255, 255, 255, 1);
-  --button-border-highlight: 1px solid rgba(51, 160, 255, 1);
+  --button-font-color-hover: rgba(255, 255, 255, 1);
+  --button-border-hover: 1px solid rgba(51, 160, 255, 1);
 
-  --text-background: rgba(22, 106, 237, 0.15);
+  --text-background: rgba(22, 106, 237, 0.25);
   --text-background-border: 1px solid rgba(0, 0, 0, 0.6);
   --border: 1px solid rgba(73, 160, 255, 0.4);
-  */
 
   --portfolio-padding: 5px;
   --portfolio-radius-perc-of-font-size: 0.75;
@@ -56,8 +45,7 @@
 }
 
 ::-webkit-scrollbar { width: var(--scrollbar-width); }
-::-webkit-scrollbar-thumb { /* border-radius: calc(var(--scrollbar-width / 2)); */
-                            background: #FFF; }
+::-webkit-scrollbar-thumb { background: #FFF; }
 
 
 
@@ -66,7 +54,7 @@
 html {
   margin: 0px;
   padding: 0px;
-  color: #fff;
+  color: var(--content-font-color);
   font-family: var(--content-font);
   font-size: 18px;
   line-height: 1.5;
@@ -75,7 +63,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  background-color: #000;
+  background-color: var(--content-background);
 }
 
 body {
@@ -91,7 +79,7 @@ body {
 h1, h2, h3, h4, h5, h6 { font-family: var(--title-font); }
 
 a {
-  color: var(--button-font-color-highlight);
+  color: var(--button-font-color-hover);
   font-family: var(--content-font);
   text-decoration: none;
   word-wrap: break-word;
@@ -176,13 +164,13 @@ content { background: var(--text-background); }
 }
 
 .menu-header a:hover { 
-  color: var(--button-font-color-highlight);
-  border: var(--button-border-highlight);
+  color: var(--button-font-color-hover);
+  border: var(--button-border-hover);
 }
 
 .menu-header-highlight a { 
-  color: var(--button-font-color-highlight);
-  border: 1px solid var(--button-font-color-highlight); 
+  color: var(--button-font-color-hover);
+  border: 1px solid var(--button-font-color-hover); 
 }
 
 
@@ -210,12 +198,14 @@ content { background: var(--text-background); }
   font-size: small;
 }
 
+#menu-footer a:hover { color: var(--content-font-color); }
+
 .menu-footer-button-border {
   display: grid;
   place-items: center;
 }
 
-.menu-footer-button-border img { opacity: 0.8; }
+.menu-footer-button-border img { opacity: 1; }
 .menu-footer-button-border { background: url('./assets/theme/accent/menu-footer-button-border-blue.svg') no-repeat center center; }
 
 .menu-footer-button-border-highlight img { opacity: 1; }
@@ -253,7 +243,7 @@ content { background: var(--text-background); }
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.menu-footer { color: var(--button-font-color-highlight); }
+.menu-footer { color: var(--button-font-color-hover); }
 
 
 
@@ -285,7 +275,7 @@ content ul, content ol {
 }
 
 content a { color: var(--button-font-color); }
-content a:hover { color: var(--content-font-color-highlight); }
+content a:hover { color: var(--content-font-color-hover); }
 
 content img {
   display: block;
@@ -306,10 +296,10 @@ content pre code {
   border: var(--border);
 }
 
-content pre code::-webkit-scrollbar { display: block; }
-content pre code::-webkit-scrollbar-thumb { background-color: var(--content-font-color-highlight); }
-content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255, 0.1); }
-
+content pre code::-webkit-scrollbar { display: block;
+                                      height: var(--scrollbar-width); }
+content pre code::-webkit-scrollbar-thumb { background-color: var(--content-font-color); }
+content pre code::-webkit-scrollbar-track { background-color: var(--code-background); }
 
 
 
@@ -363,7 +353,7 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
   padding: 0px;
 }
 
-#link-list a:hover h6 { color: var(--content-font-color-highlight) }
+#link-list a:hover h6 { color: var(--button-font-color-hover) }
 
 #certification-list {
   display: grid;
@@ -402,11 +392,11 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
 }
 
 #certification-list a:hover {
-  color: var(--button-font-color-highlight);
+  color: var(--button-font-color-hover);
 }
 
 #certification-list a:hover p {
-  color: var(--content-font-color-highlight);
+  color: var(--content-font-color-hover);
 }
 
 
@@ -436,8 +426,9 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
 }
 
 .filter button:hover { 
-  color: var(--button-font-color-highlight);
-  border: var(--button-border-highlight);
+  cursor: pointer;
+  color: var(--button-font-color-hover);
+  border: var(--button-border-hover);
 }
 
 
@@ -461,7 +452,7 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
 } 
 
 #portfolio-list a:hover, #readings-list a:hover { 
-  color: var(--button-font-color-highlight);
+  color: var(--button-font-color-hover);
 }
 
 #portfolio-list a:hover img, #readings-list a:hover img { opacity: 1; }
@@ -529,7 +520,7 @@ content pre code::-webkit-scrollbar-track { background-color: rgba(255, 255, 255
 } 
 
 #blog-list a:hover { 
-  color: var(--button-font-color-highlight);
+  color: var(--button-font-color-hover);
 } 
 
 #blog-list h4 {

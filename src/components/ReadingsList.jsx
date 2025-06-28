@@ -19,8 +19,8 @@ export default function ReadingsList({ readings }) {
 
   // Define the active style
   const activeButtonStyle = {
-    color: 'var(--button-font-color-highlight)',
-    border: '1px solid var(--button-font-color-highlight)',
+    color: 'var(--button-font-color-hover)',
+    border: '1px solid var(--button-font-color-hover)',
   };
 
   return (

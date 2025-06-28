@@ -115,7 +115,7 @@ function initSpaceBackground(container) {
     dashSize: 1,
     gapSize: 0,
     transparent: true,
-    opacity: 0.1
+    opacity: 0.0
   });
 
   const earthOrbitLine = new THREE.Line(earthOrbitPath, earthOrbitMaterial);
@@ -164,7 +164,7 @@ function initSpaceBackground(container) {
     dashSize: 1,
     gapSize: 0,
     transparent: true,
-    opacity: 0.1
+    opacity: 0.0
   });
 
   const marsOrbitLine = new THREE.Line(marsOrbitPath, marsOrbitMaterial);
@@ -173,43 +173,8 @@ function initSpaceBackground(container) {
 
   // Stars
   const marsOrbitMaxRadius = Math.max(marsOrbitRadiusX, marsOrbitRadiusY);
-  const stars = getStarfield({ numStars: 500, radius: 50, exclusionRadius: marsOrbitMaxRadius });
+  const stars = getStarfield({ numStars: 7500, radius: 50, exclusionRadius: marsOrbitMaxRadius });
   scene.add(stars);
-
-  // Shuttle
-  const shuttleGeometry = new THREE.ConeGeometry(0.025, 0.1, 10);
-  const shuttleMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
-  function createShuttle() {
-    const shuttle = new THREE.Mesh(shuttleGeometry, shuttleMaterial);
-    scene.add(shuttle);
-  
-    let progress = 0;
-    const start = earthGroup.position.clone();
-  
-    function animateShuttle() {
-      progress += 0.003;
-      if (progress > 1) {
-        scene.remove(shuttle);
-        shuttle.geometry.dispose();
-        shuttle.material.dispose();
-        return;
-      }
-  
-      const end = marsGroup.position.clone();
-      const position = new THREE.Vector3().lerpVectors(start, end, progress);
-  
-      shuttle.position.copy(position);
-  
-      const direction = new THREE.Vector3().subVectors(marsGroup.position, shuttle.position).normalize();
-      shuttle.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
-  
-      renderer.render(scene, camera);
-      requestAnimationFrame(animateShuttle);
-    }
-  
-    animateShuttle();
-  }  
-  setInterval(() => createShuttle(), Math.random() * (25000 - 10000) + 10000);
 
   // ANIMATION
   let clock = new THREE.Clock();
