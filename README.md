@@ -241,6 +241,12 @@ index.html
 Then from LinkedIn, go to your Featured section > + button > Add a link > and provide your site URL without adding a Preview image. 
 The image you embedded in index.html will be rendered upon saving.
 
+## What to do after formatting computer
+- Use GitHub Desktp to clone the repository locally.
+- Change directory to the repository folder in Visual Studio Code's Command Prompt terminal `npm install`.
+
+
+
 
 
 # CREDITS
