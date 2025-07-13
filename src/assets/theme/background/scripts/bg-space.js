@@ -1,38 +1,166 @@
-// bg-space.js
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import getStarfield from './bg-space-getStarfield.js';
-import getBackground from './bg-space-getBackground.js';
-import { getFresnelMat } from './bg-space-getFresnelMat.js';
-import { mars_mosaic_1, earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent } from '../../../../data/assets.js';
+import { star, mars_mosaic_1, earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent } from '../../../../data/assets.js';
 
-function initSpaceBackground(container) {
+function getStarfield({ numStars = 500, radius = 250, exclusionRadius = 30 } = {}) {
+  function randomSpherePoint() {
+    let r;
+    do {
+      r = Math.random() * radius * 1.5;
+    } while (r < (exclusionRadius * 1.25));
+    const u = Math.random();
+    const v = Math.random();
+    const theta = 2 * Math.PI * u;
+    const phi = Math.acos(2 * v - 1);
+    let x = r * Math.sin(phi) * Math.cos(theta);
+    let y = r * Math.sin(phi) * Math.sin(theta);
+    let z = r * Math.cos(phi);
+    return {
+      pos: new THREE.Vector3(x, y, z),
+      hue: 0.6,
+      minDist: r,
+    };
+  }
+  const verts = [];
+  const colors = [];
+  const positions = [];
+  let col;
+  for (let i = 0; i < numStars; i += 1) {
+    let p = randomSpherePoint();
+    const { pos, hue } = p;
+    positions.push(p);
+    col = new THREE.Color().setHSL(hue, 0.2, Math.random());
+    verts.push(pos.x, pos.y, pos.z);
+    colors.push(col.r, col.g, col.b);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+  const texture = new THREE.TextureLoader().load(star);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.PointsMaterial({
+    size: 0.2,
+    vertexColors: true,
+    map: texture,
+    transparent: true,
+    alphaTest: 0.1,
+    blending: THREE.AdditiveBlending,
+  });
+  return new THREE.Points(geo, mat);
+}
+
+function getFresnelMat({ rimHex = 0x0088ff, facingHex = 0x000000 } = {}) {
+  const uniforms = {
+    color1: { value: new THREE.Color(rimHex) },
+    color2: { value: new THREE.Color(facingHex) },
+    fresnelBias: { value: 0.1 },
+    fresnelScale: { value: 1.0 },
+    fresnelPower: { value: 4.0 },
+  };
+  const vs = `
+  uniform float fresnelBias;
+  uniform float fresnelScale;
+  uniform float fresnelPower;
+  varying float vReflectionFactor;
+  void main() {
+    vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+    vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+    vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
+    vec3 I = worldPosition.xyz - cameraPosition;
+    vReflectionFactor = fresnelBias + fresnelScale * pow( 1.0 + dot( normalize( I ), worldNormal ), fresnelPower );
+    gl_Position = projectionMatrix * mvPosition;
+  }
+  `;
+  const fs = `
+  uniform vec3 color1;
+  uniform vec3 color2;
+  varying float vReflectionFactor;
+  void main() {
+    float f = clamp( vReflectionFactor, 0.0, 1.0 );
+    gl_FragColor = vec4(mix(color2, color1, vec3(f)), f);
+  }
+  `;
+  return new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    vertexShader: vs,
+    fragmentShader: fs,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+  });
+}
+
+function getBackground() {
+  const vertexShader = `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `;
+  const fragmentShader = `
+    varying vec2 vUv;
+    uniform float time;
+    float random(vec2 st) {
+      return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+    }
+    float noise(vec2 st) {
+      vec2 i = floor(st);
+      vec2 f = fract(st);
+      float a = random(i);
+      float b = random(i + vec2(1.0, 0.0));
+      float c = random(i + vec2(0.0, 1.0));
+      float d = random(i + vec2(1.0, 1.0));
+      vec2 u = f * f * (3.0 - 2.0 * f);
+      return mix(a, b, u.x) +
+             (c - a) * u.y * (1.0 - u.x) +
+             (d - b) * u.x * u.y;
+    }
+    void main() {
+      vec2 scaledUv = vUv * 30.0;
+      float n1 = noise(scaledUv + vec2(time * 0.1, 0.0));
+      float n2 = noise(scaledUv + vec2(0.0, time * 0.1));
+      float n = noise(scaledUv + vec2(n1, n2));
+      vec3 color1 = vec3(0.0, 0.1, 0.2); 
+      vec3 color2 = vec3(0.01, 0.03, 0.04);
+      vec3 color3 = vec3(0.025, 0.025, 0.025); 
+      vec3 color = mix(color1, color2, n);
+      color = mix(color, color3, n * 0.5);
+      gl_FragColor = vec4(color, 1.0);
+    }
+  `;
+  const geometry = new THREE.SphereGeometry(500, 32, 32);
+  const material = new THREE.ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: { time: { value: 0.0 } },
+    side: THREE.BackSide,
+    depthWrite: false,
+  });
+  const backgroundMesh = new THREE.Mesh(geometry, material);
+  backgroundMesh.position.set(0, 0, 0);
+  return {
+    mesh: backgroundMesh,
+    update: (time) => { material.uniforms.time.value = time; },
+  };
+}
+
+function initialiseBackground(container) {
   const scene = new THREE.Scene();
-  scene.background = null; // Set the scene background to transparent to avoid black areas
-
+  scene.background = null;
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(-1, -5.5, 1.25);
   camera.up.set(0, 0, 1);
-
-  camera.far = 1000; // The background sphere's radius is 500 (or 1000 if increased)
+  camera.far = 1000;
   camera.updateProjectionMatrix();
-
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);  
-
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
-
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enabled = false; // Completely disable user interaction
-
-  // Add the procedural background (now a sphere)
+  controls.enabled = false;
   const background = getBackground();
   scene.add(background.mesh);
-  console.log("Background sphere added to scene:", background.mesh);
-
-  // Sun
   const sunGroup = new THREE.Group();
   sunGroup.rotation.z = -3.4 * Math.PI / 180;
   sunGroup.rotation.x = 90 * Math.PI / 180;
@@ -45,14 +173,10 @@ function initSpaceBackground(container) {
   });
   const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
   sunGroup.add(sunMesh);
-
-  // Sun's light
   const sunLight = new THREE.PointLight(0xffffee, 1350.0, 9999999999999999999999);
   sunLight.position.set(0, 0, 0);
   sunLight.castShadow = true;
   scene.add(sunLight);
-
-  // Earth
   const earthGroup = new THREE.Group();
   scene.add(earthGroup);
   const earthDetail = 60;
@@ -93,8 +217,6 @@ function initSpaceBackground(container) {
   earthGroup.scale.set(0.5, 0.5, 0.5);
   let earthOrbitSpeed = 0.00075;
   let earthOrbitAngle = 0;
-
-  // Earth's elliptical orbit path
   const earthOrbitRadiusX = 15.2;
   const earthOrbitRadiusY = 16.0;
   const earthOrbitPoints = [];
@@ -108,7 +230,6 @@ function initSpaceBackground(container) {
       )
     );
   }
-
   const earthOrbitPath = new THREE.BufferGeometry().setFromPoints(earthOrbitPoints);
   const earthOrbitMaterial = new THREE.LineDashedMaterial({
     color: 0xffffff,
@@ -117,12 +238,9 @@ function initSpaceBackground(container) {
     transparent: true,
     opacity: 0.0
   });
-
   const earthOrbitLine = new THREE.Line(earthOrbitPath, earthOrbitMaterial);
   earthOrbitLine.computeLineDistances();
   scene.add(earthOrbitLine);
-
-  // Mars
   const marsGroup = new THREE.Group();
   scene.add(marsGroup);
   const marsDetail = 60;
@@ -142,8 +260,6 @@ function initSpaceBackground(container) {
   marsGroup.scale.set(1, 1, 1);
   let marsOrbitSpeed = 0.00025;
   let marsOrbitAngle = 0;
-
-  // Mars's elliptical orbit path
   const marsOrbitRadiusX = 30.4;
   const marsOrbitRadiusY = 32.0;
   const marsOrbitPoints = [];
@@ -157,7 +273,6 @@ function initSpaceBackground(container) {
       )
     );
   }
-
   const marsOrbitPath = new THREE.BufferGeometry().setFromPoints(marsOrbitPoints);
   const marsOrbitMaterial = new THREE.LineDashedMaterial({
     color: 0xffffff,
@@ -166,24 +281,17 @@ function initSpaceBackground(container) {
     transparent: true,
     opacity: 0.0
   });
-
   const marsOrbitLine = new THREE.Line(marsOrbitPath, marsOrbitMaterial);
   marsOrbitLine.computeLineDistances();
   scene.add(marsOrbitLine);
-
-  // Stars
   const marsOrbitMaxRadius = Math.max(marsOrbitRadiusX, marsOrbitRadiusY);
   const stars = getStarfield({ numStars: 7500, radius: 50, exclusionRadius: marsOrbitMaxRadius });
   scene.add(stars);
-
-  // ANIMATION
   let clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
-
     const elapsedTime = clock.getElapsedTime();
     background.update(elapsedTime);
-
     sunMesh.rotation.y += 0.002;
     earthMesh.rotation.y += 0.007;
     earthLightMesh.rotation.y += 0.007;
@@ -191,7 +299,6 @@ function initSpaceBackground(container) {
     earthGlowMesh.rotation.y += 0.007;
     marsMesh.rotation.y += 0.007;
     marsGlowMesh.rotation.y += 0.007;
-
     earthOrbitAngle += earthOrbitSpeed;
     earthGroup.position.set(
       sunGroup.position.x + earthOrbitRadiusX * Math.cos(earthOrbitAngle),
@@ -204,35 +311,25 @@ function initSpaceBackground(container) {
       sunGroup.position.y + marsOrbitRadiusY * Math.sin(marsOrbitAngle),
       0
     );
-
-    const cameraOffset = new THREE.Vector3(-7, 1, 2); // (-1, -5, 2)
+    const cameraOffset = new THREE.Vector3(-7, 1, 2);
     camera.position.copy(earthGroup.position).add(cameraOffset);
     camera.lookAt(earthGroup.position);
     controls.target.copy(earthGroup.position);
-
     stars.rotation.y -= 0.0002;
     controls.update();
     renderer.render(scene, camera);
   }
   animate();
-
   function handleWindowResize() {
     camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(container.offsetWidth, container.offsetHeight);
   }
   window.addEventListener('resize', handleWindowResize);
-
   return () => {
     window.removeEventListener('resize', handleWindowResize);
     container.removeChild(renderer.domElement);
   };
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
 }
 
-export { initSpaceBackground };
+export { initialiseBackground };
