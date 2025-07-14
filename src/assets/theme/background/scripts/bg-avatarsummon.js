@@ -11,6 +11,8 @@ function getBackground() {
     color: 0x00FF00, // Lime green
     wireframe: true,
     side: THREE.BackSide,
+    transparent: true,
+    opacity: 0, // Completely transparent
   });
   const backgroundMesh = new THREE.Mesh(geometry, material);
   backgroundMesh.position.set(0, 0, 0);
@@ -49,7 +51,7 @@ function getAvatarPlatform(radius) {
   }
   hexGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
   const material = new THREE.LineBasicMaterial({
-    color: 0x049AFF,
+    color: 0x0066CC, // Darker blue
     transparent: true,
     opacity: 0.5,
   });
@@ -60,7 +62,7 @@ function getAvatarPlatform(radius) {
     mesh: hexGrid,
     update: (time) => {
       const glow = 0.5 + 0.5 * Math.sin(time * 2 * Math.PI / 3);
-      material.color.setHSL(0.55, 1, 0.5 + 0.5 * glow);
+      material.color.setHSL(0.58, 1, 0.4 + 0.2 * glow); // Shift to blue hue (0.58), darker lightness
       material.opacity = 0.5 + 0.5 * glow;
     },
   };
@@ -74,13 +76,13 @@ function getAvatar(radius) {
     wireframe: true,
   });
   const avatar = new THREE.Mesh(geometry, material);
-  avatar.position.set(0, radius * -0.3, 0); // Center at radius * 0.15
+  avatar.position.set(0, radius * -0.3, 0);
   return avatar;
 }
 
 function getRectanglePoints(radius, j, platformY) {
-  const capRadius = radius * Math.sqrt(1 - 0.75 * 0.75); // ≈ radius * 0.661
-  const innerRadius = capRadius * 0.95; // ≈ radius * 0.628
+  const capRadius = radius * Math.sqrt(1 - 0.75 * 0.75);
+  const innerRadius = capRadius * 0.95;
   const angle1 = (2 * j / 24) * Math.PI * 2;
   const angle2 = ((2 * j + 1) / 24) * Math.PI * 2;
 
@@ -93,94 +95,111 @@ function getRectanglePoints(radius, j, platformY) {
 }
 
 function getLightRing(radius) {
-  const lineGroup = new THREE.Group();
   const rectGroup = new THREE.Group();
-  const lineCount = 24;
-  const connectCount = 12; // 24 / 2 = 12 staples
-  const platformY = -radius * 0.75; // Y-position
-  const capRadius = radius * Math.sqrt(1 - 0.75 * 0.75); // ≈ radius * 0.661
-  const innerRadius = capRadius * 0.95; // Inner edge at 95% of capRadius
-
-  // Material for red lines
-  const lineMaterial = new THREE.LineBasicMaterial({
-    color: 0xFF0000, // Red
-    transparent: true,
-    opacity: 0.85,
-  });
+  const platformY = -radius * 0.75;
+  const connectCount = 12;
+  const wallHeight = radius * 0.1;
 
   // Material for light blue rectangles
   const rectMaterial = new THREE.MeshBasicMaterial({
-    color: 0xA0EBFF, // Light blue
+    color: 0x80C8FF, // Brighter blue
     transparent: true,
     side: THREE.DoubleSide,
     opacity: 0.85,
   });
 
-  // Create 24 radial red lines (legs of staples)
-  for (let i = 0; i < lineCount; i++) {
-    const angle = (i / lineCount) * Math.PI * 2;
-    const lineGeometry = new THREE.BufferGeometry();
-    const lineVertices = [
-      0, platformY, 0, // Start at center
-      capRadius * Math.cos(angle), platformY, capRadius * Math.sin(angle), // End at cap edge
-    ];
-    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(lineVertices, 3));
-    const line = new THREE.Line(lineGeometry, lineMaterial);
-    lineGroup.add(line);
-  }
+  // Custom ShaderMaterial for walls with opacity gradient starting at 70% height
+  const wallMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      color: { value: new THREE.Color(0x80C8FF) }, // Brighter blue
+      glow: { value: 0.5 },
+      fadeStart: { value: 0.7 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 color;
+      uniform float glow;
+      uniform float fadeStart;
+      varying vec2 vUv;
+      void main() {
+        float baseOpacity = 0.3;
+        float glowFactor = 0.2 + 0.2 * glow;
+        float opacity;
+        if (vUv.y < fadeStart) {
+          opacity = baseOpacity * glowFactor;
+        } else {
+          float t = (vUv.y - fadeStart) / (1.0 - fadeStart);
+          opacity = baseOpacity * (1.0 - t) * glowFactor;
+        }
+        gl_FragColor = vec4(color, opacity);
+      }
+    `,
+    transparent: true,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
 
-  // Create 12 outer and inner connecting lines
+  // Create 12 light blue rectangles and their walls
   for (let j = 0; j < connectCount; j++) {
-    const i1 = 2 * j; // First point index
-    const i2 = 2 * j + 1; // Second point index
-    const angle1 = (i1 / lineCount) * Math.PI * 2;
-    const angle2 = (i2 / lineCount) * Math.PI * 2;
-
-    // Outer connecting line geometry
-    const connectGeometry = new THREE.BufferGeometry();
-    const connectVertices = [
-      capRadius * Math.cos(angle1), platformY, capRadius * Math.sin(angle1), // Endpoint of line i1
-      capRadius * Math.cos(angle2), platformY, capRadius * Math.sin(angle2), // Endpoint of line i2
-    ];
-    connectGeometry.setAttribute('position', new THREE.Float32BufferAttribute(connectVertices, 3));
-    const connectLine = new THREE.Line(connectGeometry, lineMaterial);
-    lineGroup.add(connectLine);
-
-    // Inner connecting line geometry
-    const innerConnectGeometry = new THREE.BufferGeometry();
-    const innerConnectVertices = [
-      innerRadius * Math.cos(angle1), platformY, innerRadius * Math.sin(angle1), // Inner point at angle1
-      innerRadius * Math.cos(angle2), platformY, innerRadius * Math.sin(angle2), // Inner point at angle2
-    ];
-    innerConnectGeometry.setAttribute('position', new THREE.Float32BufferAttribute(innerConnectVertices, 3));
-    const innerConnectLine = new THREE.Line(innerConnectGeometry, lineMaterial);
-    lineGroup.add(innerConnectLine);
-  }
-
-  // Create 12 light blue rectangles
-  for (let j = 0; j < connectCount; j++) {
+    // Rectangle
     const points = getRectanglePoints(radius, j, platformY);
     const rectGeometry = new THREE.BufferGeometry();
-    const vertices = [
-      points[0].x, points[0].y, points[0].z, // v0
-      points[1].x, points[1].y, points[1].z, // v1
-      points[2].x, points[2].y, points[2].z, // v2
-      points[3].x, points[3].y, points[3].z, // v3
+    const rectVertices = [
+      points[0].x, points[0].y, points[0].z,
+      points[1].x, points[1].y, points[1].z,
+      points[2].x, points[2].y, points[2].z,
+      points[3].x, points[3].y, points[3].z,
     ];
-    const indices = [0, 1, 2, 0, 2, 3]; // Two triangles
-    rectGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    const indices = [0, 1, 2, 0, 2, 3];
+    rectGeometry.setAttribute('position', new THREE.Float32BufferAttribute(rectVertices, 3));
     rectGeometry.setIndex(indices);
     const rectangle = new THREE.Mesh(rectGeometry, rectMaterial);
+    rectangle.renderOrder = 1; // Render rectangles after walls
     rectGroup.add(rectangle);
+
+    // Create four walls for each rectangle
+    const wallPoints = [
+      [points[0], points[1]],
+      [points[1], points[2]],
+      [points[2], points[3]],
+      [points[3], points[0]],
+    ];
+
+    wallPoints.forEach(([p1, p2]) => {
+      const wallVertices = [
+        p1.x, p1.y, p1.z,
+        p2.x, p2.y, p2.z,
+        p2.x, p2.y + wallHeight, p2.z,
+        p1.x, p1.y + wallHeight, p1.z,
+      ];
+      const wallGeometry = new THREE.BufferGeometry();
+      wallGeometry.setAttribute('position', new THREE.Float32BufferAttribute(wallVertices, 3));
+      wallGeometry.setAttribute('uv', new THREE.Float32BufferAttribute([
+        0, 0,
+        1, 0,
+        1, 1,
+        0, 1,
+      ], 2));
+      wallGeometry.setIndex([0, 1, 2, 0, 2, 3]);
+      const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+      wall.renderOrder = 0; // Render walls first
+      rectGroup.add(wall);
+    });
   }
 
   return {
-    lineMesh: lineGroup,
     rectMesh: rectGroup,
     update: (time) => {
-      const glow = 0.5 + 0.5 * Math.sin(time * 2 * Math.PI / 5); // Slow glow (5s period)
-      lineMaterial.opacity = 0.7 + 0.3 * glow;
+      const glow = 0.5 + 0.5 * Math.sin(time * 2 * Math.PI / 5);
       rectMaterial.opacity = 0.7 + 0.3 * glow;
+      wallMaterial.uniforms.glow.value = glow;
+      rectGroup.rotation.y = time * 0.1; // Counterclockwise rotation
     },
   };
 }
@@ -191,7 +210,7 @@ function initialiseBackground(container) {
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   const background = getBackground();
   const radius = background.radius;
-  camera.position.set(0, 0, 0); // Initial position (will be updated in animate)
+  camera.position.set(0, 0, 0);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -201,13 +220,10 @@ function initialiseBackground(container) {
   const avatar = getAvatar(radius);
   scene.add(avatar);
   const lightRing = getLightRing(radius);
-  scene.add(lightRing.lineMesh); // Add red lines
-  scene.add(lightRing.rectMesh); // Add light blue rectangles
+  scene.add(lightRing.rectMesh);
 
-  // Avatar center is at (0, 0, radius * 0.15)
   const avatarCenter = new THREE.Vector3(0, 0, radius * 0.15);
 
-  // Disable OrbitControls since we want manual mouse-based rotation
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableRotate = false;
   controls.enableZoom = false;
@@ -217,7 +233,7 @@ function initialiseBackground(container) {
 
   let mouseX = 0;
   const onMouseMove = (event) => {
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1; // Normalized -1 to 1
+    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
   };
   window.addEventListener('mousemove', onMouseMove);
 
@@ -226,21 +242,18 @@ function initialiseBackground(container) {
     requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
     hexGrid.update(elapsedTime);
-    lightRing.update(elapsedTime); // Update line and rectangle glow
+    lightRing.update(elapsedTime);
 
-    // Camera orbits the sphere near the bottom
-    const sphereRadius = radius; // Use the sphere's radius
-    const theta = 0.7 * Math.PI; // Orbit near the bottom (126° from top, ~36° above bottom pole)
-    const phi = mouseX * Math.PI * 0.5; // Slower rotation: 90° range
+    const sphereRadius = radius;
+    const theta = 0.7 * Math.PI;
+    const phi = mouseX * Math.PI * 0.5;
 
-    // Calculate camera position in spherical coordinates
     camera.position.set(
-      sphereRadius * Math.sin(theta) * Math.cos(phi), // x
-      sphereRadius * Math.sin(theta) * Math.sin(phi), // y
-      sphereRadius * Math.cos(theta) // z
+      sphereRadius * Math.sin(theta) * Math.cos(phi),
+      sphereRadius * Math.sin(theta) * Math.sin(phi),
+      sphereRadius * Math.cos(theta)
     );
 
-    // Ensure camera looks at avatarCenter
     camera.lookAt(avatarCenter);
     controls.target.copy(avatarCenter);
     controls.update();
