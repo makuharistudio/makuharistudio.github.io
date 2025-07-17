@@ -204,6 +204,100 @@ function getLightRing(radius) {
   };
 }
 
+function getRingLayer(radius) {
+  // Define the ring's properties
+  const tubeRadius = radius * 0.05; // Thickness of the ring's tube
+  const minRingRadius = radius * 0.1; // Smaller starting radius
+  const maxRingRadius = radius * 0.3; // Current (larger) radius
+  const geometry = new THREE.TorusGeometry(minRingRadius, tubeRadius, 8, 64); // Start with smaller radius
+
+  // Custom ShaderMaterial for transparency fade on inner and outer edges
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      color: { value: new THREE.Color(0x9DE5FF) }, // Light blue
+      glow: { value: 0.5 },
+      ringRadius: { value: minRingRadius }, // Dynamic ring radius
+      tubeRadius: { value: tubeRadius },
+      baseOpacity: { value: 1 }, // Starting opacity
+    },
+    vertexShader: `
+      varying vec3 vPosition;
+      void main() {
+        vPosition = position;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 color;
+      uniform float glow;
+      uniform float ringRadius;
+      uniform float tubeRadius;
+      uniform float baseOpacity;
+      varying vec3 vPosition;
+      void main() {
+        float r = length(vPosition.xy); // Distance from ring center in xy-plane
+        float distFromCenter = abs(r - ringRadius); // Distance from the ring's centerline
+        float maxDist = tubeRadius; // Maximum distance (edge of the tube)
+        float edgeOpacity = 1.0 - distFromCenter / maxDist; // Linear fade from center to edges
+        edgeOpacity = clamp(edgeOpacity, 0.0, 1.0); // Ensure edge opacity stays within bounds
+        float opacity = baseOpacity * edgeOpacity * (0.7 + 0.3 * glow); // Combine base opacity, edge fade, and glow
+        gl_FragColor = vec4(color, opacity);
+      }
+    `,
+    transparent: true,
+    side: THREE.DoubleSide,
+    depthWrite: false, // Prevent depth buffer issues
+    blending: THREE.NormalBlending, // Standard transparency blending
+  });
+
+  const ringMesh = new THREE.Mesh(geometry, material);
+  
+  // Scale the ring to make it flatter in height
+  ringMesh.scale.set(1, 1, 0.075); // Compress z-scale to 7.5% for flatter height
+  
+  // Position the ring just above the convex part of the hexagon platform
+  ringMesh.position.set(0, radius * -0.695, 0); // Slightly above y = -0.7 (platform's peak)
+  ringMesh.rotation.set(Math.PI / 2, 0, 0); // Rotate to lie flat (visible as a circle from above)
+  ringMesh.renderOrder = 2; // Render after other transparent objects
+  
+  return {
+    mesh: ringMesh,
+    update: (time) => {
+      // Animation parameters
+      const cycleDuration = 3; // Duration of one grow/fade cycle in seconds
+      const t = (time % cycleDuration) / cycleDuration; // Normalized time [0, 1] per cycle
+      
+      // Interpolate ring radius from min to max
+      const currentRingRadius = minRingRadius + (maxRingRadius - minRingRadius) * t;
+      
+      // Update geometry with new radius
+      ringMesh.geometry.dispose(); // Dispose old geometry to avoid memory leaks
+      ringMesh.geometry = new THREE.TorusGeometry(currentRingRadius, tubeRadius, 8, 64);
+      
+      // Update shader uniform for radius
+      material.uniforms.ringRadius.value = currentRingRadius;
+      
+      // Interpolate opacity: fade in from 0 to 0.7 in first half, fade out to 0 in second half
+      let baseOpacity;
+      if (t < 0.5) {
+        // Fade in (0 to 0.7)
+        baseOpacity = 0.7 * (t / 0.5);
+      } else {
+        // Fade out (0.7 to 0)
+        baseOpacity = 0.7 * (1.0 - (t - 0.5) / 0.5);
+      }
+      material.uniforms.baseOpacity.value = baseOpacity;
+      
+      // Update glow for pulsing effect
+      const glow = 0.5 + 0.5 * Math.sin(time * 2 * Math.PI / 5);
+      material.uniforms.glow.value = glow;
+      
+      // Gentle rotation for visual interest
+      ringMesh.rotation.z = time * 0.05;
+    },
+  };
+}
+
 function initialiseBackground(container) {
   const scene = new THREE.Scene();
   scene.background = null;
@@ -221,6 +315,8 @@ function initialiseBackground(container) {
   scene.add(avatar);
   const lightRing = getLightRing(radius);
   scene.add(lightRing.rectMesh);
+  const ringLayer = getRingLayer(radius); // Add the new ring layer
+  scene.add(ringLayer.mesh); // Add ring mesh to the scene
 
   const avatarCenter = new THREE.Vector3(0, 0, radius * 0.15);
 
@@ -243,6 +339,7 @@ function initialiseBackground(container) {
     const elapsedTime = clock.getElapsedTime();
     hexGrid.update(elapsedTime);
     lightRing.update(elapsedTime);
+    ringLayer.update(elapsedTime); // Update the ring layer
 
     const sphereRadius = radius;
     const theta = 0.7 * Math.PI;
