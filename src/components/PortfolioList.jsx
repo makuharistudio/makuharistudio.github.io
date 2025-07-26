@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Panel from '../assets/theme/accent/components/Panel'
 
 export default function PortfolioList({ projects }) {
   const [selectedTag, setSelectedTag] = useState(null);
@@ -47,10 +48,12 @@ export default function PortfolioList({ projects }) {
 
           return (
             <Link key={p.name} to={'/portfolio/' + p.name}>
-              <h4>{p.title}</h4>
-              <h5>{p.date}</h5>
-              <img src={imagePath} loading='lazy' alt={p.title} />
-              <p>{p.desc}</p>
+              <Panel>
+                <h4>{p.title}</h4>
+                <h5>{p.date}</h5>
+                <img src={imagePath} loading='lazy' alt={p.title} />
+                <p>{p.desc}</p>
+              </Panel>
             </Link>
           );
         })}

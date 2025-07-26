@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Panel from '../assets/theme/accent/components/Panel'
 
 export default function ReadingsList({ readings }) {
   const [selectedTag, setSelectedTag] = useState(null);
@@ -47,10 +48,12 @@ export default function ReadingsList({ readings }) {
 
           return (
             <Link key={r.name} to={'/readings/' + r.name}>
-              <h4>{r.title} by {r.author}</h4>
-              <h5>{r.date}</h5>
-              <img src={imagePath} loading='lazy' alt={r.title} />
-              <p>{r.desc}</p>
+              <Panel>
+                <h4>{r.title} by {r.author}</h4>
+                <h5>{r.date}</h5>
+                <img src={imagePath} loading='lazy' alt={r.title} />
+                <p>{r.desc}</p>
+              </Panel>
             </Link>
           );
         })}

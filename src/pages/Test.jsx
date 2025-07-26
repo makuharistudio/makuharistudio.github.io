@@ -1,27 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import '../App.css';
-import { initSpaceBackground } from '../assets/theme/background/scripts/bg-space.js';
-
-function Test() {
-    const containerRef = useRef();
-
-    useEffect(() => {
-        let cleanup;
-        if (containerRef.current) {
-            cleanup = initSpaceBackground(containerRef.current);
-        }
-        return () => {
-            if (cleanup) cleanup();
-        };
-    }, []);
-
+export default function Test() {
     return (
-        <div className="container page">
-            <div className="interface">
-            </div>
-            <div className="bg-space" ref={containerRef}></div>
-        </div>
+      <>
+        <center>
+        </center>
+      </>
     );
 }
-
-export default Test;

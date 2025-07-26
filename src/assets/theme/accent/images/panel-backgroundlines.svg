@@ -1,4 +1,4 @@
-<svg width="600" height="300" xmlns="http://www.w3.org/2000/svg">
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="glow" filterUnits="userSpaceOnUse" x="-10" y="-10" width="604" height="70">
         <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"/>
@@ -7,10 +7,6 @@
           <feMergeNode in="SourceGraphic"/>
         </feMerge>
     </filter>
-
-    <clipPath id="dark-blue-clip">
-        <polygon points="13 8 587 8 592 13 592 287 587 292 13 292 8 287 8 13"/>
-    </clipPath>
 
     <!-- Scanline animation -->
     <pattern id="scanline-pattern" patternUnits="userSpaceOnUse" width="584" height="8" patternTransform="translate(8,8)">
@@ -42,38 +38,30 @@
         <stop offset="0%" stop-color="#60BEFF" stop-opacity="0.8"/>
         <stop offset="100%" stop-color="#33BBFF" stop-opacity="0.0"/>
     </linearGradient>
+
   </defs>
 
-  <!-- Cyan border -->
-  <path d="M5 0 L55 0 L60 5 L540 5 L545 0 L595 0 L600 5 L600 55 L595 60 L595 240 L600 245 L600 295 L595 300 L545 300 L540 295 L60 295 L55 300 L5 300 L0 295 L0 245 L5 240 L5 60 L0 55 L0 5 Z
-           M13 8 L587 8 L592 13 L592 287 L587 292 L13 292 L8 287 L8 13 Z"
-        fill="#DBF9FB"
-        stroke="#000000"
-        stroke-width="1"
-        stroke-opacity="1"
-        stroke-linejoin="miter"
-        fill-rule="evenodd" />
-
   <!-- Dark blue background -->
-  <polygon points="13 8 587 8 592 13 592 287 587 292 13 292 8 287 8 13"
+  <polygon points="0 0 600 0 600 600 0 600" 
            fill="#11294D"
            fill-opacity="0.6"
-           stroke="#000000"
-           stroke-width="1"
+           stroke="#000000" 
+           stroke-width="1" 
            stroke-linejoin="miter" />
 
   <!-- Scanline overlay -->
-  <rect x="8" y="8" width="584" height="284" fill="url(#scanline-pattern)" clip-path="url(#dark-blue-clip)" />
+  <rect x="8" y="8" width="584" height="584" fill="url(#scanline-pattern)" clip-path="url(#dark-blue-clip)" />
 
   <!-- Inner Glow: Top edge -->
-  <polygon points="11 11 13 9 587 9 589 11 564 36 36 36" fill="url(#glow-top)" />
+  <polygon points="0 0 600 0 564 36 36 36" fill="url(#glow-top)" />
 
   <!-- Inner Glow: Right edge -->
-  <polygon points="589 11 591 13 591 287 589 289 564 264 564 36" fill="url(#glow-right)" />
+  <polygon points="600 0 600 600 564 564 564 36" fill="url(#glow-right)" />
 
   <!-- Inner Glow: Bottom edge -->
-  <polygon points="589 289 587 291 13 291 11 289 36 264 564 264" fill="url(#glow-bottom)" />
+  <polygon points="600 600 0 600 36 564 564 564" fill="url(#glow-bottom)" />
 
   <!-- Inner Glow: Left edge -->
-  <polygon points="11 289 9 287 9 13 11 11 36 36 36 264" fill="url(#glow-left)" />
+  <polygon points="0 600 0 0 36 36 36 564" fill="url(#glow-left)" />
+
 </svg>

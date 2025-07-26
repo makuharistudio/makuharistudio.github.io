@@ -44,14 +44,24 @@ import logo_tableau from '../assets/theme/logo/tableau.svg'
 import logo_x from '../assets/theme/logo/x.svg'
 
 /* Background */
-import mars_mosaic_1 from '../assets/theme/background/images/planets/planetary-mosaic-mars-1.jpg'
-import earth_mosaic_1 from '../assets/theme/background/images/planets/planetary-mosaic-earth-1.jpg'
-import earth_mosaic_2_specular from '../assets/theme/background/images/planets/planetary-mosaic-earth-2-specular.jpg'
-import earth_mosaic_3_bump from '../assets/theme/background/images/planets/planetary-mosaic-earth-3-bump.jpg'
-import earth_mosaic_4_lights from '../assets/theme/background/images/planets/planetary-mosaic-earth-4-lights.jpg'
-import earth_mosaic_5_clouds from '../assets/theme/background/images/planets/planetary-mosaic-earth-5-clouds.jpg'
-import earth_mosaic_6_clouds_transparent from '../assets/theme/background/images/planets/planetary-mosaic-earth-6-cloudstransparent.jpg'
-import star from '../assets/theme/background/images/star.png'
+import mars_mosaic_1 from '../assets/theme/background/images/space/planetary-mosaic-mars-1.jpg'
+import earth_mosaic_1 from '../assets/theme/background/images/space/planetary-mosaic-earth-1.jpg'
+import earth_mosaic_2_specular from '../assets/theme/background/images/space/planetary-mosaic-earth-2-specular.jpg'
+import earth_mosaic_3_bump from '../assets/theme/background/images/space/planetary-mosaic-earth-3-bump.jpg'
+import earth_mosaic_4_lights from '../assets/theme/background/images/space/planetary-mosaic-earth-4-lights.jpg'
+import earth_mosaic_5_clouds from '../assets/theme/background/images/space/planetary-mosaic-earth-5-clouds.jpg'
+import earth_mosaic_6_clouds_transparent from '../assets/theme/background/images/space/planetary-mosaic-earth-6-cloudstransparent.jpg'
+import star from '../assets/theme/background/images/space/star.png'
+
+/* Background Scripts */
+export const backgroundMap = [
+  { path: '/', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/portfolio', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/blog', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/readings', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/applications', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/test', script: () => import('../assets/theme/background/scripts/bg-avatarsummon.js') },
+];
 
 export { avatar, title_a, title_b, title_c,
          icon_modeportrait, icon_charthistogram, icon_edit, icon_bookopen,
@@ -62,4 +72,4 @@ export { avatar, title_a, title_b, title_c,
          mars_mosaic_1, 
          earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent,
          star
-       }
+}

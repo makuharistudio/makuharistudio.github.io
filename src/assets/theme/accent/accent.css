@@ -1,0 +1,68 @@
+.panel-corners {
+  position: relative;
+  margin: 0px;
+  padding: 5px;
+  z-index: 2;
+}
+
+.panel-background {
+  position: relative;
+  border: 1px solid #DBF9FB;
+  z-index: 1;
+  background: url('./images/panel-backgroundlines.svg') no-repeat center center;
+  background-size: cover;
+  height: 100%;
+}
+
+a:hover .panel-background {
+  border: 1px solid #FFFFFF;
+  background: url('./images/panel-backgroundlines-hover.svg') no-repeat center center;
+  background-size: cover;
+}
+
+.panel-content {
+  position: relative;
+  padding: 1rem;
+  min-width: 120px;
+  min-height: 120px;
+  z-index: 4;
+}
+
+.panel-corner {
+  position: absolute;
+  width: 60px; /* Fixed size for corner SVGs, adjust as needed */
+  height: 60px;
+  z-index: 3;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  background: url('./images/panel-corneredge.svg') no-repeat center center;
+}
+
+a:hover .panel-corner {
+  background: url('./images/panel-corneredge-hover.svg') no-repeat center center;
+}
+
+.panel-corner-top-left {
+  top: 0px;
+  left: 0px;
+  transform: rotate(0deg);
+}
+
+.panel-corner-top-right {
+  top: 0px;
+  right: 0px;
+  transform: rotate(90deg);
+}
+
+.panel-corner-bottom-right {
+  bottom: 0px;
+  right: 0px;
+  transform: rotate(180deg);
+}
+
+.panel-corner-bottom-left {
+  bottom: 0px;
+  left: 0px;
+  transform: rotate(-90deg);
+}

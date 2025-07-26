@@ -80,7 +80,7 @@ function getAvatar(radius) {
   return avatar;
 }
 
-function getRectanglePoints(radius, j, platformY) {
+function getRevolvingLightBarsPoints(radius, j, platformY) {
   const capRadius = radius * Math.sqrt(1 - 0.75 * 0.75);
   const innerRadius = capRadius * 0.95;
   const angle1 = (2 * j / 24) * Math.PI * 2;
@@ -94,7 +94,7 @@ function getRectanglePoints(radius, j, platformY) {
   ];
 }
 
-function getLightRing(radius) {
+function getRevolvingLightBars(radius) {
   const rectGroup = new THREE.Group();
   const platformY = -radius * 0.75;
   const connectCount = 12;
@@ -148,7 +148,7 @@ function getLightRing(radius) {
   // Create 12 light blue rectangles and their walls
   for (let j = 0; j < connectCount; j++) {
     // Rectangle
-    const points = getRectanglePoints(radius, j, platformY);
+    const points = getRevolvingLightBarsPoints(radius, j, platformY);
     const rectGeometry = new THREE.BufferGeometry();
     const rectVertices = [
       points[0].x, points[0].y, points[0].z,
@@ -204,7 +204,7 @@ function getLightRing(radius) {
   };
 }
 
-function getRingLayer(radius) {
+function getPulsatingPlatformRing(radius) {
   // Define the ring's properties
   const tubeRadius = radius * 0.05; // Thickness of the ring's tube
   const minRingRadius = radius * 0.1; // Smaller starting radius
@@ -313,9 +313,9 @@ function initialiseBackground(container) {
   scene.add(hexGrid.mesh);
   const avatar = getAvatar(radius);
   scene.add(avatar);
-  const lightRing = getLightRing(radius);
+  const lightRing = getRevolvingLightBars(radius);
   scene.add(lightRing.rectMesh);
-  const ringLayer = getRingLayer(radius); // Add the new ring layer
+  const ringLayer = getPulsatingPlatformRing(radius); // Add the new ring layer
   scene.add(ringLayer.mesh); // Add ring mesh to the scene
 
   const avatarCenter = new THREE.Vector3(0, 0, radius * 0.15);

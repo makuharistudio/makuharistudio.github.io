@@ -10,6 +10,8 @@ import Blog from './pages/Blog';
 import Post from './pages/Post';
 import Readings from './pages/Readings';
 import Reading from './pages/Reading';
+import Applications from './pages/Applications';
+import Application from './pages/Application';
 import Test from './pages/Test';
 import './App.css';
 
@@ -25,6 +27,8 @@ const routes = [{
     { path: '/blog/:name', element: <Post /> },
     { path: '/readings', element: <Readings /> },
     { path: '/readings/:name', element: <Reading /> },
+    { path: '/applications', element: <Applications />},
+    { path: '/applications/:name', element: <Application />},
     { path: '/test', element: <Test /> }
   ]
 }];

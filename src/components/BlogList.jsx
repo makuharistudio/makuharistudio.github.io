@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { marked } from 'marked';
+import Panel from '../assets/theme/accent/components/Panel'
 
 export default function BlogList({ posts }) {
   const [selectedTag, setSelectedTag] = useState(null);
@@ -48,9 +49,11 @@ export default function BlogList({ posts }) {
 
           return (
             <Link key={p.name} to={'/blog/' + p.name}>
-              <h4>{p.title}</h4>
-              <h5>{p.date}</h5>
-              <p>{excerpt}</p>
+              <Panel>
+                <h4>{p.title}</h4>
+                <h5>{p.date}</h5>
+                <p>{excerpt}</p>
+              </Panel>
             </Link>
           );
         })}
