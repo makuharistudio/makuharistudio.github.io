@@ -257,6 +257,8 @@ The image you embedded in index.html will be rendered upon saving.
 
 * Background animation is a modified version of "Create the Earth with THREE.js" **[- YouTube tutorial by Robot Bobby](https://www.youtube.com/watch?v=FntV9iEJ0tU)**
 
+* https://avatar.wawasensei.dev
+
 
 
 
