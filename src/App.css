@@ -355,41 +355,6 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
 
 #link-list a:hover h6 { color: var(--button-font-color-hover) }
 
-#certification-list {
-  display: grid;
-  row-gap: 3rem;
-  column-gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  align-items: stretch;
-}
-
-#certification-list a h3,
-#certification-list a h4,
-#certification-list a h5,
-#certification-list a p {
-  line-height: 1.2;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
-
-#certification-list a p {
-  word-break: break-all;
-}
-
-#certification-list a h5 {
-  text-align: right;
-  margin: 0px;
-}
-
-#certification-list a:hover {
-  color: var(--button-font-color-hover);
-}
-
-#certification-list a:hover p {
-  color: var(--content-font-color-hover);
-}
-
 
 
 
@@ -426,7 +391,7 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
 
 
 
-#portfolio-list, #blog-list, #readings-list { 
+#certification-list, #portfolio-list, #blog-list, #readings-list { 
   display: grid;
   place-items: center;
   row-gap: 2rem;
@@ -447,91 +412,38 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
   width: 100%;
 }
 
-#portfolio-list a:hover, #readings-list a:hover { 
+#certification-list a p {
+  word-break: break-all;
+}
+
+#certification-list a:hover, #portfolio-list a:hover, #blog-list a:hover, #readings-list a:hover { 
   color: var(--button-font-color-hover);
 }
 
-#portfolio-list a:hover img, #readings-list a:hover img { opacity: 1; }
+#certification-list a:hover p {
+  color: var(--content-font-color-hover);
+}
 
-#portfolio-list h4, #readings-list h4 {
-  margin-top: 0px;
-  display: grid;
-  place-items: center;
+#portfolio-list a:hover img, #blog-list a:hover img, #readings-list a:hover img { 
+  opacity: 1;
+}
+
+#portfolio-list h4, #blog-list h4, #readings-list h4 {
+  margin-top: 0.5rem;
   text-align: center;
-  white-space: normal;
-  line-clamp: 2;
-  overflow: hidden;
-  padding-left: var(--portfolio-padding);
-  padding-right: var(--portfolio-padding);
-  height: calc(var(--content-font-size) * 3.25);
-  margin-bottom: 0px;
 }
 
-#portfolio-list h5, #readings-list h5 {
+#certification-list a h5, #portfolio-list h5, #blog-list h5, #readings-list h5 {
   margin: 0px;
-  display: grid;
   text-align: right;
-  line-clamp: 1;
-  overflow: hidden;
-  border-top: none;
-  padding-right: var(--portfolio-padding, 1rem);
-  min-height: calc(var(--content-font-size) * 1.5);
-  position: relative;
-  z-index: 1;
 }
 
-#portfolio-list img, #readings-list img {
+#portfolio-list img, #blog-list img, #readings-list img {
   width: 100%;
   height: auto;
   max-height: 100%;
   opacity: 0.45;
   object-fit: contain;
-}
-
-#portfolio-list p, #readings-list p {
-  margin: var(--portfolio-padding) 0px 0px 0px;
-  padding: var(--portfolio-padding);
-  overflow: hidden;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
-
-
-
-
-
-#blog-list a:hover { 
-  color: var(--button-font-color-hover);
-} 
-
-#blog-list h4 {
-  margin: 0px;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  white-space: normal;
-  line-clamp: 2;
-  overflow: hidden;
-  padding-left: var(--portfolio-padding);
-  padding-right: var(--portfolio-padding);
-  height: calc(var(--content-font-size) * 3.25);
-}
-
-#blog-list h5 {
-  margin: 0px;
-  display: grid;
-  text-align: right;
-  line-clamp: 1;
-  overflow: hidden;
-  padding-right: var(--portfolio-padding);
-}
-
-#blog-list p {
-  margin: 0px;
-  padding: var(--portfolio-padding);
-  overflow: hidden;
-  border-top: none;
 }
 
 
@@ -650,12 +562,8 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
     height: 10vw;
   }
 
-  #certification-list, #portfolio-list, #readings-list { 
+  #certification-list, #portfolio-list, #blog-list, #readings-list { 
     grid-template-columns: repeat(2, 1fr); 
-  }
-
-  #blog-list { 
-    grid-template-columns: repeat(1, 1fr); 
   }
 
 }

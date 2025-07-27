@@ -46,12 +46,15 @@ export default function BlogList({ posts }) {
           // Convert Markdown to plain text
           const plainText = marked(p.content).replace(/<[^>]*>/g, '');
           const excerpt = plainText.split(" ").slice(0, 30).join(" ") + ' . . . ';
+          const isExternalUrl = p.photo.startsWith('http');
+          const imagePath = isExternalUrl ? p.photo : new URL(`../assets/blog/${p.photo.split('/').pop().trim()}`, import.meta.url).href;
 
           return (
             <Link key={p.name} to={'/blog/' + p.name}>
               <Panel>
                 <h4>{p.title}</h4>
                 <h5>{p.date}</h5>
+                <img src={imagePath} loading='lazy' alt={p.title} />
                 <p>{excerpt}</p>
               </Panel>
             </Link>
