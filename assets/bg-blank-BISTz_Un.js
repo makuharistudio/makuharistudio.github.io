@@ -1,0 +1,1 @@
+function e(l){return l.style.backgroundColor="#000000",l.style.backgroundImage="none",l.style.margin="0",l.style.padding="0",l.style.overflow="hidden",()=>{l.style.backgroundColor="",l.style.backgroundImage=""}}export{e as initialiseWhiteBackground};

@@ -48,9 +48,9 @@ import{S as fe,P as ve,W as we,A as Me,L as ge,O as xe,G as I,I as R,M as X,a as
       float n1 = noise(scaledUv + vec2(time * 0.1, 0.0));
       float n2 = noise(scaledUv + vec2(0.0, time * 0.1));
       float n = noise(scaledUv + vec2(n1, n2));
-      vec3 color1 = vec3(0.0, 0.1, 0.2); 
-      vec3 color2 = vec3(0.01, 0.03, 0.04);
-      vec3 color3 = vec3(0.025, 0.025, 0.025); 
+      vec3 color1 = vec3(0.0, 0.04, 0.08); 
+      vec3 color2 = vec3(0.004, 0.012, 0.016);
+      vec3 color3 = vec3(0.009, 0.009, 0.009); 
       vec3 color = mix(color1, color2, n);
       color = mix(color, color3, n * 0.5);
       gl_FragColor = vec4(color, 1.0);
