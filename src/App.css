@@ -201,8 +201,6 @@ content { background: var(--text-background); }
   max-width: var(--menu-footer-button-width);
 }
 
-/*#menu-footer a:hover { color: var(--content-font-color); }*/
-
 .menu-footer-button {
   display: grid;
   place-items: center;
@@ -481,7 +479,7 @@ content pre code::-webkit-scrollbar-track {
 }
 
 /* ======================================================================================== */
-/* =============================  VERY TALL PORTRAIT MOBILE - 1 COLUMN  =================== */
+/* ==================================  PORTRAIT MOBILE  =================================== */
 /* ======================================================================================== */
 
 @media (max-aspect-ratio: 17/20) {
@@ -532,7 +530,7 @@ content pre code::-webkit-scrollbar-track {
 
   content { width: min(90vw, 75ch); }
   content img { width: min(85vw, 60ch); }
-  content pre code { width: min(90vw, 75ch); }
+  content pre code { width: min(80vw, 65ch); }
 
   #menu-header { display: grid; } /* show header on wider/taller viewports */
 
@@ -558,13 +556,44 @@ content pre code::-webkit-scrollbar-track {
     height: auto;
   }
 
-  /* Column layout progression using width (more reliable than aspect) */
-  #certification-list, #blog-list {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  #certification-list, #portfolio-list, #blog-list, #readings-list {
+    grid-template-columns: repeat(auto-fill, minmax(340px, max-content));
+    justify-content: center;
+    column-gap: auto;
   }
 
-  #portfolio-list, #readings-list {
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  /* This code is to help the content of the panels have same title heights */
+  #portfolio-list .panel-content, #blog-list .panel-content, #readings-list .panel-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #portfolio-list h4 {
+    min-height: 2em;
+    line-height: 1.125;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #blog-list h4 {
+    min-height: 4.5em;
+    line-height: 1.125;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #readings-list h4 {
+    min-height: 2em;
+    line-height: 1.125;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #portfolio-list h5, #blog-list h5, #readings-list h5 {
+    margin-top: auto;
   }
 
   /* Hide footer on larger screens */
