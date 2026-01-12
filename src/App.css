@@ -494,7 +494,7 @@ content pre code::-webkit-scrollbar-track {
 /* =============================  VERY TALL PORTRAIT MOBILE - 1 COLUMN  =================== */
 /* ======================================================================================== */
 
-@media (max-aspect-ratio: 12/21) {
+@media (max-aspect-ratio: 17/20) {
 
   html { font-size: calc(var(--content-font-size) * 0.9); }
 
@@ -535,7 +535,7 @@ content pre code::-webkit-scrollbar-track {
 /* ===============================  ALL OTHER ASPECT RATIOS  ============================== */
 /* ======================================================================================== */
 
-@media (min-aspect-ratio: 12/21) {
+@media (min-aspect-ratio: 17/20) {
 
   /* Base for non-extreme portrait */
   html { font-size: var(--content-font-size); }
