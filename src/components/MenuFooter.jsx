@@ -1,107 +1,85 @@
-import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import {
-  icon_modeportrait,
-  icon_modeportrait_highlight,
-  icon_charthistogram,
-  icon_charthistogram_highlight,
-  icon_edit,
-  icon_edit_highlight,
-  icon_bookopen,
-  icon_bookopen_highlight,
+  menu_about, menu_project, menu_blog, menu_reading, menu_blank,
+  menu_about_active, menu_project_active, menu_blog_active, menu_reading_active,
 } from '../data/assets';
 
 export default function MenuFooter() {
   const location = useLocation();
   const currentPath = location.pathname;
-  const [hoveredLink, setHoveredLink] = useState(null); // Track which link is hovered
 
-  // Map each route to its default, highlight, and hover images
+  // Map each route to its default and active images (hover removed)
   const linkConfigs = [
     {
       to: '/',
       label: 'ABOUT',
-      defaultIcon: icon_modeportrait,
-      activeIcon: icon_modeportrait_highlight,
-      hoverIcon: icon_modeportrait_highlight,
       isActive: currentPath === '/',
+      iconDefault: menu_about,
+      iconActive: menu_about_active,      
+      lightDefault: 'menu-footer-light-highlight-teal',
+      lightActive: 'menu-footer-light-highlight-red',
     },
     {
       to: '/portfolio',
-      label: 'PORTFOLIO',
-      defaultIcon: icon_charthistogram,
-      activeIcon: icon_charthistogram_highlight,
-      hoverIcon: icon_charthistogram_highlight,
+      label: 'PROJECT',
       isActive: currentPath.includes('/portfolio'),
+      iconDefault: menu_project,
+      iconActive: menu_project_active,
+      lightDefault: 'menu-footer-light-highlight-teal',
+      lightActive: 'menu-footer-light-highlight-purple',
     },
     {
       to: '/blog',
       label: 'BLOG',
-      defaultIcon: icon_edit,
-      activeIcon: icon_edit_highlight,
-      hoverIcon: icon_edit_highlight,
       isActive: currentPath.includes('/blog'),
+      iconDefault: menu_blog,
+      iconActive: menu_blog_active,
+      lightDefault: 'menu-footer-light-highlight-teal',
+      lightActive: 'menu-footer-light-highlight-yellow',
     },
     {
       to: '/readings',
-      label: 'READINGS',
-      defaultIcon: icon_bookopen,
-      activeIcon: icon_bookopen_highlight,
-      hoverIcon: icon_bookopen_highlight,
+      label: 'READING',
       isActive: currentPath.includes('/readings'),
+      iconDefault: menu_reading,
+      iconActive: menu_reading_active,
+      lightDefault: 'menu-footer-light-highlight-teal',
+      lightActive: 'menu-footer-light-highlight-blue',
     },
     {
       to: '/',
       label: '- - - - -',
-      defaultIcon: null,
-      activeIcon: null,
-      hoverIcon: null,
+      iconDefault: menu_blank,
+      iconActive: menu_blank,
       isActive: false,
+      lightDefault: 'menu-footer-light-highlight-white',
+      lightActive: 'menu-footer-light-highlight-white',
     },
     {
       to: '/',
       label: '- - - - -',
-      defaultIcon: null,
-      activeIcon: null,
-      hoverIcon: null,
+      iconDefault: menu_blank,
+      iconActive: menu_blank,
       isActive: false,
+      lightDefault: 'menu-footer-light-highlight-white',
+      lightActive: 'menu-footer-light-highlight-white',
     },
   ];
 
   return (
     <nav id="menu-footer">
       {linkConfigs.map((link, index) => (
-        <Link
-          key={index}
-          to={link.to}
-          onMouseEnter={() => setHoveredLink(index)}
-          onMouseLeave={() => setHoveredLink(null)}
-        >
-          <div
-            className={`menu-footer-button-border ${
-              link.isActive ? 'menu-footer-button-border-highlight' : 'menu-footer-button-border'
-            }`}
-          >
-            {link.defaultIcon && (
-              <img
-                src={
-                  hoveredLink === index
-                    ? link.hoverIcon // Show hover image when hovered
-                    : link.isActive
-                    ? link.activeIcon // Show highlight image when active
-                    : link.defaultIcon // Show default image otherwise
-                }
-                alt={link.label}
-              />
-            )}
+        <Link key={index} to={link.to}>
+          <div className='menu-footer-button'>
+            {link.iconDefault && (
+              <img src={link.isActive ? link.iconActive : link.iconDefault} alt={link.label}/>)}
           </div>
-          <div
-            className={`menu-footer-button-light ${
-              link.isActive ? 'menu-footer-button-light-highlight' : 'menu-footer-button-light-white'
-            }`}
-          ></div>
-          <h6 className={link.isActive ? 'menu-footer' : ''}>{link.label}</h6>
+          <div className={`menu-footer-light ${ link.isActive ? link.lightActive : link.lightDefault }`}>
+          </div>
+          <div className='menu-footer-label'>
+            <h6 className={link.isActive ? 'menu-footer' : ''}>{link.label}</h6>
+          </div>
         </Link>
       ))}
     </nav>

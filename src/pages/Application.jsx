@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import SVGMaker from '../applications/SVGMaker';
+//import SVGMaker from '../applications/SVGMaker';
 // Add more as needed
 
 export default function ApplicationViewer() {
@@ -9,7 +9,7 @@ export default function ApplicationViewer() {
 
   switch (key) {
     case 'svg-maker':
-      return <SVGMaker />;
+      return <h1>Hello</h1> // <SVGMaker />;
     default:
       return <h1>Application not found</h1>;
   }

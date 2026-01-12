@@ -5,16 +5,16 @@ import title_a from '../assets/theme/avatar/title-y-a.png'
 import title_b from '../assets/theme/avatar/title-y-b.png'
 import title_c from '../assets/theme/avatar/title-y-c.png'
 
-/* Icons */
-import icon_charthistogram from '../assets/theme/icon/chart-histogram-blue-glow.svg'
-import icon_edit from '../assets/theme/icon/edit-blue-glow.svg'
-import icon_modeportrait from '../assets/theme/icon/mode-portrait-blue-glow.svg'
-import icon_bookopen from '../assets/theme/icon/book-open-cover-blue-glow.svg'
-
-import icon_charthistogram_highlight from '../assets/theme/icon/chart-histogram-white-glow.svg'
-import icon_edit_highlight from '../assets/theme/icon/edit-white-glow.svg'
-import icon_modeportrait_highlight from '../assets/theme/icon/mode-portrait-white-glow.svg'
-import icon_bookopen_highlight from '../assets/theme/icon/book-open-cover-white-glow.svg'
+/* Menu Buttons */
+import menu_about from '../assets/theme/accent/images/menu-footer-button-about-teal.svg'
+import menu_project from '../assets/theme/accent/images/menu-footer-button-project-teal.svg'
+import menu_blog from '../assets/theme/accent/images/menu-footer-button-blog-teal.svg'
+import menu_reading from '../assets/theme/accent/images/menu-footer-button-reading-teal.svg'
+import menu_blank from '../assets/theme/accent/images/menu-footer-button.svg'
+import menu_about_active from '../assets/theme/accent/images/menu-footer-button-about-red.svg'
+import menu_project_active from '../assets/theme/accent/images/menu-footer-button-project-purple.svg'
+import menu_blog_active from '../assets/theme/accent/images/menu-footer-button-blog-yellow.svg'
+import menu_reading_active from '../assets/theme/accent/images/menu-footer-button-reading-blue.svg'
 
 /* Links */
 import link_linkedin from '../assets/theme/logo/linkedin-blue.svg'
@@ -59,13 +59,13 @@ export const backgroundMap = [
   { path: '/portfolio', script: () => import('../assets/theme/background/scripts/bg-space.js') },
   { path: '/blog', script: () => import('../assets/theme/background/scripts/bg-space.js') },
   { path: '/readings', script: () => import('../assets/theme/background/scripts/bg-space.js') },
-  { path: '/applications', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/applications', script: () => import('../assets/theme/background/scripts/bg-blank.js') },
   { path: '/test', script: () => import('../assets/theme/background/scripts/bg-avatarsummon.js') },
 ];
 
 export { avatar, title_a, title_b, title_c,
-         icon_modeportrait, icon_charthistogram, icon_edit, icon_bookopen,
-         icon_modeportrait_highlight, icon_charthistogram_highlight, icon_edit_highlight, icon_bookopen_highlight,
+         menu_about, menu_project, menu_blog, menu_reading, menu_blank,
+         menu_about_active, menu_project_active, menu_blog_active, menu_reading_active,
          logo_aws, logo_azure, logo_css, logo_excel, logo_github, logo_linkedin, logo_neo4j, logo_powerbi, logo_python, logo_sqlserver, logo_tableau, logo_x,
          link_linkedin, link_x, link_github, link_powerbi, link_tableau,
          link_linkedin_active, link_x_active, link_github_active, link_powerbi_active, link_tableau_active,

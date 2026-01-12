@@ -1,15 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira:wght@600&display=swap'); /* Body title */
-@import url('https://fonts.googleapis.com/css2?family=Cambay&display=swap'); /* Body text */
-@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap'); /* Label design */
-@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+@font-face {
+  font-family: 'Anta';
+  src: url('/src/assets/theme/font/Anta-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
+@font-face {
+  font-family: 'Audiowide';
+  src: url('/src/assets/theme/font/Audiowide-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cambay';
+  src: url('/src/assets/theme/font/Cambay-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('/src/assets/theme/font/Orbitron-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Saira';
+  src: url('/src/assets/theme/font/Saira-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* VARIABLES */
   
   /* Shared for all resolutions */
   --scrollbar-width: 4px;
-  --content-font-size: 1rem;
+  --content-font-size: 1.2rem;
 
   --title-font: 'Anta', Helvetica, Verdana;
   --content-font: 'Cambay', Helvetica, Verdana;
@@ -23,7 +57,7 @@
   --code-background: rgba(255, 255, 255, 0.1);
 
   --button-font: 'Anta', 'Consolas', Helvetica, Verdana;
-  --button-font-color: rgba(83, 168, 255, 1);
+  --button-font-color: rgba(255, 255, 255, 1);
   --button-font-color-hover: rgba(255, 255, 255, 1);
   --button-border-hover: 1px solid rgba(51, 160, 255, 1);
 
@@ -31,8 +65,7 @@
   --text-background-border: 1px solid rgba(0, 0, 0, 0.6);
   --border: 1px solid rgba(73, 160, 255, 0.4);
 
-  --portfolio-padding: 5px;
-  --portfolio-radius-perc-of-font-size: 0.75;
+  --portfolio-padding: 0.33rem;
 
   /* Mobile view 1 columns */
   --menu-footer-width: calc(100vw - var(--scrollbar-width));
@@ -41,22 +74,17 @@
   /* Landscape view 4 columns */
   --menu-header-width: 30vw;
   --menu-header-height: 5vh;
-
 }
 
 ::-webkit-scrollbar { width: var(--scrollbar-width); }
 ::-webkit-scrollbar-thumb { background: #FFF; }
-
-
-
-
 
 html {
   margin: 0px;
   padding: 0px;
   color: var(--content-font-color);
   font-family: var(--content-font);
-  font-size: 18px;
+  font-size: var(--content-font-size);
   line-height: 1.5;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -92,10 +120,6 @@ nav {
   padding: 0px;
 }
 
-
-
-
-
 #bg-space {
   position: fixed;
   top: 0;
@@ -106,19 +130,11 @@ nav {
   z-index: -1;
 }
 
-
-
-
-
 content { background: var(--text-background); }
 .content-no-bg { 
   background: none; 
   border: none;
 }
-
-
-
-
 
 #menu-header {
   top: calc(var(--content-font-size) / 2);
@@ -173,10 +189,6 @@ content { background: var(--text-background); }
   border: 1px solid var(--button-font-color-hover); 
 }
 
-
-
-
-
 #menu-footer {
   margin: 0px;
   padding: 0px;
@@ -185,7 +197,7 @@ content { background: var(--text-background); }
   left: 0;
   bottom: 0;
   display: grid;
-  grid-template-columns: repeat(6, auto);
+  grid-template-columns: repeat(6, 1fr);
   place-items: center;
   text-align: center;
   z-index: 998;
@@ -195,68 +207,105 @@ content { background: var(--text-background); }
   color: var(--button-font-color);
   display: grid;
   grid-template-rows: repeat(3, auto);
-  font-size: small;
+  width: var(--menu-footer-button-width);
+  max-width: var(--menu-footer-button-width);
 }
 
-#menu-footer a:hover { color: var(--content-font-color); }
+/*#menu-footer a:hover { color: var(--content-font-color); }*/
 
-.menu-footer-button-border {
+.menu-footer-button {
   display: grid;
   place-items: center;
 }
 
-.menu-footer-button-border img { opacity: 1; }
-.menu-footer-button-border { background: url('./assets/theme/accent/images/menu-footer-button-border-blue.svg') no-repeat center center; }
+.menu-footer-button img { 
+  opacity: 1;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
 
-.menu-footer-button-border-highlight img { opacity: 1; }
-.menu-footer-button-border-highlight { background: url('./assets/theme/accent/images/menu-footer-button-border-white.svg') no-repeat center center; }
+.menu-footer-button img:hover {
+  transform: scale(0.75);
+}
 
-.menu-footer-button-light {
+.menu-footer-light {
+  width: 75%;
+  height: 0.25rem;
   margin: 0px auto 0px auto;
   background-repeat: no-repeat;
   background-position: center center, center center;
-  animation: menu-footer-button-light-glow 3s infinite;
+  animation: menu-footer-light-glow 3s infinite;
 }
 
-.menu-footer-button-light {
+.menu-footer-light-highlight-blue {
+  background-image: 
+  linear-gradient(90deg, transparent, #A5D8FF, transparent),
+  linear-gradient(90deg, rgba(76, 89, 150, 0) 0%, rgba(78, 147, 242, 0.6) 25%, #A5D8FF 50%, rgba(109, 178, 255, 0.9) 60%, rgba(78, 147, 242, 0.6) 75%, rgba(76, 89, 150, 0) 100%);
+}
+
+.menu-footer-light-highlight-purple {
+  background-image: 
+    linear-gradient(90deg, transparent, #D4BFFF, transparent),
+    linear-gradient(90deg, rgba(120, 80, 160, 0) 0%, rgba(140, 90, 190, 0.6) 25%, #D4BFFF 50%, rgba(201, 122, 236, 0.9) 60%, rgba(140, 90, 190, 0.6) 75%, rgba(120, 80, 160, 0) 100%);
+}
+.menu-footer-light-highlight-red {
+  background-image: 
+  linear-gradient(90deg, transparent, #FFDDAA, transparent),
+  linear-gradient(90deg, rgba(150, 78, 76, 0) 0%, rgba(242, 80, 78, 0.6) 25%, #ff5a5a 50%, rgba(255, 109, 109, 0.9) 60%, rgba(242, 80, 78, 0.6) 75%, rgba(150, 78, 76, 0) 100%);
+}
+
+.menu-footer-light-highlight-teal {
   background-image: 
   linear-gradient(90deg, transparent, #B4FFFF, transparent),
   linear-gradient(90deg, rgba(76, 89, 150, 0) 0%, rgba(78, 147, 242, 0.6) 25%, #B4FFFF 50%, rgba(146, 226, 255, 0.9) 60%, rgba(78, 147, 242, 0.6) 75%, rgba(76, 89, 150, 0) 100%);
 }
 
-.menu-footer-button-light-highlight {
+.menu-footer-light-highlight-white {
   background-image: 
-  linear-gradient(90deg, transparent, #FFFFFF, transparent),
-  linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 25%, #FFFFFF 50%, rgba(255, 255, 255, 0.9) 60%, rgba(255, 255, 255, 0.6) 75%, rgba(255, 255, 255, 0) 100%);
+  linear-gradient(90deg, transparent, #EEEEEE, transparent),
+  linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 25%, #FFFFFF 50%, rgba(255, 255, 255, 0.7) 60%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0) 100%);
 }
 
-@keyframes menu-footer-button-light-glow {
+.menu-footer-light-highlight-yellow {
+  background-image: 
+    linear-gradient(90deg, transparent, #FFF9C4, transparent),
+    linear-gradient(90deg, rgba(180, 160, 80, 0) 0%, rgba(220, 200, 100, 0.6) 25%, #FFF9C4 50%, rgba(255, 235, 59, 0.9) 60%, rgba(220, 200, 100, 0.6) 75%, rgba(180, 160, 80, 0) 100%);
+}
+
+@keyframes menu-footer-light-glow {
   0%   { background-size: 10% 100%, 100% 100%; }
   50%  { background-size: 80% 100%, 100% 100%; }
   100% { background-size: 10% 100%, 100% 100%; }
 }
 
+.menu-footer-label {
+  width: calc(var(--menu-footer-button-width) * 0.65);
+  max-width: calc(var(--menu-footer-button-width) * 0.65);
+  margin: 0.2rem auto 0.4rem auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #menu-footer a h6 {
+  margin: 0px;
+  padding: 0px;
   font-family: var(--menu-footer-font);
-  width: 90%;
-  margin: 0px auto 1rem auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .menu-footer { color: var(--button-font-color-hover); }
-
-
-
-
 
 #outlet {
   width: calc(100vw - var(--scrollbar-width));
   height: fit-content;
 }
-
-
-
-
 
 content {
   display: block;
@@ -265,12 +314,12 @@ content {
   border: var(--border);
 }
 
-content h1, content h2, content h3, content h4, content h5, content h6, content p {
+content h1, h2, h3, h4, h5, h6, p {
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
-content ul, content ol {
+content ul, ol {
   padding-right: 1rem;
 }
 
@@ -296,13 +345,16 @@ content pre code {
   border: var(--border);
 }
 
-content pre code::-webkit-scrollbar { display: block;
-                                      height: var(--scrollbar-width); }
-content pre code::-webkit-scrollbar-thumb { background-color: var(--content-font-color); }
-content pre code::-webkit-scrollbar-track { background-color: var(--code-background); }
-
-
-
+content pre code::-webkit-scrollbar { 
+  display: block;
+  height: var(--scrollbar-width); 
+}
+content pre code::-webkit-scrollbar-thumb { 
+  background-color: var(--content-font-color); 
+}
+content pre code::-webkit-scrollbar-track { 
+  background-color: var(--code-background); 
+}
 
 #about { display: flex; }
 
@@ -355,10 +407,6 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
 
 #link-list a:hover h6 { color: var(--button-font-color-hover) }
 
-
-
-
-
 .filter { 
   display: flex;
   flex-wrap: wrap;
@@ -386,10 +434,6 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
   color: var(--button-font-color-hover);
   border: var(--button-border-hover);
 }
-
-
-
-
 
 #certification-list, #portfolio-list, #blog-list, #readings-list { 
   display: grid;
@@ -446,12 +490,8 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
   object-fit: contain;
 }
 
-
-
-
-
 /* ======================================================================================== */
-/* =============================  PORTRAIT MOBILE 1 COLUMN  =============================== */
+/* =============================  VERY TALL PORTRAIT MOBILE - 1 COLUMN  =================== */
 /* ======================================================================================== */
 
 @media (max-aspect-ratio: 12/21) {
@@ -464,24 +504,9 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
 
   #menu-header { display: none; }
 
-  .menu-footer-button-border {
-    width: var(--menu-footer-button-width);
-    height: var(--menu-footer-button-width);
-  }
-
-  .menu-footer-button-border img { 
-    width: calc(var(--menu-footer-button-width) * 0.40);
-    height: calc(var(--menu-footer-button-width) * 0.40);
-  }
-
-  .menu-footer-button-light {
-    width: calc(var(--menu-footer-button-width) * 0.7);
-    height: calc(var(--content-font-size) * 0.5);
-  }
-
   #outlet {
     padding-top: var(--menu-footer-button-width);
-    padding-bottom: calc(var(--menu-footer-button-width) * 2.5)
+    padding-bottom: calc(var(--menu-footer-button-width) * 2.5);
   }
 
   #about img {
@@ -501,169 +526,57 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-backgro
     height: 14vw;
   }
 
-  #certification-list, #portfolio-list, #blog-list, #readings-list  { 
+  #certification-list, #portfolio-list, #blog-list, #readings-list { 
     grid-template-columns: repeat(1, 1fr);
   }
-
 }
 
-
-
-
-
 /* ======================================================================================== */
-/* =============================  SQUARISH PORTRAIT 2 COLUMNS  ============================ */
+/* ===============================  ALL OTHER ASPECT RATIOS  ============================== */
 /* ======================================================================================== */
 
-@media (min-aspect-ratio: 12/21) and (max-aspect-ratio: 1/1) {
+@media (min-aspect-ratio: 12/21) {
 
-  html { font-size: calc(var(--content-font-size) * 1.1); }
+  /* Base for non-extreme portrait */
+  html { font-size: var(--content-font-size); }
 
-  content { width: calc(95vw - var(--scrollbar-width)); }
-  content img { width: 85vw; }
-  content pre code { width: 85vw; }
+  content { width: min(90vw, 75ch); }
+  content img { width: min(85vw, 60ch); }
+  content pre code { width: min(90vw, 75ch); }
 
-  #menu-header { display: none; }
+  #menu-header { display: block; } /* show header on wider/taller viewports */
 
-  .menu-footer-button-border {
-    width: calc(var(--menu-footer-button-width) * 0.75);
-    height: calc(var(--menu-footer-button-width) * 0.75);
-  }
-
-  .menu-footer-button-border img { 
-    width: calc(var(--menu-footer-button-width) * 0.75 * 0.40);
-    height: calc(var(--menu-footer-button-width) * 0.75 * 0.40);
-  }
-
-  .menu-footer-button-light {
-    width: calc(var(--menu-footer-button-width) * 0.49);
-    height: calc(var(--content-font-size) * 0.25);
-  }
-
-  #outlet { 
-    padding-top: var(--menu-footer-button-width);
-    padding-bottom: calc(var(--menu-footer-button-width) * 2);
-  }
-
-  #about img {
-    width: 24vw;
-    height: 28.8vw;
-  }
-
-  #about-title { margin-left: 3vw; }
-
-  #about-title img { 
-    height: 6vw; 
-    width: auto;
-  }
-
-  #link-list a img {
-    width: 10vw;
-    height: 10vw;
-  }
-
-  #certification-list, #portfolio-list, #blog-list, #readings-list { 
-    grid-template-columns: repeat(2, 1fr); 
-  }
-
-}
-
-
-
-
-
-/* ======================================================================================== */
-/* =============================  SQUARISH LANDSCAPE 3 COLUMNS  =========================== */
-/* ======================================================================================== */
-
-@media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 16/10) {
-
-  html { font-size: calc(var(--content-font-size) * 1.15); }
-
-  content { width: calc(65vw - var(--scrollbar-width)); }
-  content img { width: 55vw; }
-  content pre code { width: 55vw; }
-
-  #menu-footer { display: none; }
-
-  #outlet { 
+  #outlet {
     padding-top: calc(var(--menu-header-height) * 1.5);
     padding-bottom: calc(var(--menu-header-height) * 2);
   }
 
   #about img {
-    width: 15vw;
-    height: 18vw;
+    width: clamp(12vw, 18vw, 240px);
+    height: auto;
   }
 
   #about-title { margin-left: 1.5vw; }
 
   #about-title img { 
-    height: 3vw; 
+    height: clamp(2vw, 3vw, 48px); 
     width: auto;
   }
 
   #link-list a img {
-    width: 5vw;
-    height: 5vw;
+    width: clamp(3vw, 5vw, 80px);
+    height: auto;
+  }
+
+  /* Column layout progression using width (more reliable than aspect) */
+  #certification-list, #blog-list {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
 
   #portfolio-list, #readings-list {
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   }
 
-  #certification-list, #blog-list {
-    grid-template-columns: repeat(2, 1fr); 
-  }
-
-}
-
-
-
-
-
-/* ======================================================================================== */
-/* =============================  LANDSCAPE DESKTOP 4 COLUMNS  ============================ */
-/* ======================================================================================== */
-
-@media (min-aspect-ratio: 16/10) {
-
-  html { font-size: var(--content-font-size); }
-
-  content { width: calc(55vw - var(--scrollbar-width)); }
-  content img { width: 45vw; }
-  content pre code { width: 45vw; }
-
+  /* Hide footer on larger screens */
   #menu-footer { display: none; }
-
-  #outlet { 
-    padding-top: calc(var(--menu-header-height) * 1.5);
-    padding-bottom: calc(var(--menu-header-height) * 2);
-  }
-
-  #about img {
-    width: 12vw;
-    height: 14.4vw;
-  }
-
-  #about-title { margin-left: 1vw; }
-
-  #about-title img { 
-    height: 2vw; 
-    width: auto;
-  }
-
-  #link-list a img {
-    width: 3vw;
-    height: 3vw;
-  }
-
-  #portfolio-list, #readings-list {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  #certification-list, #blog-list {
-    grid-template-columns: repeat(3, 1fr); 
-  }
-
 }
