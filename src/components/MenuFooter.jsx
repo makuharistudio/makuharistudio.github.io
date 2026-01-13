@@ -21,9 +21,9 @@ export default function MenuFooter() {
       lightActive: 'menu-footer-light-highlight-red',
     },
     {
-      to: '/portfolio',
+      to: '/projects',
       label: 'PROJECT',
-      isActive: currentPath.includes('/portfolio'),
+      isActive: currentPath.includes('/project'),
       iconDefault: menu_project,
       iconActive: menu_project_active,
       lightDefault: 'menu-footer-light-highlight-teal',
@@ -41,7 +41,7 @@ export default function MenuFooter() {
     {
       to: '/readings',
       label: 'READING',
-      isActive: currentPath.includes('/readings'),
+      isActive: currentPath.includes('/reading'),
       iconDefault: menu_reading,
       iconActive: menu_reading_active,
       lightDefault: 'menu-footer-light-highlight-teal',

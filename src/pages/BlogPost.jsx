@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import posts from '../data/posts';
 
-export default function Post() {
+export default function BlogPost() {
   const { name } = useParams();
 
   const post = posts.find(p => p.name === name);
@@ -13,16 +13,16 @@ export default function Post() {
 
   const { title, date, content } = post;
 
-  // Helper function to dynamically import images from blog or portfolio
+  // Helper function to dynamically import images from blog or project
   const importImage = (path) => {
     try {
       if (path.startsWith('http')) return path; // Return as-is if external
 
       const filename = path.split('/').pop().trim(); // Extract filename
       const isBlog = path.includes('/blog/') || path.startsWith('blog/');
-      const isPortfolio = path.includes('/portfolio/') || path.startsWith('portfolio/');
+      const isProject = path.includes('/project/') || path.startsWith('project/');
 
-      let folder = isBlog ? 'blog' : isPortfolio ? 'portfolio' : '';
+      let folder = isBlog ? 'blog' : isProject ? 'project' : '';
 
       if (!folder) return ''; // If no match, return empty
 

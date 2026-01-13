@@ -4,10 +4,10 @@ import { createHashRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
-import Portfolio from './pages/Portfolio';
+import Projects from './pages/Projects';
 import Project from './pages/Project';
 import Blog from './pages/Blog';
-import Post from './pages/Post';
+import Post from './pages/BlogPost';
 import Readings from './pages/Readings';
 import Reading from './pages/Reading';
 import Applications from './pages/Applications';
@@ -21,14 +21,14 @@ const routes = [{
   errorElement: <NotFound />,
   children: [
     { path: '/', element: <About /> },
-    { path: '/portfolio', element: <Portfolio /> },
-    { path: '/portfolio/:name', element: <Project /> },
+    { path: '/projects', element: <Projects /> },
+    { path: '/project/:name', element: <Project /> },
     { path: '/blog', element: <Blog /> },
     { path: '/blog/:name', element: <Post /> },
     { path: '/readings', element: <Readings /> },
-    { path: '/readings/:name', element: <Reading /> },
+    { path: '/reading/:name', element: <Reading /> },
     { path: '/applications', element: <Applications />},
-    { path: '/applications/:name', element: <Application />},
+    { path: '/application/:name', element: <Application />},
     { path: '/test', element: <Test /> }
   ]
 }];

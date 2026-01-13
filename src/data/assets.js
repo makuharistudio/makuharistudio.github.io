@@ -6,15 +6,15 @@ import title_b from '../assets/theme/avatar/title-y-b.png'
 import title_c from '../assets/theme/avatar/title-y-c.png'
 
 /* Menu Buttons */
-import menu_about from '../assets/theme/accent/images/menu-footer-button-about-teal.svg'
-import menu_project from '../assets/theme/accent/images/menu-footer-button-project-teal.svg'
-import menu_blog from '../assets/theme/accent/images/menu-footer-button-blog-teal.svg'
-import menu_reading from '../assets/theme/accent/images/menu-footer-button-reading-teal.svg'
-import menu_blank from '../assets/theme/accent/images/menu-footer-button.svg'
-import menu_about_active from '../assets/theme/accent/images/menu-footer-button-about-red.svg'
-import menu_project_active from '../assets/theme/accent/images/menu-footer-button-project-purple.svg'
-import menu_blog_active from '../assets/theme/accent/images/menu-footer-button-blog-yellow.svg'
-import menu_reading_active from '../assets/theme/accent/images/menu-footer-button-reading-blue.svg'
+import menu_about from '../assets/theme/accent/images/menu-button-about-teal.svg'
+import menu_project from '../assets/theme/accent/images/menu-button-project-teal.svg'
+import menu_blog from '../assets/theme/accent/images/menu-button-blog-teal.svg'
+import menu_reading from '../assets/theme/accent/images/menu-button-reading-teal.svg'
+import menu_blank from '../assets/theme/accent/images/menu-button.svg'
+import menu_about_active from '../assets/theme/accent/images/menu-button-about-red.svg'
+import menu_project_active from '../assets/theme/accent/images/menu-button-project-purple.svg'
+import menu_blog_active from '../assets/theme/accent/images/menu-button-blog-yellow.svg'
+import menu_reading_active from '../assets/theme/accent/images/menu-button-reading-blue.svg'
 
 /* Links */
 import link_linkedin from '../assets/theme/logo/linkedin-blue.svg'
@@ -56,8 +56,10 @@ import star from '../assets/theme/background/images/space/star.png'
 /* Background Scripts */
 export const backgroundMap = [
   { path: '/', script: () => import('../assets/theme/background/scripts/bg-space.js') },
-  { path: '/portfolio', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/project', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/projects', script: () => import('../assets/theme/background/scripts/bg-space.js') },
   { path: '/blog', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/reading', script: () => import('../assets/theme/background/scripts/bg-space.js') },
   { path: '/readings', script: () => import('../assets/theme/background/scripts/bg-space.js') },
   { path: '/applications', script: () => import('../assets/theme/background/scripts/bg-blank.js') },
   { path: '/test', script: () => import('../assets/theme/background/scripts/bg-avatarsummon.js') },

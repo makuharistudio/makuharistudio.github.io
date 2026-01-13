@@ -5,7 +5,7 @@ export default function Blog() {
     return (
       <>
         <center>
-          <h1>BLOG</h1>
+          <h1>BLOG POSTS</h1>
         </center>
         <BlogList posts={posts} />
       </>

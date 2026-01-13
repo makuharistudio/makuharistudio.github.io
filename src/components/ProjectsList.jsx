@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Panel from '../assets/theme/accent/components/Panel'
 
-export default function PortfolioList({ projects }) {
+export default function ProjectsList({ projects }) {
   const [selectedTag, setSelectedTag] = useState(null);
 
   if (!projects) {
@@ -41,13 +41,13 @@ export default function PortfolioList({ projects }) {
         ))}
       </div>
 
-      <div id='portfolio-list'>
+      <div id='projects-list'>
         {filteredProjects.map(p => {
           const isExternalUrl = p.photo.startsWith('http');
-          const imagePath = isExternalUrl ? p.photo : new URL(`../assets/portfolio/${p.photo.split('/').pop().trim()}`, import.meta.url).href;
+          const imagePath = isExternalUrl ? p.photo : new URL(`../assets/projects/${p.photo.split('/').pop().trim()}`, import.meta.url).href;
 
           return (
-            <Link key={p.name} to={'/portfolio/' + p.name}>
+            <Link key={p.name} to={'/project/' + p.name}>
               <Panel>
                 <h4>{p.title}</h4>
                 <h5>{p.date}</h5>

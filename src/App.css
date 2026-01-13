@@ -65,7 +65,7 @@
   --text-background-border: 1px solid rgba(0, 0, 0, 0.6);
   --border: 1px solid rgba(73, 160, 255, 0.4);
 
-  --portfolio-padding: 0.33rem;
+  --projects-padding: 0.33rem;
 
   /* Mobile view */
   --menu-footer-width: calc(100vw - var(--scrollbar-width));
@@ -389,7 +389,7 @@ content pre code::-webkit-scrollbar-track {
 
 #link-list a h6 {
   color: var(--button-font-color);
-  margin: calc(var(--portfolio-padding) * 2) 0px 0px 0px;
+  margin: calc(var(--projects-padding) * 2) 0px 0px 0px;
   padding: 0px;
 }
 
@@ -409,7 +409,7 @@ content pre code::-webkit-scrollbar-track {
   font-family: var(--button-font); 
   background-color: rgba(0, 0, 0, 0);
   border: var(--border);
-  margin: var(--portfolio-padding);
+  margin: var(--projects-padding);
   padding: 
     calc(var(--content-font-size) * 0.15)
     calc(var(--content-font-size) * 0.75)
@@ -423,7 +423,7 @@ content pre code::-webkit-scrollbar-track {
   border: var(--button-border-hover);
 }
 
-#certification-list, #portfolio-list, #blog-list, #readings-list { 
+#certification-list, #projects-list, #blog-list, #readings-list { 
   display: grid;
   place-items: center;
   row-gap: 2rem;
@@ -434,7 +434,7 @@ content pre code::-webkit-scrollbar-track {
   padding-right: 1rem;
 }
 
-#certification-list a, #portfolio-list a, #blog-list a, #readings-list a {
+#certification-list a, #projects-list a, #blog-list a, #readings-list a {
   color: var(--button-font-color);
   text-decoration: none;
   display: grid;
@@ -448,7 +448,7 @@ content pre code::-webkit-scrollbar-track {
   word-break: break-all;
 }
 
-#certification-list a:hover, #portfolio-list a:hover, #blog-list a:hover, #readings-list a:hover { 
+#certification-list a:hover, #projects-list a:hover, #blog-list a:hover, #readings-list a:hover { 
   color: var(--button-font-color-hover);
 }
 
@@ -456,21 +456,21 @@ content pre code::-webkit-scrollbar-track {
   color: var(--content-font-color-hover);
 }
 
-#portfolio-list a:hover img, #blog-list a:hover img, #readings-list a:hover img { 
+#projects-list a:hover img, #blog-list a:hover img, #readings-list a:hover img { 
   opacity: 1;
 }
 
-#portfolio-list h4, #blog-list h4, #readings-list h4 {
+#projects-list h4, #blog-list h4, #readings-list h4 {
   margin-top: 0.5rem;
   text-align: center;
 }
 
-#certification-list a h5, #portfolio-list h5, #blog-list h5, #readings-list h5 {
+#certification-list a h5, #projects-list h5, #blog-list h5, #readings-list h5 {
   margin: 0px;
   text-align: right;
 }
 
-#portfolio-list img, #blog-list img, #readings-list img {
+#projects-list img, #blog-list img, #readings-list img {
   width: 100%;
   height: auto;
   max-height: 100%;
@@ -514,7 +514,7 @@ content pre code::-webkit-scrollbar-track {
     height: 14vw;
   }
 
-  #certification-list, #portfolio-list, #blog-list, #readings-list { 
+  #certification-list, #projects-list, #blog-list, #readings-list { 
     grid-template-columns: repeat(1, 1fr);
   }
 }
@@ -556,19 +556,19 @@ content pre code::-webkit-scrollbar-track {
     height: auto;
   }
 
-  #certification-list, #portfolio-list, #blog-list, #readings-list {
+  #certification-list, #projects-list, #blog-list, #readings-list {
     grid-template-columns: repeat(auto-fill, minmax(340px, max-content));
     justify-content: center;
     column-gap: auto;
   }
 
   /* This code is to help the content of the panels have same title heights */
-  #portfolio-list .panel-content, #blog-list .panel-content, #readings-list .panel-content {
+  #projects-list .panel-content, #blog-list .panel-content, #readings-list .panel-content {
     display: flex;
     flex-direction: column;
   }
 
-  #portfolio-list h4 {
+  #projects-list h4 {
     min-height: 2em;
     line-height: 1.125;
     display: flex;
@@ -592,7 +592,7 @@ content pre code::-webkit-scrollbar-track {
     margin-right: auto;
   }
 
-  #portfolio-list h5, #blog-list h5, #readings-list h5 {
+  #projects-list h5, #blog-list h5, #readings-list h5 {
     margin-top: auto;
   }
 

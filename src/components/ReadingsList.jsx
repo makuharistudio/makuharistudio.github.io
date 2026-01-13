@@ -47,7 +47,7 @@ export default function ReadingsList({ readings }) {
           const imagePath = isExternalUrl ? r.photo : new URL(`../assets/readings/${r.photo.split('/').pop().trim()}`, import.meta.url).href;
 
           return (
-            <Link key={r.name} to={'/readings/' + r.name}>
+            <Link key={r.name} to={'/reading/' + r.name}>
               <Panel>
                 <h4>{r.title} by {r.author}</h4>
                 <h5>{r.date}</h5>

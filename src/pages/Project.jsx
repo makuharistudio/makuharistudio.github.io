@@ -13,16 +13,16 @@ export default function Project() {
 
   const { title, date, desc, content } = project;
 
-  // Helper function to dynamically import images from blog or portfolio
+  // Helper function to dynamically import images from blog or project
   const importImage = (path) => {
     try {
       if (path.startsWith('http')) return path; // Return as-is if external
   
       const filename = path.split('/').pop().trim(); // Extract filename
       const isBlog = path.includes('/blog/') || path.startsWith('blog/');
-      const isPortfolio = path.includes('/portfolio/') || path.startsWith('portfolio/');
+      const isProject = path.includes('/projects/') || path.startsWith('projects/');
   
-      let folder = isBlog ? 'blog' : isPortfolio ? 'portfolio' : '';
+      let folder = isBlog ? 'blog' : isProject ? 'projects' : '';
   
       if (!folder) return ''; // If no match, return empty
   
