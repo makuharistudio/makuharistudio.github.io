@@ -444,13 +444,35 @@
      id="path34"
      sodipodi:nodetypes="ccccccccccc"
      inkscape:label="button-arrow-bottom"
-     sodipodi:insensitive="true" /><path
+     sodipodi:insensitive="true">
+    
+       <animateTransform 
+         attributeName="transform" 
+         type="rotate" 
+         from="360 14.55 14.65" 
+         to="0 14.55 14.65" 
+         dur="30s" 
+         repeatCount="indefinite"/>
+    </path>
+     
+     <path
      style="display:inline;fill:url(#linearGradient32);fill-opacity:0.95;stroke:none;stroke-width:0.0264583;stroke-dasharray:none;stroke-opacity:0.733333"
      d="M 3.4891927,16.040365 C 2.7606196,1.1186866 22.690456,-0.96227099 25.532291,12.666927 l -0.843359,0.760677 C 24.209322,11.323563 23.94117,9.2234385 21.159817,7.0767731 l 0.0048,-0.4932566 C 15.049199,2.7365058 12.323221,4.2063329 7.9383309,6.5683273 L 7.931653,7.0900568 C 5.8387821,8.5526379 4.5007822,12.129931 4.5293272,13.587294 l 0.4659293,0.303746 0.015036,0.530672 z"
      id="path29"
      sodipodi:nodetypes="ccccccccccc"
      inkscape:label="button-arrow-top"
-     sodipodi:insensitive="true" /><text
+     sodipodi:insensitive="true">
+
+       <animateTransform 
+         attributeName="transform" 
+         type="rotate" 
+         from="360 14.55 14.65" 
+         to="0 14.55 14.65" 
+         dur="30s" 
+         repeatCount="indefinite"/>
+    </path>
+     
+     <text
      xml:space="preserve"
      transform="matrix(0.26458333,0,0,0.26458333,5.4699917,1.9590301)"
      id="text1"
