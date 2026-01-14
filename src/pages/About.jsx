@@ -17,13 +17,13 @@ export default function About() {
             <br />
             <Panel>
             <div id='about'>
-                <img src={ avatar } alt='avatar' />
+                <img id='avatar-image' src={ avatar } alt='avatar' />
                 <div id='about-desc'>
                     <div id='about-title'>
-                        <img id='avatar-image' src={ title_a } alt='' /><img src={ title_b } alt='' /><img src={ title_c } alt='' />
+                        <img src={ title_a } alt='' /><img src={ title_b } alt='' /><img src={ title_c } alt='' />
                     </div>
-                    <p>A consultant with over 12 years client services experience in the software and healthcare industries.</p>
-                    <p>Specialist in application problem-solving and data analysis.</p>
+                    <p>Consultant with 12+ years in client services for software and healthcare industries.</p>
+                    <p>Technical generalist with application problem-solving and data analysis experience.</p>
                     <ul>
                         <li>{totalProjects} side projects since October 2021</li>
                         <li>{totalPosts} blog posts since Sep 2021</li>

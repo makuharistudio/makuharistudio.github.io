@@ -497,7 +497,7 @@ content pre code::-webkit-scrollbar-track {
     padding-bottom: calc(var(--menu-footer-button-width) * 2.5);
   }
 
-  #avatar-image img {
+  #avatar-image {
     width: 22vw;
     height: 26.4vw;
   }
@@ -539,7 +539,7 @@ content pre code::-webkit-scrollbar-track {
     padding-bottom: calc(var(--menu-header-height) * 2);
   }
 
-  #avatar-image img {
+  #avatar-image {
     width: 12vw;
     height: 14.4vw;
   }
