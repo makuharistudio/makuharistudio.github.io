@@ -20,9 +20,9 @@ export default function BlogPost() {
 
       const filename = path.split('/').pop().trim(); // Extract filename
       const isBlog = path.includes('/blog/') || path.startsWith('blog/');
-      const isProject = path.includes('/project/') || path.startsWith('project/');
+      const isProject = path.includes('/projects/') || path.startsWith('projects/');
 
-      let folder = isBlog ? 'blog' : isProject ? 'project' : '';
+      let folder = isBlog ? 'blog' : isProject ? 'projects' : '';
 
       if (!folder) return ''; // If no match, return empty
 

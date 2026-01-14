@@ -15,20 +15,23 @@ export default function Layout() {
   useScrollToTop();
   const containerRef = useRef(null);
   const location = useLocation();
-  const [currentBackground, setCurrentBackground] = useState(null);
   const cleanupRef = useRef(null);
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false); // Track if background is already loaded
 
   useEffect(() => {
     let isMounted = true;
 
     const loadBackground = async () => {
-      // Clean up previous background
+      // Only load if not already loaded
+      if (backgroundLoaded) return;
+
+      // Clean up if somehow previous exists (though shouldn't)
       if (cleanupRef.current) {
         cleanupRef.current();
         cleanupRef.current = null;
       }
 
-      // Clear container to prevent overlap
+      // Clear container
       if (containerRef.current) {
         while (containerRef.current.firstChild) {
           containerRef.current.removeChild(containerRef.current.firstChild);
@@ -36,22 +39,25 @@ export default function Layout() {
       }
 
       try {
-        const importFn = backgroundMapObject[location.pathname] || backgroundMapObject['/'];
-        console.log(`Loading background for path: ${location.pathname}`);
+        // Load based on initial path (or fallback to '/')
+        const initialPath = location.pathname;
+        const importFn = backgroundMapObject[initialPath] || backgroundMapObject['/'];
+
         const backgroundModule = await importFn();
         if (isMounted && containerRef.current) {
           const cleanup = backgroundModule.initialiseBackground(containerRef.current);
           cleanupRef.current = cleanup;
-          setCurrentBackground(location.pathname);
-          console.log(`Background loaded for: ${location.pathname}`);
+          setBackgroundLoaded(true); // Mark as loaded
+
         }
       } catch (error) {
-        console.error(`Failed to load background for ${location.pathname}:`, error);
+        console.error(`Failed to load background:`, error);
       }
     };
 
     loadBackground();
 
+    // Cleanup on unmount (e.g., if Layout ever unmounts, though it shouldn't in this setup)
     return () => {
       isMounted = false;
       if (cleanupRef.current) {
@@ -59,7 +65,7 @@ export default function Layout() {
         cleanupRef.current = null;
       }
     };
-  }, [location.pathname]);
+  }, []); // Empty dependency array: load only once on mount
 
   return (
     <>

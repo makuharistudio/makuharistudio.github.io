@@ -14,17 +14,11 @@ const ascii3 = String.fromCharCode(72,65,82,73);
 /* LINKS */
 export const LinkData = [
     {
-        name: 'LINKEDIN',
-        icon: link_linkedin,
-        hover: link_linkedin_active,
-        link: ascii1 + ascii2 + ascii3 
-    },
-    {
         name: '𝕏',
         icon: link_x,
         hover: link_x_active,
         link: xURL
-    },  
+    },
     {
         name: 'GITHUB',
         icon: link_github,
@@ -42,6 +36,12 @@ export const LinkData = [
         icon: link_tableau,
         hover: link_tableau_active,
         link: tableauURL
+    },
+    {
+        name: 'LINKEDIN',
+        icon: link_linkedin,
+        hover: link_linkedin_active,
+        link: ascii1 + ascii2 + ascii3 
     }
 ];
 

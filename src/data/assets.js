@@ -55,12 +55,12 @@ import star from '../assets/theme/background/images/space/star.png'
 
 /* Background Scripts */
 export const backgroundMap = [
-  { path: '/', script: () => import('../assets/theme/background/scripts/bg-space.js') },
-  { path: '/project', script: () => import('../assets/theme/background/scripts/bg-space.js') },
-  { path: '/projects', script: () => import('../assets/theme/background/scripts/bg-space.js') },
-  { path: '/blog', script: () => import('../assets/theme/background/scripts/bg-space.js') },
-  { path: '/reading', script: () => import('../assets/theme/background/scripts/bg-space.js') },
-  { path: '/readings', script: () => import('../assets/theme/background/scripts/bg-space.js') },
+  { path: '/', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
+  { path: '/project', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
+  { path: '/projects', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
+  { path: '/blog', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
+  { path: '/reading', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
+  { path: '/readings', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
   { path: '/applications', script: () => import('../assets/theme/background/scripts/bg-blank.js') },
   { path: '/test', script: () => import('../assets/theme/background/scripts/bg-avatarsummon.js') },
 ];
