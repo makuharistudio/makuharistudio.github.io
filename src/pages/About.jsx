@@ -22,8 +22,8 @@ export default function About() {
                     <div id='about-title'>
                         <img id='avatar-image' src={ title_a } alt='' /><img src={ title_b } alt='' /><img src={ title_c } alt='' />
                     </div>
-                    <p>A tech-savvy consultant with over 12 years client services experience in the advertising software and healthcare industries.</p>
-                    <p>Specialist in application problem-solving and performing data analysis with SQL querying, Excel data models, and Power BI.</p>
+                    <p>A consultant with over 12 years client services experience in the software and healthcare industries.</p>
+                    <p>Specialist in application problem-solving and data analysis.</p>
                     <ul>
                         <li>{totalProjects} side projects since October 2021</li>
                         <li>{totalPosts} blog posts since Sep 2021</li>

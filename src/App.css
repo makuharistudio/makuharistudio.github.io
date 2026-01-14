@@ -353,17 +353,6 @@ content pre code::-webkit-scrollbar-track {
   border: none;
 }
 
-#avatar-image img {
-  height: 100%;
-  width: auto;
-  max-width: none;
-  object-fit: contain;
-}
-
-@media (max-aspect-ratio: 1/3) { 
-  #avatar-image img  { object-fit: cover; /* only crop when extremely thin */} 
-}
-
 #about-desc {
   display: grid;
   grid-template-rows: 1;
@@ -508,7 +497,7 @@ content pre code::-webkit-scrollbar-track {
     padding-bottom: calc(var(--menu-footer-button-width) * 2.5);
   }
 
-  #about img {
+  #avatar-image img {
     width: 22vw;
     height: 26.4vw;
   }
@@ -550,7 +539,7 @@ content pre code::-webkit-scrollbar-track {
     padding-bottom: calc(var(--menu-header-height) * 2);
   }
 
-  #about img {
+  #avatar-image img {
     width: 12vw;
     height: 14.4vw;
   }
