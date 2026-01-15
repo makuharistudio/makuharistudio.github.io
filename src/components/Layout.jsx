@@ -71,6 +71,8 @@ export default function Layout() {
     <>
       <MenuHeader />
       <div id="outlet">
+        <br />
+        <br />
         <Outlet />
       </div>
       <MenuFooter />

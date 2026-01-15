@@ -17,7 +17,9 @@ export default function About() {
             <br />
             <Panel>
             <div id='about'>
-                <img id='avatar-image' src={ avatar } alt='avatar' />
+                <div id='avatar-image'>
+                    <img src={ avatar } alt='avatar' />
+                </div>
                 <div id='about-desc'>
                     <div id='about-title'>
                         <img src={ title_a } alt='' /><img src={ title_b } alt='' /><img src={ title_c } alt='' />
@@ -44,14 +46,14 @@ export default function About() {
             <br />
             <center><h2>SITE CREDITS</h2></center>
             <Panel>
-                <div id='credits'>
-                <p>I designed and coded this website, but also incorporated the following:</p>
+            <div>
+                <p>I designed this site and incorporated code from:</p>
                 <ul>
-                    <li><p>Creating a React site with URL path management: a LinkedIn Learning course by Shaun Wassell <a href='https://www.linkedin.com/learning/react-creating-and-hosting-a-full-stack-site-24928483/defining-environment-variables' target='_blank'>https://www.linkedin.com/learning/react-creating-and-hosting-a-full-stack-site-24928483/defining-environment-variables</a>.</p></li>
-                    <li><p>JavaScript code that renders multiple page data from markdown: a YouTube tutorial by Will Ward <a href='https://www.youtube.com/watch?v=gT1v33oA1gI&list=PLASldBPN_pkBfRXOkBOaeCJYzCnISw5-Z' target='_blank'>https://www.youtube.com/watch?v=gT1v33oA1gI&list=PLASldBPN_pkBfRXOkBOaeCJYzCnISw5-Z</a>.</p></li>
-                    <li><p>Three.js code for a rotating Earth: a YouTube tutorial by Robot Bobby <a href='https://www.youtube.com/watch?v=FntV9iEJ0tU' target='_blank'>https://www.youtube.com/watch?v=FntV9iEJ0tU</a>.</p></li>
+                    <li><p><a href='https://www.linkedin.com/learning/react-creating-and-hosting-a-full-stack-site-24928483/defining-environment-variables' target='_blank'>Creating a React site with URL path management by Shaun Wassell.</a></p></li>
+                    <li><p><a href='https://www.youtube.com/watch?v=gT1v33oA1gI&list=PLASldBPN_pkBfRXOkBOaeCJYzCnISw5-Z' target='_blank'>JavaScript that renders multiple page data from markdown by Will Ward.</a></p></li>
+                    <li><p><a href='https://www.youtube.com/watch?v=FntV9iEJ0tU' target='_blank'>Three.js code for a rotating Earth by Robot Bobby</a></p></li>
                 </ul>
-                <p>To create your own GitHub Pages site using React, you can refer to this site's <a href='https://github.com/makuharistudio/makuharistudio.github.io' target='_blank'>README</a> on GitHub.</p>
+                <p>Visit this site's README<a href='https://github.com/makuharistudio/makuharistudio.github.io' target='_blank'>README</a> on GitHub.</p>
                 </div>
             </Panel>
         </content>
