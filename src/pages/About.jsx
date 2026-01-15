@@ -51,9 +51,9 @@ export default function About() {
                 <ul>
                     <li><p><a href='https://www.linkedin.com/learning/react-creating-and-hosting-a-full-stack-site-24928483/defining-environment-variables' target='_blank'>Creating a React site with URL path management by Shaun Wassell.</a></p></li>
                     <li><p><a href='https://www.youtube.com/watch?v=gT1v33oA1gI&list=PLASldBPN_pkBfRXOkBOaeCJYzCnISw5-Z' target='_blank'>JavaScript that renders multiple page data from markdown by Will Ward.</a></p></li>
-                    <li><p><a href='https://www.youtube.com/watch?v=FntV9iEJ0tU' target='_blank'>Three.js code for a rotating Earth by Robot Bobby</a></p></li>
+                    <li><p><a href='https://www.youtube.com/watch?v=FntV9iEJ0tU' target='_blank'>Three.js code for a rotating Earth by Robot Bobby.</a></p></li>
                 </ul>
-                <p>Visit this site's README<a href='https://github.com/makuharistudio/makuharistudio.github.io' target='_blank'>README</a> on GitHub.</p>
+                <p><a href='https://github.com/makuharistudio/makuharistudio.github.io' target='_blank'>Visit this site's README on GitHub.</a></p>
                 </div>
             </Panel>
         </content>
