@@ -17,11 +17,11 @@ import menu_blog_active from '../assets/theme/accent/images/menu-button-blog-yel
 import menu_reading_active from '../assets/theme/accent/images/menu-button-reading-blue.svg'
 
 /* Links */
-import link_linkedin from '../assets/theme/logo/linkedin-blue.svg'
-import link_x from '../assets/theme/logo/x-blue.svg'
-import link_github from '../assets/theme/logo/github-blue.svg'
-import link_powerbi from '../assets/theme/logo/powerbi-blue.svg'
-import link_tableau from '../assets/theme/logo/tableau-blue.svg'
+import link_linkedin from '../assets/theme/logo/linkedin-teal.svg'
+import link_x from '../assets/theme/logo/x-teal.svg'
+import link_github from '../assets/theme/logo/github-teal.svg'
+import link_powerbi from '../assets/theme/logo/powerbi-teal.svg'
+import link_tableau from '../assets/theme/logo/tableau-teal.svg'
 
 import link_linkedin_active from '../assets/theme/logo/linkedin-white.svg'
 import link_x_active from '../assets/theme/logo/x-white.svg'

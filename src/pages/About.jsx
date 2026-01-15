@@ -12,7 +12,7 @@ export default function About() {
 
     return (
         <content className='content-no-bg'>
-            <center><h1>ABOUT</h1></center>
+            <center><h1>ABOUT ME</h1></center>
             <br />
             <br />
             <Panel>
@@ -24,8 +24,8 @@ export default function About() {
                     <div id='about-title'>
                         <img src={ title_a } alt='' /><img src={ title_b } alt='' /><img src={ title_c } alt='' />
                     </div>
-                    <p>Consultant with 12+ years in client services for software and healthcare industries.</p>
-                    <p>Technical generalist with application problem-solving and data analysis experience.</p>
+                    <p>Consultant with 12+ years in client services for software and pathology industries.</p>
+                    <p>Technical generalist with extensive problem-solving and data analysis experience.</p>
                     <ul>
                         <li>{totalProjects} side projects since October 2021</li>
                         <li>{totalPosts} blog posts since Sep 2021</li>

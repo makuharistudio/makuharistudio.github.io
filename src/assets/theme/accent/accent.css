@@ -46,23 +46,25 @@ a:hover .panel-corner {
 .panel-corner-top-left {
   top: 0px;
   left: 0px;
-  transform: rotate(0deg);
 }
 
 .panel-corner-top-right {
   top: 0px;
   right: 0px;
-  transform: rotate(90deg);
+  transform: scaleX(-1);
+  transform-origin: center;
 }
 
 .panel-corner-bottom-right {
-  bottom: 0px;
+  bottom: -1px;
   right: 0px;
-  transform: rotate(180deg);
+  transform: scaleY(-1) scaleX(-1);
+  transform-origin: center;
 }
 
 .panel-corner-bottom-left {
-  bottom: 0px;
+  bottom: -1px;
   left: 0px;
-  transform: rotate(-90deg);
+  transform: scaleY(-1);
+  transform-origin: center;
 }
