@@ -583,6 +583,14 @@ content pre code::-webkit-scrollbar-track {
     flex-direction: column;
   }
 
+  #certification-list h3 {
+    min-height: 2.2em;
+    line-height: 1.125;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   #projects-list h4 {
     min-height: 2em;
     line-height: 1.125;
