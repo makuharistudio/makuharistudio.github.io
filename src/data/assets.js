@@ -44,13 +44,14 @@ import logo_tableau from '../assets/theme/logo/tableau.svg'
 import logo_x from '../assets/theme/logo/x.svg'
 
 /* Background */
-import mars_mosaic_1 from '../assets/theme/background/images/space/planetary-mosaic-mars-1.jpg'
 import earth_mosaic_1 from '../assets/theme/background/images/space/planetary-mosaic-earth-1.jpg'
 import earth_mosaic_2_specular from '../assets/theme/background/images/space/planetary-mosaic-earth-2-specular.jpg'
 import earth_mosaic_3_bump from '../assets/theme/background/images/space/planetary-mosaic-earth-3-bump.jpg'
 import earth_mosaic_4_lights from '../assets/theme/background/images/space/planetary-mosaic-earth-4-lights.jpg'
 import earth_mosaic_5_clouds from '../assets/theme/background/images/space/planetary-mosaic-earth-5-clouds.jpg'
 import earth_mosaic_6_clouds_transparent from '../assets/theme/background/images/space/planetary-mosaic-earth-6-cloudstransparent.jpg'
+import moon_luna_mosaic_1 from '../assets/theme/background/images/space/moon-mosaic-luna-1.jpg'
+import moon_luna_mosaic_3_bump from '../assets/theme/background/images/space/moon-mosaic-luna-1-bump.jpg'
 import star from '../assets/theme/background/images/space/star.png'
 
 /* Background Scripts */
@@ -71,7 +72,7 @@ export { avatar, title_a, title_b, title_c,
          logo_aws, logo_azure, logo_css, logo_excel, logo_github, logo_linkedin, logo_neo4j, logo_powerbi, logo_python, logo_sqlserver, logo_tableau, logo_x,
          link_linkedin, link_x, link_github, link_powerbi, link_tableau,
          link_linkedin_active, link_x_active, link_github_active, link_powerbi_active, link_tableau_active,
-         mars_mosaic_1, 
          earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent,
+         moon_luna_mosaic_1, moon_luna_mosaic_3_bump,
          star
 }

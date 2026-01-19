@@ -7,11 +7,12 @@ import {
   earth_mosaic_3_bump, 
   earth_mosaic_4_lights, 
   earth_mosaic_5_clouds, 
-  earth_mosaic_6_clouds_transparent 
+  earth_mosaic_6_clouds_transparent,
+  moon_luna_mosaic_1,
+  moon_luna_mosaic_3_bump
 } from '../../../../data/assets.js';
 
 function getStarfield({ numStars = 1200, radius = 200, exclusionRadius = 60 } = {}) {
-  // exclusionRadius = keeps stars away from origin so none appear inside Earth or too close to sun
   function randomSpherePoint() {
     let r;
     do {
@@ -44,7 +45,7 @@ function getStarfield({ numStars = 1200, radius = 200, exclusionRadius = 60 } = 
   texture.colorSpace = THREE.SRGBColorSpace;
 
   const mat = new THREE.PointsMaterial({
-    size: 0.5,       // star point size — smaller values (0.1–0.3) look more natural
+    size: 0.5,
     vertexColors: true,
     map: texture,
     transparent: true,
@@ -59,9 +60,9 @@ function getFresnelMat({ rimHex = 0x3399ff, facingHex = 0x000000 } = {}) {
   const uniforms = {
     color1: { value: new THREE.Color(rimHex) },
     color2: { value: new THREE.Color(facingHex) },
-    fresnelBias: { value: 0.08 },     // minimum glow strength (higher = always brighter rim)
-    fresnelScale: { value: 1.1 },     // overall rim intensity multiplier
-    fresnelPower: { value: 3.8 },     // how quickly glow fades toward center (higher = sharper edge)
+    fresnelBias: { value: 0.08 },
+    fresnelScale: { value: 1.1 },
+    fresnelPower: { value: 3.8 },
   };
 
   const vs = `
@@ -167,13 +168,13 @@ function initialiseBackground(container) {
   const bg = getBackground();
   scene.add(bg.mesh);
 
-  // Stars (beyond Earth's orbit)
+  // Stars
   const stars = getStarfield({ numStars: 3000, radius: 200, exclusionRadius: 100 });
   scene.add(stars);
 
   // Sun group + visible sun mesh + light
   const sunGroup = new THREE.Group();
-  sunGroup.rotation.z = -3.4 * Math.PI / 180;   // small artistic tilt of the sun plane
+  sunGroup.rotation.z = -3.4 * Math.PI / 180;
   scene.add(sunGroup);
 
   const sunGeometry = new THREE.SphereGeometry(3.2, 32, 24);
@@ -243,7 +244,39 @@ function initialiseBackground(container) {
 
   earthGroup.scale.setScalar(5.8);
 
-  // Orbital path
+  // ────────────────────────────────────────────────────────────────
+  // Moon (named moonluna for future-proofing)
+  // ────────────────────────────────────────────────────────────────
+  const moonlunaGroup = new THREE.Group();
+  earthGroup.add(moonlunaGroup);
+
+  const moonlunaRadius = 1 / 3.67; // ≈ 0.272 × Earth radius (before group scaling)
+  const moonlunaGeometry = new THREE.IcosahedronGeometry(moonlunaRadius, 12);
+
+  const moonlunaMaterial = new THREE.MeshPhongMaterial({
+    map: loader.load(moon_luna_mosaic_1),
+    bumpMap: loader.load(moon_luna_mosaic_3_bump),
+    bumpScale: 0.06,
+    shininess: 5,
+  });
+
+  const moonlunaMesh = new THREE.Mesh(moonlunaGeometry, moonlunaMaterial);
+  moonlunaGroup.add(moonlunaMesh);
+
+  // Optional subtle rim lighting
+  const moonlunaGlow = getFresnelMat({ rimHex: 0xaaaaaa, facingHex: 0x000000 });
+  const moonlunaGlowMesh = new THREE.Mesh(moonlunaGeometry, moonlunaGlow);
+  moonlunaGlowMesh.scale.setScalar(1.04);
+  moonlunaGroup.add(moonlunaGlowMesh);
+
+  // Moon orbit parameters (relative to Earth)
+  const moonlunaOrbitRadius = 8;
+  let moonlunaOrbitAngle = Math.random() * Math.PI * 2;
+  const moonlunaOrbitSpeed = 0.0032; // roughly realistic relative to earth orbit speed
+
+  // ────────────────────────────────────────────────────────────────
+  // Earth orbital path around Sun
+  // ────────────────────────────────────────────────────────────────
   const orbitRadiusX = 100;
   const orbitRadiusY = 100;
   const orbitPoints = [];
@@ -260,18 +293,19 @@ function initialiseBackground(container) {
   const orbitMaterial = new THREE.LineBasicMaterial({
     color: 0xffffff,
     transparent: true,
-    opacity: 0, // 0.35,
+    opacity: 0, // set to 0.35 if you want to see it
     blending: THREE.AdditiveBlending,
     linewidth: 1.5,
   });
   const earthOrbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
   scene.add(earthOrbitLine);
 
-  // Orbit animation
+  // ────────────────────────────────────────────────────────────────
+  // Animation loop variables
+  // ────────────────────────────────────────────────────────────────
   let orbitAngle = Math.random() * Math.PI * 2;
-  const orbitSpeed = 0.0006;    // very slow realistic orbital motion
+  const orbitSpeed = 0.0006;
 
-  // Interactive camera
   let mouseX = 0;
   let mouseY = 0;
   let currentX = 0;
@@ -296,15 +330,16 @@ function initialiseBackground(container) {
     const dt = clock.getElapsedTime();
 
     bg.update(dt);
-    stars.rotation.y -= 0.00015;                  // gentle background star rotation
+    stars.rotation.y -= 0.00015;
     sunMesh.rotation.y += 0.002;
 
-    // Earth rotation + orbit
+    // Earth system rotation
     earthMesh.rotation.y += 0.0072 * 0.15;
     nightMesh.rotation.y += 0.0072 * 0.15;
     clouds.rotation.y -= 0.0075 * 0.075;
     glowMesh.rotation.y += 0.0072 * 0.15;
 
+    // Earth orbit around sun
     orbitAngle += orbitSpeed;
     earthGroup.position.set(
       Math.cos(orbitAngle) * orbitRadiusX,
@@ -312,29 +347,23 @@ function initialiseBackground(container) {
       0
     );
 
-    // ────────────────────────────────────────────────────────────────
-    //          CAMERA CONTROL & TUNING VALUES
-    // ────────────────────────────────────────────────────────────────
+    // Moonluna orbit + rotation
+    moonlunaOrbitAngle += moonlunaOrbitSpeed;
+    moonlunaGroup.position.set(
+      Math.cos(moonlunaOrbitAngle) * moonlunaOrbitRadius,
+      Math.sin(moonlunaOrbitAngle) * moonlunaOrbitRadius,
+      0
+    );
 
-    // Mouse lag/smoothing factor (lower = smoother & slower response)
+    moonlunaMesh.rotation.y += 0.004; // slow self-rotation
+
+    // Camera control
     currentX += (mouseX - currentX) * 0.02;
     currentY += (mouseY - currentY) * 0.02;
 
-    const camRadius = 15;  // distance from Earth's center to camera
-                           //   smaller (10–20) → Earth fills more of screen
-                           //   larger (25–40) → Earth looks smaller, more space
-
+    const camRadius = 15;
     const theta = 0.3 * Math.PI - currentY * Math.PI * 0.2;
-    // theta controls vertical angle
-    //   base 0.3π ≈ 54° above equator — nice 3/4 view
-    //   change 0.3 → 0.1 for more edge-on / polar view
-    //   the * 0.2 controls how much mouse Y tilts the view up/down
-
     const phi = currentX * Math.PI * 0.5;
-    // phi controls horizontal rotation around Earth
-    //   * 0.5 → moderate orbit with mouse X
-    //   increase to * 1.0 for full 360° freedom
-    //   decrease to * 0.2 for very subtle left/right
 
     const relativePos = new THREE.Vector3(
       camRadius * Math.sin(theta) * Math.cos(phi),
@@ -342,38 +371,16 @@ function initialiseBackground(container) {
       camRadius * Math.cos(theta)
     );
 
-    // Camera stays at the same distance from Earth's center
     camera.position.copy(earthGroup.position).add(relativePos);
 
-    // ── Option A: offset look target toward north pole surface ──────
-    // After rotation.x = π/2, model's +Z axis points toward geographic north pole
     const northDirection = new THREE.Vector3(0, 0, 1).normalize();
-
-    // Approximate Earth radius in world units
-    // (geometry radius = 1, group scale = 5.8)
     const earthRadiusWorld = 1 * 5.8;
-
-    // How far toward the surface to shift the look target
-    // 0.0 = look at center (original behavior)
-    // 0.8–0.98 = look toward surface, north pole near center
-    // 1.0 = exactly on surface (may clip slightly)
     const surfaceBias = 1.3;
-
     const lookOffset = northDirection.multiplyScalar(earthRadiusWorld * surfaceBias);
-
-    // Final look target = Earth's center + offset toward north
     const lookTarget = earthGroup.position.clone().add(lookOffset);
 
-    // Point camera at the offset surface point instead of center
     camera.lookAt(lookTarget);
-
-    // Keep horizon level / Earth's axis vertical on screen
-    const worldUp = new THREE.Vector3(0, 0, 1);
-    camera.up.copy(worldUp);
-
-    // Optional: small additional tilt after lookAt
-    // camera.rotateX(-0.08);   // tiny downward tilt → north pole slightly above center
-    // camera.rotateX(0.12);    // opposite direction
+    camera.up.copy(new THREE.Vector3(0, 0, 1));
 
     renderer.render(scene, camera);
   }
