@@ -214,7 +214,7 @@ content { background: var(--text-background); }
 }
 
 .menu-footer-button img:hover {
-  transform: scale(0.75);
+  transform: scale(0.85);
 }
 
 .menu-footer-light {
@@ -383,39 +383,47 @@ content pre code::-webkit-scrollbar-track {
 
 #about-desc p { margin-bottom: 0px; }
 
-#about-title { display: flex; }
+#about-title { 
+  display: flex;
+  margin-top: 0.5rem;
+}
 
 #about-title img {
+  height: 2.75rem;
+  width: auto;
   margin: 0px;
   padding: 0px;
 }
 
 #link-list {
   display: flex;
-  place-items: center;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.25rem;
+  margin-right: 1rem;
 }
 
 #link-list a {
   width: fit-content;
   display: grid;
-  margin-left: auto;
-  margin-right: auto;
   text-decoration: none;
   grid-template-rows: auto auto;
   place-items: center;
 }
 
 #link-list a img {
+  width: 1.75rem;
+  height: 1.75rem;
   border: none;
 }
 
 #link-list a h6 {
   color: var(--button-font-color);
-  margin: calc(var(--projects-padding) * 2) 0px 0px 0px;
+  margin: var(--projects-padding) 0px 0px 0px;
   padding: 0px;
 }
 
-#link-list a:hover h6 { color: var(--button-font-color-hover) }
+#link-list a:hover h6 { color: var(--content-font-color-hover) }
 
 .filter { 
   display: flex;
@@ -520,19 +528,10 @@ content pre code::-webkit-scrollbar-track {
   }
 
   #avatar-image { width: 30%; }
+
   #about-desc { width: 70%; }
 
   #about-title { margin-left: 3vw; }
-
-  #about-title img { 
-    height: 5vw; 
-    width: auto;
-  }
-
-  #link-list a img {
-    width: 14vw;
-    height: 14vw;
-  }
 
   #certification-list, #projects-list, #blog-list, #readings-list { 
     grid-template-columns: repeat(1, 1fr);
@@ -560,16 +559,6 @@ content pre code::-webkit-scrollbar-track {
   }
 
   #about-title { margin-left: 1.5vw; }
-
-  #about-title img { 
-    height: clamp(2vw, 3vw, 48px); 
-    width: auto;
-  }
-
-  #link-list a img {
-    width: clamp(3vw, 5vw, 80px);
-    height: auto;
-  }
 
   #certification-list, #projects-list, #blog-list, #readings-list {
     grid-template-columns: repeat(auto-fill, minmax(340px, max-content));

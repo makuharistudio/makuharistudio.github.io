@@ -17,17 +17,13 @@ import menu_blog_active from '../assets/theme/accent/images/menu-button-blog-yel
 import menu_reading_active from '../assets/theme/accent/images/menu-button-reading-blue.svg'
 
 /* Links */
-import link_linkedin from '../assets/theme/logo/linkedin-teal.svg'
-import link_x from '../assets/theme/logo/x-teal.svg'
-import link_github from '../assets/theme/logo/github-teal.svg'
-import link_powerbi from '../assets/theme/logo/powerbi-teal.svg'
-import link_tableau from '../assets/theme/logo/tableau-teal.svg'
+import link_x from '../assets/theme/logo/x-white.svg'
+import link_github from '../assets/theme/logo/github-white.svg'
+import link_linkedin from '../assets/theme/logo/linkedin-white.svg'
 
-import link_linkedin_active from '../assets/theme/logo/linkedin-white.svg'
-import link_x_active from '../assets/theme/logo/x-white.svg'
-import link_github_active from '../assets/theme/logo/github-white.svg'
-import link_powerbi_active from '../assets/theme/logo/powerbi-white.svg'
-import link_tableau_active from '../assets/theme/logo/tableau-white.svg'
+import link_x_active from '../assets/theme/logo/x-teal.svg'
+import link_github_active from '../assets/theme/logo/github-teal.svg'
+import link_linkedin_active from '../assets/theme/logo/linkedin-teal.svg'
 
 /* Logos */
 import logo_aws from '../assets/theme/logo/aws.svg'
@@ -70,8 +66,8 @@ export { avatar, title_a, title_b, title_c,
          menu_about, menu_project, menu_blog, menu_reading, menu_blank,
          menu_about_active, menu_project_active, menu_blog_active, menu_reading_active,
          logo_aws, logo_azure, logo_css, logo_excel, logo_github, logo_linkedin, logo_neo4j, logo_powerbi, logo_python, logo_sqlserver, logo_tableau, logo_x,
-         link_linkedin, link_x, link_github, link_powerbi, link_tableau,
-         link_linkedin_active, link_x_active, link_github_active, link_powerbi_active, link_tableau_active,
+         link_x, link_github, link_linkedin, 
+         link_x_active, link_github_active, link_linkedin_active,
          earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent,
          moon_luna_mosaic_1, moon_luna_mosaic_3_bump,
          star

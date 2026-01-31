@@ -7,7 +7,6 @@ export default function LinksList() {
 
     return (
         <>
-            <center><h2>LINKS</h2></center>
             <nav id='link-list'>
                 {LinkData.map((item, index) => (
                     <Link 

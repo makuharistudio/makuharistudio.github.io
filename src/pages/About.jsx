@@ -12,15 +12,14 @@ export default function About() {
 
     return (
         <content className='content-no-bg'>
-            <center><h1>ABOUT ME</h1></center>
-            <br />
-            <br />
+            <center><h2>ABOUT ME</h2></center>
             <Panel>
             <div id='about'>
                 <div id='avatar-image'>
                     <img src={ avatar } alt='avatar' />
                 </div>
                 <div id='about-desc'>
+                    <LinkList />
                     <div id='about-title'>
                         <img src={ title_a } alt='' /><img src={ title_b } alt='' /><img src={ title_c } alt='' />
                     </div>
@@ -34,15 +33,7 @@ export default function About() {
             </div>
             </Panel>
             <br />
-            <br />
-            <br />
             <CertificationList />
-            <br />
-            <br />
-            <br />
-            <LinkList />
-            <br />
-            <br />
             <br />
             <center><h2>SITE CREDITS</h2></center>
             <Panel>

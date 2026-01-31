@@ -1,4 +1,4 @@
-import { link_linkedin, link_x, link_github, link_powerbi, link_tableau, link_linkedin_active, link_x_active, link_github_active, link_powerbi_active, link_tableau_active } from './assets';
+import { link_x, link_github, link_linkedin, link_x_active, link_github_active, link_linkedin_active } from './assets';
 
 /* GENERAL */
 const displayName = 'ｍａｋｕｈａｒｉｓｔｕｄｉｏ';
@@ -24,18 +24,6 @@ export const LinkData = [
         icon: link_github,
         hover: link_github_active,
         link: githubURL 
-    },
-    {
-        name: 'POWER BI',
-        icon: link_powerbi,
-        hover: link_powerbi_active,
-        link: powerbiURL
-    },
-    {
-        name: 'TABLEAU',
-        icon: link_tableau,
-        hover: link_tableau_active,
-        link: tableauURL
     },
     {
         name: 'LINKEDIN',
