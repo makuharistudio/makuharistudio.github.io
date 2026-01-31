@@ -389,8 +389,6 @@ content pre code::-webkit-scrollbar-track {
 }
 
 #about-title img {
-  height: 2.75rem;
-  width: auto;
   margin: 0px;
   padding: 0px;
 }
@@ -533,6 +531,11 @@ content pre code::-webkit-scrollbar-track {
 
   #about-title { margin-left: 3vw; }
 
+  #about-title img {
+    height: clamp(4vw, 6vw, 48px);
+    width: auto;
+  }
+
   #certification-list, #projects-list, #blog-list, #readings-list { 
     grid-template-columns: repeat(1, 1fr);
   }
@@ -559,6 +562,11 @@ content pre code::-webkit-scrollbar-track {
   }
 
   #about-title { margin-left: 1.5vw; }
+
+  #about-title img {
+    height: 2.75rem;
+    width: auto;
+  }
 
   #certification-list, #projects-list, #blog-list, #readings-list {
     grid-template-columns: repeat(auto-fill, minmax(340px, max-content));
