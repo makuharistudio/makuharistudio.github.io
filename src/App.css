@@ -532,7 +532,7 @@ content pre code::-webkit-scrollbar-track {
   #about-title { margin-left: 3vw; }
 
   #about-title img {
-    height: clamp(4vw, 6vw, 48px);
+    height: clamp(6vw, 9vw, 72px);
     width: auto;
   }
 
