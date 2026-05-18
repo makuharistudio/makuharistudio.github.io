@@ -5,6 +5,12 @@ import projects from '../data/projects'
 import posts from '../data/posts'
 import Panel from '../assets/theme/accent/components/Panel'
 
+                    /*
+                    <div id='about-title'>
+                        <img src={ title_a } alt='' /><img src={ title_b } alt='' /><img src={ title_c } alt='' />
+                    </div>
+                    */
+
 export default function About() {
 
     const totalProjects = projects.length;
@@ -19,16 +25,13 @@ export default function About() {
                     <img src={ avatar } alt='avatar' />
                 </div>
                 <div id='about-desc'>
-                    <LinkList />
-                    <div id='about-title'>
-                        <img src={ title_a } alt='' /><img src={ title_b } alt='' /><img src={ title_c } alt='' />
-                    </div>
                     <p>Consultant with 12+ years in client services for software and pathology industries.</p>
                     <p>Technical generalist with extensive problem-solving and data analysis experience.</p>
                     <ul>
                         <li>{totalProjects} side projects since October 2021</li>
                         <li>{totalPosts} blog posts since Sep 2021</li>
                     </ul>
+                    <LinkList />
                 </div>
             </div>
             </Panel>

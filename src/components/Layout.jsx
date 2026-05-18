@@ -16,22 +16,22 @@ export default function Layout() {
   const containerRef = useRef(null);
   const location = useLocation();
   const cleanupRef = useRef(null);
-  const [backgroundLoaded, setBackgroundLoaded] = useState(false); // Track if background is already loaded
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
 
     const loadBackground = async () => {
-      // Only load if not already loaded
       if (backgroundLoaded) return;
 
-      // Clean up if somehow previous exists (though shouldn't)
+      const initialPath = location.pathname;
+      if (initialPath.startsWith('/game') || initialPath === '/games' ) return;
+
       if (cleanupRef.current) {
         cleanupRef.current();
         cleanupRef.current = null;
       }
 
-      // Clear container
       if (containerRef.current) {
         while (containerRef.current.firstChild) {
           containerRef.current.removeChild(containerRef.current.firstChild);
@@ -39,16 +39,14 @@ export default function Layout() {
       }
 
       try {
-        // Load based on initial path (or fallback to '/')
-        const initialPath = location.pathname;
-        const importFn = backgroundMapObject[initialPath] || backgroundMapObject['/'];
-
+        const path = location.pathname;
+        const backgroundKey = Object.keys(backgroundMapObject).find(key => path.startsWith(key)) || '/';
+        const importFn = backgroundMapObject[backgroundKey];
         const backgroundModule = await importFn();
         if (isMounted && containerRef.current) {
           const cleanup = backgroundModule.initialiseBackground(containerRef.current);
           cleanupRef.current = cleanup;
-          setBackgroundLoaded(true); // Mark as loaded
-
+          setBackgroundLoaded(true);
         }
       } catch (error) {
         console.error(`Failed to load background:`, error);
@@ -57,7 +55,6 @@ export default function Layout() {
 
     loadBackground();
 
-    // Cleanup on unmount (e.g., if Layout ever unmounts, though it shouldn't in this setup)
     return () => {
       isMounted = false;
       if (cleanupRef.current) {
@@ -65,7 +62,42 @@ export default function Layout() {
         cleanupRef.current = null;
       }
     };
-  }, []); // Empty dependency array: load only once on mount
+  }, []); // Load once on mount
+
+  useEffect(() => {
+    const path = location.pathname;
+    const isGamePath = path.startsWith('/game') || path === '/games';
+
+    if (isGamePath) {
+      // Game: cleanup space-earth, set black
+      if (cleanupRef.current) {
+        cleanupRef.current();
+        cleanupRef.current = null;
+      }
+      if (containerRef.current) {
+        containerRef.current.style.backgroundColor = '#000000';
+        containerRef.current.style.backgroundImage = 'none';
+        while (containerRef.current.firstChild) {
+          containerRef.current.removeChild(containerRef.current.firstChild);
+        }
+      }
+    } else if (!cleanupRef.current) {
+      // Non-game & cleaned: reload space-earth
+      const loadSpaceEarth = async () => {
+        try {
+          const spaceEarthFn = backgroundMapObject['/'];
+          const module = await spaceEarthFn();
+          if (containerRef.current) {
+            const cleanup = module.initialiseBackground(containerRef.current);
+            cleanupRef.current = cleanup;
+          }
+        } catch (error) {
+          console.error('Reload space-earth failed:', error);
+        }
+      };
+      loadSpaceEarth();
+    }
+  }, [location.pathname]); // Switch on navigation
 
   return (
     <>

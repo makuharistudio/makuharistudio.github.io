@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import {
-  menu_about, menu_project, menu_blog, menu_reading, menu_blank,
-  menu_about_active, menu_project_active, menu_blog_active, menu_reading_active,
+  menu_about, menu_project, menu_blog, menu_reading, menu_game, menu_blank,
+  menu_about_active, menu_project_active, menu_blog_active, menu_reading_active, menu_game_active
 } from '../data/assets';
 
 export default function MenuFooter() {
@@ -36,7 +36,7 @@ export default function MenuFooter() {
       iconDefault: menu_blog,
       iconActive: menu_blog_active,
       lightDefault: 'menu-footer-light-highlight-teal',
-      lightActive: 'menu-footer-light-highlight-yellow',
+      lightActive: 'menu-footer-light-highlight-purple',
     },
     {
       to: '/readings',
@@ -48,13 +48,13 @@ export default function MenuFooter() {
       lightActive: 'menu-footer-light-highlight-blue',
     },
     {
-      to: '/',
-      label: '- - - - -',
-      iconDefault: menu_blank,
-      iconActive: menu_blank,
-      isActive: false,
-      lightDefault: 'menu-footer-light-highlight-white',
-      lightActive: 'menu-footer-light-highlight-white',
+      to: '/games',
+      label: 'GAME',
+      isActive: currentPath.includes('/game'),
+      iconDefault: menu_game,
+      iconActive: menu_game_active,
+      lightDefault: 'menu-footer-light-highlight-teal',
+      lightActive: 'menu-footer-light-highlight-orange',
     },
     {
       to: '/',

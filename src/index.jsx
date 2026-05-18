@@ -10,8 +10,8 @@ import Blog from './pages/Blog';
 import Post from './pages/BlogPost';
 import Readings from './pages/Readings';
 import Reading from './pages/Reading';
-import Applications from './pages/Applications';
-import Application from './pages/Application';
+import Games from './pages/Games';
+import Game from './pages/Game';
 import Test from './pages/Test';
 import './App.css';
 
@@ -27,8 +27,8 @@ const routes = [{
     { path: '/blog/:name', element: <Post /> },
     { path: '/readings', element: <Readings /> },
     { path: '/reading/:name', element: <Reading /> },
-    { path: '/applications', element: <Applications />},
-    { path: '/application/:name', element: <Application />},
+    { path: '/games', element: <Games /> },
+    { path: '/game/:name', element: <Game /> },
     { path: '/test', element: <Test /> }
   ]
 }];

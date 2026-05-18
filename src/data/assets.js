@@ -10,11 +10,13 @@ import menu_about from '../assets/theme/accent/images/menu-button-about-teal.svg
 import menu_project from '../assets/theme/accent/images/menu-button-project-teal.svg'
 import menu_blog from '../assets/theme/accent/images/menu-button-blog-teal.svg'
 import menu_reading from '../assets/theme/accent/images/menu-button-reading-teal.svg'
+import menu_game from '../assets/theme/accent/images/menu-button-game-teal.svg'
 import menu_blank from '../assets/theme/accent/images/menu-button.svg'
 import menu_about_active from '../assets/theme/accent/images/menu-button-about-red.svg'
 import menu_project_active from '../assets/theme/accent/images/menu-button-project-purple.svg'
-import menu_blog_active from '../assets/theme/accent/images/menu-button-blog-yellow.svg'
+import menu_blog_active from '../assets/theme/accent/images/menu-button-blog-purple.svg'
 import menu_reading_active from '../assets/theme/accent/images/menu-button-reading-blue.svg'
+import menu_game_active from '../assets/theme/accent/images/menu-button-game-orange.svg'
 
 /* Links */
 import link_x from '../assets/theme/logo/x-white.svg'
@@ -58,13 +60,14 @@ export const backgroundMap = [
   { path: '/blog', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
   { path: '/reading', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
   { path: '/readings', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
-  { path: '/applications', script: () => import('../assets/theme/background/scripts/bg-blank.js') },
+  { path: '/game', script: () => import('../assets/theme/background/scripts/bg-blank.js') },
+  { path: '/games', script: () => import('../assets/theme/background/scripts/bg-blank.js') },
   { path: '/test', script: () => import('../assets/theme/background/scripts/bg-avatarsummon.js') },
 ];
 
 export { avatar, title_a, title_b, title_c,
-         menu_about, menu_project, menu_blog, menu_reading, menu_blank,
-         menu_about_active, menu_project_active, menu_blog_active, menu_reading_active,
+         menu_about, menu_project, menu_blog, menu_reading, menu_game, menu_blank,
+         menu_about_active, menu_project_active, menu_blog_active, menu_reading_active, menu_game_active,
          logo_aws, logo_azure, logo_css, logo_excel, logo_github, logo_linkedin, logo_neo4j, logo_powerbi, logo_python, logo_sqlserver, logo_tableau, logo_x,
          link_x, link_github, link_linkedin, 
          link_x_active, link_github_active, link_linkedin_active,

@@ -143,7 +143,7 @@ content { background: var(--text-background); }
   margin: 0px;
   padding: 0px;
   display: grid;
-  grid-template-columns: repeat(4, max-content);
+  grid-template-columns: repeat(3, max-content);
   column-gap: 1.5rem;
   z-index: 9999;
 }
@@ -153,6 +153,7 @@ content { background: var(--text-background); }
   grid-template-columns: repeat(2, auto);
   align-items: center;
   justify-items: start; 
+  padding-bottom: 0.5rem;
 }
 
 .menu-header-button {
@@ -259,6 +260,12 @@ content { background: var(--text-background); }
   background-image: 
     linear-gradient(90deg, transparent, #FFF9C4, transparent),
     linear-gradient(90deg, rgba(180, 160, 80, 0) 0%, rgba(220, 200, 100, 0.6) 25%, #FFF9C4 50%, rgba(255, 235, 59, 0.9) 60%, rgba(220, 200, 100, 0.6) 75%, rgba(180, 160, 80, 0) 100%);
+}
+
+.menu-footer-light-highlight-orange {
+  background-image: 
+    linear-gradient(90deg, transparent, #ffe7c4, transparent),
+    linear-gradient(90deg, rgba(180, 160, 80, 0) 0%, rgba(220, 148, 100, 0.6) 25%, #ffe4c4 50%, rgba(255, 170, 59, 0.9) 60%, rgba(220, 154, 100, 0.6) 75%, rgba(180, 160, 80, 0) 100%);
 }
 
 @keyframes menu-footer-light-glow {

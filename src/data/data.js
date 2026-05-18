@@ -25,12 +25,13 @@ export const LinkData = [
         hover: link_github_active,
         link: githubURL 
     },
-    {
+/*    {
         name: 'LINKEDIN',
         icon: link_linkedin,
         hover: link_linkedin_active,
         link: ascii1 + ascii2 + ascii3 
     }
+*/
 ];
 
 export { displayName, assetURL }

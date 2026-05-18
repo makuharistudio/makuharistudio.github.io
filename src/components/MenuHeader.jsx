@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import {
-  menu_about, menu_project, menu_blog, menu_reading,
-  menu_about_active, menu_project_active, menu_blog_active, menu_reading_active,
+  menu_about, menu_project, menu_blog, menu_reading, menu_game,
+  menu_about_active, menu_project_active, menu_blog_active, menu_reading_active, menu_game_active
 } from '../data/assets';
 
 export default function MenuHeader() {
@@ -42,6 +42,14 @@ export default function MenuHeader() {
       iconDefault: menu_reading,
       iconActive: menu_reading_active,
       lightActive: 'menu-header-light-highlight-blue',
+    },
+    {
+      to: '/games',
+      label: 'GAME',
+      isActive: currentPath.includes('/game'),
+      iconDefault: menu_game,
+      iconActive: menu_game_active,
+      lightActive: 'menu-header-light-highlight-orange',
     },
   ];
 
