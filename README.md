@@ -319,6 +319,9 @@ The image you embedded in index.html will be rendered upon saving.
        
 11. Commit and push source changes
    ```
+   git remote set-url origin git@github.com:makuharistudio/makuharistudio.github.io.git
+   git remote -v
+   git status
    git add .
    git commit -m "Update: your description here"
    git push origin main
@@ -334,6 +337,75 @@ npm run deploy
 git add . && git commit -m "..." && git push origin main
 exit
 ```
+
+## Setting up delta updates for main branch
+
+**Important!** Pushing from Terminal updates all files and ignores delta checks, which is unlike Windows GitHub Desktop which only pushes delta changes. To amend this, use GitHub Actions.
+
+1. From within Toolbox, uninstall gh-pages:
+   - `npm uninstall gh-pages`
+   - Remove or comment out the "deploy" script and "predeploy" in package.json.
+
+2. Create `.github/workflows/deploy.yml` in your project folder and add the code below
+
+```
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build   # Make sure this matches your build script
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+3. Push that GitHub Action file to main
+   ```
+   git add .github/workflows/deploy.yml
+   git commit -m "Add GitHub Actions deployment"
+   git push origin main
+   ```
+4. Go to your site's repo > Settings > Pages and set Source to "GitHub Actions".
+
+5. Make site edits, then push this way to both main and gh-pages.
+   ```
+   git add .
+   git commit -m "Update: your description of the design changes"
+   git push origin main
+   ```
 
 ## Remove entire Toolbox environment
 `toolbox rm toolbox-env-react-site`

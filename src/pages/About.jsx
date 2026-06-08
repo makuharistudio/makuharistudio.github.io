@@ -26,7 +26,7 @@ export default function About() {
                 </div>
                 <div id='about-desc'>
                     <p>Consultant with 12+ years in client services for software and pathology industries.</p>
-                    <p>A technical generalist with extensive problem-solving and data analysis experience.</p>
+                    <p>Technical generalist with extensive problem-solving and data analysis experience.</p>
                     <ul>
                         <li>{totalProjects} side projects since October 2021</li>
                         <li>{totalPosts} blog posts since Sep 2021</li>
