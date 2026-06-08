@@ -249,6 +249,99 @@ The image you embedded in index.html will be rendered upon saving.
 
 
 
+# LINUX
+
+1. Install Toolbox
+   `sudo dnf install toolbox`
+
+2. Create a dedicated Toolbox Container to isolate the project from the host system
+   These are hidden: ~/.local/share/containers/storage/
+   The actual files you modify will appear in ~/home/
+   ```
+   toolbox create toolbox-env-react-site
+   toolbox enter toolbox-env-react-site
+   ```
+
+3. Clone the repository
+   ```
+   mkdir -p ~/GitHub
+   cd ~/GitHub
+   git clone https://github.com/makuharistudio/makuharistudio.github.io.git
+   cd makuharistudio.github.io
+   ```
+   
+4. Install Node.js nd npm inside the Toolbox
+   ```
+   sudo dnf update
+   sudo dnf install nodejs npm
+   ```
+   
+5. Install project dependencies
+   `npm ci`
+
+6. Preview the site
+   - `npm run dev`
+   - Check http://localhost:5173 on browser
+
+7. Inside Toolbox, generate an SSH key (email is a dummy string, ed25519 is the SSH key tyoe)
+   - `ssh-keygen -t ed25519 -C "makuhari_studio@users.noreply.github.com"`
+   - Press Enter to save to default location ~/.ssh/id_ed25519
+   - Type a passphrase to protect the passkey on disk
+   - View the public key `cat ~/.ssh/id_ed25519.pub`
+   - Copy the entire contents of that public key to GitHub > Settings > SSH and GPG keys > New SSH key
+   - Test it by running `ssh -T git@github.com`. 
+     - If it is the first time your computer hs connected to GitHub via SSH, it will prompt:
+       `Are you sure you want to continue connecting (yes/no/[fingerprint])?`
+       To verify the server's identity.
+       Check if the fingerprint received exactly matches one of these official GitHub fingerprints
+       SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU ← (Ed25519) — most common now
+       SHA256:uNiVztksCsDhcc0u9e8BujQXVUpKZIDTMczCvj3tD2s ← (RSA)
+       SHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgUfQM ← (ECDSA)
+       - If it matches, type yes and press Enter. SSH will add GitHub to your known_hosts file and you won't see this again.
+       - It will reply "You've successfully authenticated"
+
+8. Inside Toolbox, configure your identity
+   ```
+   git config --global user.name "makuharistudio"
+   git config --global user.email "makuhari_studio@users.noreply.github.com"
+   ```
+   
+9. Configure `package.json` to force it to use SSH
+   ```
+   "deploy": "gh-pages -d dist -r git@github.com:makuharistudio/makuharistudio.github.io.git"
+   ```
+
+10. Make your desired update to the site and stage for deployment
+   ```
+   npm run parser
+   npm run deploy
+   ```
+       
+11. Commit and push source changes
+   ```
+   git add .
+   git commit -m "Update: your description here"
+   git push origin main
+   ```
+
+## Workflow after initial setup
+```
+toolbox enter toolbox-env-react-site
+cd ~/GitHub/makuharistudio.github.io
+// (make edits inside or outside terminal)
+npm run parser
+npm run deploy
+git add . && git commit -m "..." && git push origin main
+exit
+```
+
+## Remove entire Toolbox environment
+`toolbox rm toolbox-env-react-site`
+
+
+
+
+
 # CREDITS
 
 * Create a React site with blog article URL path management code **[- LinkedIn Learning course by Shaun Wassell](https://www.linkedin.com/learning/react-creating-and-hosting-a-full-stack-site-24928483/defining-environment-variables)**
