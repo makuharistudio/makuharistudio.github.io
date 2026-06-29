@@ -7,16 +7,26 @@
 
 .panel-background {
   position: relative;
-  border: 1px solid #DBF9FB;
+  border: 1px solid var(--panel-border-color);
   z-index: 1;
-  background: url('./images/panel-backgroundlines.svg') no-repeat center center;
+  background: url('./images/panel-light-backgroundlines.svg') no-repeat center center;
   background-size: cover;
   height: 100%;
 }
 
 a:hover .panel-background {
-  border: 1px solid #FFFFFF;
-  background: url('./images/panel-backgroundlines-hover.svg') no-repeat center center;
+  border: 1px solid var(--panel-border-color-hover);
+  background: url('./images/panel-light-backgroundlines-hover.svg') no-repeat center center;
+  background-size: cover;
+}
+
+[data-theme="dark"] .panel-background {
+  background: url('./images/panel-dark-backgroundlines.svg') no-repeat center center;
+  background-size: cover;
+}
+
+[data-theme="dark"] a:hover .panel-background {
+  background: url('./images/panel-dark-backgroundlines-hover.svg') no-repeat center center;
   background-size: cover;
 }
 
@@ -36,11 +46,19 @@ a:hover .panel-background {
   border: none;
   margin: 0px;
   padding: 0px;
-  background: url('./images/panel-corneredge.svg') no-repeat center center;
+  background: url('./images/panel-light-corneredge.svg') no-repeat center center;
 }
 
 a:hover .panel-corner {
-  background: url('./images/panel-corneredge-hover.svg') no-repeat center center;
+  background: url('./images/panel-light-corneredge-hover.svg') no-repeat center center;
+}
+
+[data-theme="dark"] .panel-corner {
+  background: url('./images/panel-dark-corneredge.svg') no-repeat center center;
+}
+
+[data-theme="dark"] a:hover .panel-corner {
+  background: url('./images/panel-dark-corneredge-hover.svg') no-repeat center center;
 }
 
 .panel-corner-top-left {
@@ -53,6 +71,7 @@ a:hover .panel-corner {
   right: 0px;
   transform: scaleX(-1);
   transform-origin: center;
+  /* display: none; */
 }
 
 .panel-corner-bottom-right {
@@ -67,4 +86,5 @@ a:hover .panel-corner {
   left: 0px;
   transform: scaleY(-1);
   transform-origin: center;
+  /* display: none; */
 }

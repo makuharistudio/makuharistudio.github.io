@@ -12,7 +12,7 @@ import {
   moon_luna_mosaic_3_bump
 } from '../../../../data/assets.js';
 
-function getStarfield({ numStars = 1200, radius = 200, exclusionRadius = 60 } = {}) {
+function getStarfield({ numStars = 500, radius = 200, exclusionRadius = 60 } = {}) {
   function randomSpherePoint() {
     let r;
     do {

@@ -1,4 +1,3 @@
-import React from 'react';
 import '../accent.css';
 
 const Panel = ({ children }) => {

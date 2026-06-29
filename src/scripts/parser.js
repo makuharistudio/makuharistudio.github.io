@@ -9,10 +9,12 @@ const __dirname = path.dirname(__filename);
 const dirPathPosts = path.join(__dirname, "../markdown/posts");
 const dirPathProjects = path.join(__dirname, "../markdown/projects");
 const dirPathReadings = path.join(__dirname, "../markdown/readings");
+const dirPathGames = path.join(__dirname, "../assets/games");
 
 let postlist = [];
 let projectlist = [];
 let readinglist = [];
+let gamelist = [];
 
 const getPosts = async () => {
   try {
@@ -208,7 +210,47 @@ const parseMetadata = (lines, metadataIndices) => {
   return metadata;
 };
 
+const getGames = async () => {
+  try {
+    const files = await fs.readdir(dirPathGames);
+
+    for (const file of files) {
+      if (!file.endsWith('.jsx')) continue;
+
+      const contents = await fs.readFile(`${dirPathGames}/${file}`, "utf8");
+      const obj = parseGameJsx(contents, file);
+      if (obj) {
+        gamelist.push(obj);
+      }
+    }
+
+    gamelist.sort((a, b) => a.title.localeCompare(b.title));
+
+    await fs.writeFile(path.join(__dirname, "../data/games.json"), JSON.stringify(gamelist, null, 2));
+  } catch (err) {
+    console.error("Error reading games directory:", err);
+  }
+};
+
+const parseGameJsx = (contents, filename) => {
+  const metadataIndices = getMetadataIndices(contents.split(/\r?\n/));
+  if (metadataIndices.length < 2) return null;
+
+  const lines = contents.split(/\r?\n/);
+  const metadata = parseMetadata(lines, metadataIndices);
+  const name = path.basename(filename, '.jsx');
+  const photoPath = metadata.photo ? metadata.photo : '';
+
+  return {
+    name,
+    title: metadata.title || "No title given",
+    desc: metadata.desc || metadata.description || "No description given",
+    photo: photoPath,
+  };
+};
+
 // Run all parsers
 getPosts();
 getProjects();
 getReadings();
+getGames();

@@ -39,31 +39,14 @@
 }
 
 :root {
-  /* VARIABLES */
-  
-  /* Shared for all resolutions */
+  /* Shared — fonts, layout, spacing */
   --scrollbar-width: 4px;
   --content-font-size: 1.2rem;
 
   --title-font: 'Anta', Helvetica, Verdana;
   --content-font: 'Cambay', Helvetica, Verdana;
   --menu-footer-font: 'Saira', Helvetica, Verdana;
-
-  /* Colour scheme */
-  --content-font-color: rgba(255, 255, 255, 1);
-  --content-font-color-hover: rgba(130, 225, 255, 1);
-  --content-background: rgba(0, 0, 0, 1);
-
-  --code-background: rgba(255, 255, 255, 0.1);
-
   --button-font: 'Anta', 'Consolas', Helvetica, Verdana;
-  --button-font-color: rgba(255, 255, 255, 1);
-  --button-font-color-hover: rgba(255, 255, 255, 1);
-  --button-border-hover: 1px solid rgba(51, 160, 255, 1);
-
-  --text-background: rgba(0, 32, 129, 0.55);
-  --text-background-border: 1px solid rgba(0, 0, 0, 0.6);
-  --border: 1px solid rgba(0, 128, 255, 0.6);
 
   --projects-padding: 0.33rem;
 
@@ -73,10 +56,60 @@
 
   /* Landscape view */
   --menu-header-height: 5vh;
+
+  /* Code blocks — same styling in both themes */
+  --code-block-background: #000;
+  --code-block-font-color: rgba(255, 255, 255, 1);
+  --code-scrollbar-track: rgba(255, 255, 255, 0.1);
+}
+
+:root,
+[data-theme="light"] {
+  /* Light theme (futuristic city) */
+  --content-font-color: rgba(20, 20, 30, 1);
+  --content-font-color-hover: rgba(0, 123, 255, 1);
+  --content-background: rgba(255, 255, 255, 1);
+
+  --button-font-color: rgba(30, 30, 40, 1);
+  --button-font-color-hover: rgba(0, 123, 255, 1);
+  --button-border-hover: 1px solid rgba(0, 123, 255, 1);
+  --filter-button-background: rgba(255, 255, 255, 1);
+
+  --text-background: rgba(255, 255, 255, 1);
+  --text-background-border: 1px solid rgba(0, 0, 0, 0.12);
+  --border: 1px solid rgba(0, 123, 255, 1);
+
+  --scrollbar-thumb-color: rgba(0, 123, 255, 1);
+  --menu-footer-highlight-bg: rgba(0, 0, 0, 0.8);
+
+  --panel-border-color: rgba(0, 0, 0, 1);
+  --panel-border-color-hover: rgba(0, 123, 255, 1);
+}
+
+[data-theme="dark"] {
+  /* Dark theme (space) */
+  --content-font-color: rgba(255, 255, 255, 1);
+  --content-font-color-hover: rgba(130, 225, 255, 1);
+  --content-background: rgba(0, 0, 0, 1);
+
+  --button-font-color: rgba(255, 255, 255, 1);
+  --button-font-color-hover: rgba(255, 255, 255, 1);
+  --button-border-hover: 1px solid rgba(51, 160, 255, 1);
+  --filter-button-background: rgba(0, 0, 0, 0);
+
+  --text-background: rgba(0, 32, 129, 0.55);
+  --text-background-border: 1px solid rgba(0, 0, 0, 0.6);
+  --border: 1px solid rgba(0, 128, 255, 0.6);
+
+  --scrollbar-thumb-color: #FFF;
+  --menu-footer-highlight-bg: rgba(0, 0, 0, 0.5);
+
+  --panel-border-color: #DBF9FB;
+  --panel-border-color-hover: #FFFFFF;
 }
 
 ::-webkit-scrollbar { width: var(--scrollbar-width); }
-::-webkit-scrollbar-thumb { background: #FFF; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-color); }
 
 html {
   margin: 0px;
@@ -146,6 +179,27 @@ content { background: var(--text-background); }
   grid-template-columns: repeat(3, max-content);
   column-gap: 1.5rem;
   z-index: 9999;
+}
+
+#theme-toggle {
+  position: fixed;
+  top: var(--content-font-size);
+  left: var(--content-font-size);
+  width: calc(var(--content-font-size) * 1.5);
+  height: calc(var(--content-font-size) * 1.5);
+  z-index: 9999;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#theme-toggle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
 
 #menu-header a {
@@ -278,7 +332,7 @@ content { background: var(--text-background); }
   width: calc(var(--menu-footer-button-width) * 0.65);
   max-width: calc(var(--menu-footer-button-width) * 0.65);
   margin: 0.2rem auto 0.4rem auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--menu-footer-highlight-bg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -293,6 +347,10 @@ content { background: var(--text-background); }
   text-overflow: clip;
   text-align: center;
   line-height: 1.2;
+}
+
+#menu-footer .menu-footer-label h6 {
+  color: rgba(255, 255, 255, 1);
 }
 
 .menu-footer { color: var(--button-font-color-hover); }
@@ -334,9 +392,10 @@ content pre code {
   margin-right: auto;
   padding: 1rem;
   overflow-x: auto;
-  font-family: 'Consolas', 'Segoe UI', Helvetica;
+  font-family: ui-monospace, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
   line-height: 1.5;
-  background-color: #000;
+  color: var(--code-block-font-color);
+  background-color: var(--code-block-background);
   border: var(--border);
 }
 
@@ -345,10 +404,10 @@ content pre code::-webkit-scrollbar {
   height: var(--scrollbar-width); 
 }
 content pre code::-webkit-scrollbar-thumb { 
-  background-color: var(--content-font-color); 
+  background-color: var(--code-block-font-color); 
 }
 content pre code::-webkit-scrollbar-track { 
-  background-color: var(--code-background); 
+  background-color: var(--code-scrollbar-track); 
 }
 
 #about {
@@ -442,7 +501,7 @@ content pre code::-webkit-scrollbar-track {
   color: var(--button-font-color);
   font-size: calc(var(--content-font-size) * 0.75);
   font-family: var(--button-font); 
-  background-color: rgba(0, 0, 0, 0);
+  background-color: var(--filter-button-background);
   border: var(--border);
   margin: var(--projects-padding);
   padding: 
@@ -458,7 +517,7 @@ content pre code::-webkit-scrollbar-track {
   border: var(--button-border-hover);
 }
 
-#certification-list, #projects-list, #blog-list, #readings-list { 
+#certification-list, #projects-list, #games-list, #blog-list, #readings-list { 
   display: grid;
   place-items: center;
   row-gap: 2rem;
@@ -469,7 +528,7 @@ content pre code::-webkit-scrollbar-track {
   padding-right: 1rem;
 }
 
-#certification-list a, #projects-list a, #blog-list a, #readings-list a {
+#certification-list a, #projects-list a, #games-list a, #blog-list a, #readings-list a {
   color: var(--button-font-color);
   text-decoration: none;
   display: grid;
@@ -483,7 +542,7 @@ content pre code::-webkit-scrollbar-track {
   word-break: break-all;
 }
 
-#certification-list a:hover, #projects-list a:hover, #blog-list a:hover, #readings-list a:hover { 
+#certification-list a:hover, #projects-list a:hover, #games-list a:hover, #blog-list a:hover, #readings-list a:hover { 
   color: var(--button-font-color-hover);
 }
 
@@ -491,21 +550,21 @@ content pre code::-webkit-scrollbar-track {
   color: var(--content-font-color-hover);
 }
 
-#projects-list a:hover img, #blog-list a:hover img, #readings-list a:hover img { 
+#projects-list a:hover img, #games-list a:hover img, #blog-list a:hover img, #readings-list a:hover img { 
   opacity: 1;
 }
 
-#projects-list h4, #blog-list h4, #readings-list h4 {
+#projects-list h4, #games-list h4, #blog-list h4, #readings-list h4 {
   margin-top: 0.5rem;
   text-align: center;
 }
 
-#certification-list a h5, #projects-list h5, #blog-list h5, #readings-list h5 {
+#certification-list a h5, #projects-list h5, #games-list h5, #blog-list h5, #readings-list h5 {
   margin: 0px;
   text-align: right;
 }
 
-#projects-list img, #blog-list img, #readings-list img {
+#projects-list img, #games-list img, #blog-list img, #readings-list img {
   width: 100%;
   height: auto;
   max-height: 100%;
@@ -543,7 +602,7 @@ content pre code::-webkit-scrollbar-track {
     width: auto;
   }
 
-  #certification-list, #projects-list, #blog-list, #readings-list { 
+  #certification-list, #projects-list, #games-list, #blog-list, #readings-list { 
     grid-template-columns: repeat(1, 1fr);
   }
 }
@@ -575,14 +634,14 @@ content pre code::-webkit-scrollbar-track {
     width: auto;
   }
 
-  #certification-list, #projects-list, #blog-list, #readings-list {
+  #certification-list, #projects-list, #games-list, #blog-list, #readings-list {
     grid-template-columns: repeat(auto-fill, minmax(340px, max-content));
     justify-content: center;
-    column-gap: auto;
+    column-gap: 1rem;
   }
 
   /* This code is to help the content of the panels have same title heights */
-  #projects-list .panel-content, #blog-list .panel-content, #readings-list .panel-content {
+  #projects-list .panel-content, #games-list .panel-content, #blog-list .panel-content, #readings-list .panel-content {
     display: flex;
     flex-direction: column;
   }
@@ -595,7 +654,7 @@ content pre code::-webkit-scrollbar-track {
     margin-right: auto;
   }
 
-  #projects-list h4 {
+  #projects-list h4, #games-list h4 {
     min-height: 2em;
     line-height: 1.125;
     display: flex;
@@ -619,7 +678,7 @@ content pre code::-webkit-scrollbar-track {
     margin-right: auto;
   }
 
-  #projects-list h5, #blog-list h5, #readings-list h5 {
+  #projects-list h5, #games-list h5, #blog-list h5, #readings-list h5 {
     margin-top: auto;
   }
 

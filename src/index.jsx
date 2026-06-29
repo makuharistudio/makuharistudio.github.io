@@ -14,6 +14,7 @@ import Games from './pages/Games';
 import Game from './pages/Game';
 import Test from './pages/Test';
 import './App.css';
+import { ThemeProvider } from './components/ThemeToggle';
 
 const routes = [{ 
   path: '/',
@@ -37,6 +38,8 @@ const router = createHashRouter(routes);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </StrictMode>,
 );

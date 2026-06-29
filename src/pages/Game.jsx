@@ -21,9 +21,13 @@ export default function Game() {
   return (
     <Suspense
       fallback={
+
+      <center>
         <div className="flex h-screen w-screen items-center justify-center bg-black text-white font-mono text-xl">
-          Loading strategic simulation…
+          Loading game...
         </div>
+      </center>
+
       }
     >
       <GameComponent />

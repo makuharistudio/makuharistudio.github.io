@@ -1,55 +1,75 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import MenuHeader from './MenuHeader';
 import MenuFooter from './MenuFooter';
+import ThemeToggle from './ThemeToggle';
 import useScrollToTop from '../scripts/useScrollToTop';
-import { useEffect, useRef, useState } from 'react';
-import { backgroundMap } from '../data/assets';
+import { useEffect, useMemo, useRef } from 'react';
+import { themeBackgroundMap } from '../data/assets';
+import { useTheme } from './ThemeToggle';
 
-// Convert backgroundMap array to object for compatibility
-const backgroundMapObject = backgroundMap.reduce((acc, { path, script }) => {
-  acc[path] = script;
-  return acc;
-}, {});
+// Only /game/:name (Game.jsx) uses the lightweight blank background.
+// /games and all other routes share the same themed background so it keeps
+// running across navigation and avoids redundant WebGL teardown/init.
+function isGamePlayRoute(pathname) {
+  return pathname.startsWith('/game/');
+}
+
+function getBackgroundImport(theme, pathname) {
+  if (pathname.startsWith('/test')) {
+    return () => import('../assets/theme/background/scripts/bg-avatarsummon.js');
+  }
+
+  const map = themeBackgroundMap[theme];
+  return isGamePlayRoute(pathname) ? map.game : map.default;
+}
+
+function getBackgroundKey(theme, pathname) {
+  if (pathname.startsWith('/test')) {
+    return 'test';
+  }
+
+  return `${theme}-${isGamePlayRoute(pathname) ? 'game' : 'default'}`;
+}
 
 export default function Layout() {
   useScrollToTop();
   const containerRef = useRef(null);
   const location = useLocation();
   const cleanupRef = useRef(null);
-  const [backgroundLoaded, setBackgroundLoaded] = useState(false);
+  const { theme } = useTheme();
+
+  const backgroundKey = useMemo(
+    () => getBackgroundKey(theme, location.pathname),
+    [theme, location.pathname]
+  );
 
   useEffect(() => {
     let isMounted = true;
 
     const loadBackground = async () => {
-      if (backgroundLoaded) return;
-
-      const initialPath = location.pathname;
-      if (initialPath.startsWith('/game') || initialPath === '/games' ) return;
-
       if (cleanupRef.current) {
         cleanupRef.current();
         cleanupRef.current = null;
       }
 
-      if (containerRef.current) {
-        while (containerRef.current.firstChild) {
-          containerRef.current.removeChild(containerRef.current.firstChild);
-        }
+      const container = containerRef.current;
+      if (!container) return;
+
+      container.style.backgroundColor = '';
+      container.style.backgroundImage = '';
+      while (container.firstChild) {
+        container.removeChild(container.firstChild);
       }
 
       try {
-        const path = location.pathname;
-        const backgroundKey = Object.keys(backgroundMapObject).find(key => path.startsWith(key)) || '/';
-        const importFn = backgroundMapObject[backgroundKey];
+        const importFn = getBackgroundImport(theme, location.pathname);
         const backgroundModule = await importFn();
         if (isMounted && containerRef.current) {
           const cleanup = backgroundModule.initialiseBackground(containerRef.current);
           cleanupRef.current = cleanup;
-          setBackgroundLoaded(true);
         }
       } catch (error) {
-        console.error(`Failed to load background:`, error);
+        console.error('Failed to load background:', error);
       }
     };
 
@@ -62,45 +82,11 @@ export default function Layout() {
         cleanupRef.current = null;
       }
     };
-  }, []); // Load once on mount
-
-  useEffect(() => {
-    const path = location.pathname;
-    const isGamePath = path.startsWith('/game') || path === '/games';
-
-    if (isGamePath) {
-      // Game: cleanup space-earth, set black
-      if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = null;
-      }
-      if (containerRef.current) {
-        containerRef.current.style.backgroundColor = '#000000';
-        containerRef.current.style.backgroundImage = 'none';
-        while (containerRef.current.firstChild) {
-          containerRef.current.removeChild(containerRef.current.firstChild);
-        }
-      }
-    } else if (!cleanupRef.current) {
-      // Non-game & cleaned: reload space-earth
-      const loadSpaceEarth = async () => {
-        try {
-          const spaceEarthFn = backgroundMapObject['/'];
-          const module = await spaceEarthFn();
-          if (containerRef.current) {
-            const cleanup = module.initialiseBackground(containerRef.current);
-            cleanupRef.current = cleanup;
-          }
-        } catch (error) {
-          console.error('Reload space-earth failed:', error);
-        }
-      };
-      loadSpaceEarth();
-    }
-  }, [location.pathname]); // Switch on navigation
+  }, [backgroundKey, theme, location.pathname]);
 
   return (
     <>
+      <ThemeToggle />
       <MenuHeader />
       <div id="outlet">
         <br />

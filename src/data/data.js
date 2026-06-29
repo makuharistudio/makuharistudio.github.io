@@ -1,4 +1,8 @@
-import { link_x, link_github, link_linkedin, link_x_active, link_github_active, link_linkedin_active } from './assets';
+import {
+    link_x_light, link_x_light_active, link_x_dark, link_x_dark_active,
+    link_github_light, link_github_light_active, link_github_dark, link_github_dark_active,
+    link_linkedin_light, link_linkedin_light_active, link_linkedin_dark, link_linkedin_dark_active,
+} from './assets';
 
 /* GENERAL */
 const displayName = 'ｍａｋｕｈａｒｉｓｔｕｄｉｏ';
@@ -15,21 +19,27 @@ const ascii3 = String.fromCharCode(72,65,82,73);
 export const LinkData = [
     {
         name: '𝕏',
-        icon: link_x,
-        hover: link_x_active,
+        icons: {
+            light: { default: link_x_light, active: link_x_light_active },
+            dark: { default: link_x_dark, active: link_x_dark_active },
+        },
         link: xURL
     },
     {
         name: 'GITHUB',
-        icon: link_github,
-        hover: link_github_active,
-        link: githubURL 
+        icons: {
+            light: { default: link_github_light, active: link_github_light_active },
+            dark: { default: link_github_dark, active: link_github_dark_active },
+        },
+        link: githubURL
     },
 /*    {
         name: 'LINKEDIN',
-        icon: link_linkedin,
-        hover: link_linkedin_active,
-        link: ascii1 + ascii2 + ascii3 
+        icons: {
+            light: { default: link_linkedin_light, active: link_linkedin_light_active },
+            dark: { default: link_linkedin_dark, active: link_linkedin_dark_active },
+        },
+        link: ascii1 + ascii2 + ascii3
     }
 */
 ];

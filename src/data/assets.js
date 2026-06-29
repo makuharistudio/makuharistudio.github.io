@@ -18,14 +18,23 @@ import menu_blog_active from '../assets/theme/accent/images/menu-button-blog-pur
 import menu_reading_active from '../assets/theme/accent/images/menu-button-reading-blue.svg'
 import menu_game_active from '../assets/theme/accent/images/menu-button-game-orange.svg'
 
-/* Links */
-import link_x from '../assets/theme/logo/x-white.svg'
-import link_github from '../assets/theme/logo/github-white.svg'
-import link_linkedin from '../assets/theme/logo/linkedin-white.svg'
+/* Links Dark */
+import link_x_dark from '../assets/theme/logo/x-white.svg'
+import link_github_dark from '../assets/theme/logo/github-white.svg'
+import link_linkedin_dark from '../assets/theme/logo/linkedin-white.svg'
 
-import link_x_active from '../assets/theme/logo/x-teal.svg'
-import link_github_active from '../assets/theme/logo/github-teal.svg'
-import link_linkedin_active from '../assets/theme/logo/linkedin-teal.svg'
+import link_x_dark_active from '../assets/theme/logo/x-teal.svg'
+import link_github_dark_active from '../assets/theme/logo/github-teal.svg'
+import link_linkedin_dark_active from '../assets/theme/logo/linkedin-teal.svg'
+
+/* Links Light */
+import link_x_light from '../assets/theme/logo/x-black.svg'
+import link_github_light from '../assets/theme/logo/github-black.svg'
+import link_linkedin_light from '../assets/theme/logo/linkedin-black.svg'
+
+import link_x_light_active from '../assets/theme/logo/x-blue.svg'
+import link_github_light_active from '../assets/theme/logo/github-blue.svg'
+import link_linkedin_light_active from '../assets/theme/logo/linkedin-blue.svg'
 
 /* Logos */
 import logo_aws from '../assets/theme/logo/aws.svg'
@@ -52,6 +61,17 @@ import moon_luna_mosaic_1 from '../assets/theme/background/images/space/moon-mos
 import moon_luna_mosaic_3_bump from '../assets/theme/background/images/space/moon-mosaic-luna-1-bump.jpg'
 import star from '../assets/theme/background/images/space/star.png'
 
+export const themeBackgroundMap = {
+  light: {
+    default: () => import('../assets/theme/background/scripts/bg-futuristic-city.js'),
+    game: () => import('../assets/theme/background/scripts/bg-solid-light.js'),
+  },
+  dark: {
+    default: () => import('../assets/theme/background/scripts/bg-space-earth.js'),
+    game: () => import('../assets/theme/background/scripts/bg-solid-dark.js'),
+  },
+};
+
 /* Background Scripts */
 export const backgroundMap = [
   { path: '/', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
@@ -60,8 +80,8 @@ export const backgroundMap = [
   { path: '/blog', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
   { path: '/reading', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
   { path: '/readings', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
-  { path: '/game', script: () => import('../assets/theme/background/scripts/bg-blank.js') },
-  { path: '/games', script: () => import('../assets/theme/background/scripts/bg-blank.js') },
+  { path: '/game', script: () => import('../assets/theme/background/scripts/bg-solid-dark.js') },
+  { path: '/games', script: () => import('../assets/theme/background/scripts/bg-space-earth.js') },
   { path: '/test', script: () => import('../assets/theme/background/scripts/bg-avatarsummon.js') },
 ];
 
@@ -69,8 +89,10 @@ export { avatar, title_a, title_b, title_c,
          menu_about, menu_project, menu_blog, menu_reading, menu_game, menu_blank,
          menu_about_active, menu_project_active, menu_blog_active, menu_reading_active, menu_game_active,
          logo_aws, logo_azure, logo_css, logo_excel, logo_github, logo_linkedin, logo_neo4j, logo_powerbi, logo_python, logo_sqlserver, logo_tableau, logo_x,
-         link_x, link_github, link_linkedin, 
-         link_x_active, link_github_active, link_linkedin_active,
+         link_x_dark, link_github_dark, link_linkedin_dark,
+         link_x_dark_active, link_github_dark_active, link_linkedin_dark_active,
+         link_x_light, link_github_light, link_linkedin_light,
+         link_x_light_active, link_github_light_active, link_linkedin_light_active,
          earth_mosaic_1, earth_mosaic_2_specular, earth_mosaic_3_bump, earth_mosaic_4_lights, earth_mosaic_5_clouds, earth_mosaic_6_clouds_transparent,
          moon_luna_mosaic_1, moon_luna_mosaic_3_bump,
          star

@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import { marked } from 'marked';
 import Panel from '../assets/theme/accent/components/Panel'
 
+function markdownToPlainText(markdown) {
+  const html = marked.parse(markdown);
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  return doc.body.textContent ?? '';
+}
+
 export default function BlogList({ posts }) {
   const [selectedTag, setSelectedTag] = useState(null);
 
@@ -43,8 +49,7 @@ export default function BlogList({ posts }) {
       <div id='blog-list'>
         {/* Display filtered posts */}
         {filteredPosts.map(p => {
-          // Convert Markdown to plain text
-          const plainText = marked(p.content).replace(/<[^>]*>/g, '');
+          const plainText = markdownToPlainText(p.content);
           const excerpt = plainText.split(" ").slice(0, 30).join(" ") + ' . . . ';
           const isExternalUrl = p.photo.startsWith('http');
           const imagePath = isExternalUrl ? p.photo : new URL(`../assets/blog/${p.photo.split('/').pop().trim()}`, import.meta.url).href;

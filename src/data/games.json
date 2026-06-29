@@ -1,0 +1,14 @@
+[
+  {
+    "name": "DualNBack",
+    "title": "Dual N-Back",
+    "desc": "Match square position and letters from N steps back to directly improve working memory.",
+    "photo": "./DualNBack.png"
+  },
+  {
+    "name": "SatelliteCoverageOptimiser",
+    "title": "Satellite Coverage Optimiser",
+    "desc": "A game that teaches you the spacial positioning of satellites to maximise global coverage.",
+    "photo": "./SatelliteCoverageOptimiser.png"
+  }
+]
