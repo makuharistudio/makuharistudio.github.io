@@ -300,10 +300,10 @@ The image you embedded in index.html will be rendered upon saving.
        - If it matches, type yes and press Enter. SSH will add GitHub to your known_hosts file and you won't see this again.
        - It will reply "You've successfully authenticated"
 
-8. Inside Toolbox, configure your identity
+8. Inside Toolbox, configure your identity based on the masking email in GitHub > Settings > Email
    ```
    git config --global user.name "makuharistudio"
-   git config --global user.email "makuhari_studio@users.noreply.github.com"
+   git config --global user.email "48945612+makuharistudio@users.noreply.github.com"
    ```
    
 9. Configure `package.json` to force it to use SSH
