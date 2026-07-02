@@ -6,9 +6,21 @@
     "photo": "./DualNBack.png"
   },
   {
+    "name": "RocketLaunchSimulation",
+    "title": "Rocket Launch Simulation",
+    "desc": "Work-In-Progress Rocket ascent physics with an interactive 3D globe.",
+    "photo": "./RocketLaunchSimulation.png"
+  },
+  {
     "name": "SatelliteCoverageOptimiser",
     "title": "Satellite Coverage Optimiser",
     "desc": "A game that teaches you the spacial positioning of satellites to maximise global coverage.",
     "photo": "./SatelliteCoverageOptimiser.png"
+  },
+  {
+    "name": "VocabularyTrainer",
+    "title": "Vocabulary Trainer",
+    "desc": "Intermediate to advanced English vocabulary multiple choice questions.",
+    "photo": "./VocabularyTrainer.png"
   }
 ]

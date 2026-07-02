@@ -6,7 +6,7 @@ export default function Games() {
     <>
       <center>
         <h1>GAMES</h1>
-        <h3>Strategic thinking simulators and interactive learning experiences.</h3>
+        <h3>Educational games vibe-coded using paid Grok API.</h3>
       </center>
       <GamesList games={games} />
     </>
