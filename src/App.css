@@ -23,6 +23,30 @@
 }
 
 @font-face {
+  font-family: 'Cambay';
+  src: url('/src/assets/theme/font/Cambay-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cambay';
+  src: url('/src/assets/theme/font/Cambay-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cambay';
+  src: url('/src/assets/theme/font/Cambay-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Orbitron';
   src: url('/src/assets/theme/font/Orbitron-Regular.woff2') format('woff2');
   font-weight: 400;
@@ -378,6 +402,16 @@ content ul, ol {
 
 content a { color: var(--button-font-color); }
 content a:hover { color: var(--content-font-color-hover); }
+
+content strong,
+content b {
+  font-weight: 700;
+}
+
+content em,
+content i {
+  font-style: italic;
+}
 
 content img {
   display: block;
