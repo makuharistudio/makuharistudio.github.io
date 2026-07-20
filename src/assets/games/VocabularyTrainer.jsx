@@ -9,7 +9,7 @@ desc: Intermediate to advanced English vocabulary multiple choice questions.
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { vocabularyData } from './vocabularytrainerData.js';
 
-// vocabularyData: 180 entries — see vocabularyData.js (regenerate via scripts/generate_vocabulary_data.py)
+// vocabularyData: 180 entries — see vocabularytrainerData.js (regenerate via src/games/scripts/generate_vocabulary_data.py)
 
 // ─── Constants ─────────────────────────────────────────────────────────────
 
@@ -1139,8 +1139,11 @@ const VocabularyTrainer = () => {
                 </div>
                 <p style={{ margin: '0.35rem 0 0', lineHeight: 1.5, fontSize: '0.92rem' }}>{q.entry.definition}</p>
                 {q.entry.etymology && (
-                  <p style={{ margin: '0.35rem 0 0', fontSize: '0.8rem', color: palette.muted, fontStyle: 'italic' }}>
-                    Did you know? {q.entry.etymology}
+                  <p style={{ margin: '0.45rem 0 0', fontSize: '0.84rem', color: palette.muted, lineHeight: 1.45 }}>
+                    <span style={{ fontFamily: palette.titleFont, color: palette.accent, fontSize: '0.78rem' }}>
+                      Why it means that ·{' '}
+                    </span>
+                    {q.entry.etymology}
                   </p>
                 )}
               </li>
@@ -1253,6 +1256,14 @@ const VocabularyTrainer = () => {
                     <p style={{ margin: '0.45rem 0 0', fontSize: '0.88rem', color: palette.muted, lineHeight: 1.5 }}>
                       {m.fullDefinition}
                     </p>
+                    {m.entry.etymology && (
+                      <p style={{ margin: '0.4rem 0 0', fontSize: '0.84rem', color: palette.muted, lineHeight: 1.45 }}>
+                        <span style={{ fontFamily: palette.titleFont, color: palette.accent, fontSize: '0.78rem' }}>
+                          Why it means that ·{' '}
+                        </span>
+                        {m.entry.etymology}
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -1393,11 +1404,6 @@ const VocabularyTrainer = () => {
               </div>
             </>
           )}
-          {currentQuestion.entry.etymology && revealed && (
-            <p style={{ margin: '0.75rem 0 0', fontSize: '0.8rem', color: palette.muted, fontStyle: 'italic' }}>
-              Did you know? {currentQuestion.entry.etymology}
-            </p>
-          )}
         </div>
 
         {/* Options */}
@@ -1439,24 +1445,64 @@ const VocabularyTrainer = () => {
           })}
         </div>
 
-        {/* Feedback */}
+        {/* Feedback + brief learning explanation */}
         {revealed && (
-          <p
+          <div
             style={{
-              textAlign: 'center',
-              margin: '0 0 0.75rem',
-              fontFamily: palette.titleFont,
-              color: isCorrectSelection ? palette.success : palette.error,
-              fontSize: '0.95rem',
+              margin: '0 0 0.85rem',
               animation: 'fadeIn 0.2s ease',
             }}
           >
-            {isCorrectSelection
-              ? streak > 1
-                ? `Correct! +${BASE_POINTS + (streak - 1) * STREAK_BONUS} pts (streak bonus)`
-                : `Correct! +${BASE_POINTS} pts`
-              : 'Incorrect — review the correct answer above.'}
-          </p>
+            <p
+              style={{
+                textAlign: 'center',
+                margin: '0 0 0.55rem',
+                fontFamily: palette.titleFont,
+                color: isCorrectSelection ? palette.success : palette.error,
+                fontSize: '0.95rem',
+              }}
+            >
+              {isCorrectSelection
+                ? streak > 1
+                  ? `Correct! +${BASE_POINTS + (streak - 1) * STREAK_BONUS} pts (streak bonus)`
+                  : `Correct! +${BASE_POINTS} pts`
+                : 'Incorrect — review the correct answer above.'}
+            </p>
+            {currentQuestion.entry.etymology && (
+              <div
+                role="note"
+                aria-label="Answer explanation"
+                style={{
+                  background: isDarkish(palette) ? 'rgba(167,139,250,0.1)' : 'rgba(109,40,217,0.06)',
+                  border: palette.border,
+                  borderRadius: 8,
+                  padding: compact ? '0.7rem 0.85rem' : '0.8rem 1rem',
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: palette.titleFont,
+                    fontSize: '0.78rem',
+                    color: palette.accent,
+                    marginBottom: '0.3rem',
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  Why it means that
+                </div>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: compact ? '0.86rem' : '0.9rem',
+                    lineHeight: 1.5,
+                    color: palette.text,
+                  }}
+                >
+                  {currentQuestion.entry.etymology}
+                </p>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Actions */}

@@ -15,7 +15,7 @@ export const vocabularyData = [
       'innocuous',
       'inchoative',
     ],
-    etymology: 'From Latin inchoare, "to begin."',
+    etymology: 'From Latin inchoare, "to begin." Think of something only just started and still formless.',
   },
   {
     id: 2,
@@ -33,6 +33,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin per (through) + via (way). Something pervious lets things pass through it.',
   },
   {
     id: 3,
@@ -50,6 +51,7 @@ export const vocabularyData = [
       'tenacious',
       'evasive',
     ],
+    etymology: 'From Latin evanescere, "to vanish." Evanescent things fade away almost as soon as they appear.',
   },
   {
     id: 4,
@@ -67,6 +69,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin fastidium, "loathing" or disgust. A fastidious person is hard to please about details.',
   },
   {
     id: 5,
@@ -84,6 +87,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin incipere, "to begin" (in + capere, "take hold"). It marks the very start of something.',
   },
   {
     id: 6,
@@ -101,6 +105,7 @@ export const vocabularyData = [
       'tremulous',
       'granular',
     ],
+    etymology: 'From Latin grex, "flock." Gregarious people like being in a group, like animals in a herd.',
   },
   {
     id: 7,
@@ -118,6 +123,7 @@ export const vocabularyData = [
       'loquacious',
       'tremulous',
     ],
+    etymology: 'From Laconia, home of the Spartans, famous for terse speech. Laconic means brief to the point of bluntness.',
   },
   {
     id: 8,
@@ -135,6 +141,7 @@ export const vocabularyData = [
       'turbulent',
       'tacit',
     ],
+    etymology: 'From Latin tacitus, "silent." A taciturn person habitually says little.',
   },
   {
     id: 9,
@@ -152,6 +159,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'Linked to Italian capriccio (whim), from capra, "goat." Like a goat\'s sudden leaps, moods change unpredictably.',
   },
   {
     id: 10,
@@ -169,6 +177,7 @@ export const vocabularyData = [
       'maleficent',
       'tremulous',
     ],
+    etymology: 'From Latin munus (gift) + facere (to make). Literally "gift-making" — extremely generous.',
   },
   {
     id: 11,
@@ -186,6 +195,7 @@ export const vocabularyData = [
       'tremulous',
       'profligate',
     ],
+    etymology: 'From Latin parcere, "to spare" or be thrifty. It means stingy with money or resources.',
   },
   {
     id: 12,
@@ -203,6 +213,7 @@ export const vocabularyData = [
       'sanguinary',
       'sanctimonious',
     ],
+    etymology: 'From Latin sanguis, "blood." Medieval medicine linked a bloody temperament with cheerful optimism.',
   },
   {
     id: 13,
@@ -220,6 +231,7 @@ export const vocabularyData = [
       'immutable',
       'tremulous',
     ],
+    etymology: 'From French amener, "to lead to." Amenable people can be led or persuaded.',
   },
   {
     id: 14,
@@ -237,6 +249,7 @@ export const vocabularyData = [
       'dramatic',
       'diplomatic',
     ],
+    etymology: 'From Greek pragma, "deed" or practical matter. Focus on what works in practice, not pure theory.',
   },
   {
     id: 15,
@@ -254,6 +267,7 @@ export const vocabularyData = [
       'venerable',
       'veracious',
     ],
+    etymology: 'From Latin verbum, "word." Verbose speech uses too many words.',
   },
   {
     id: 16,
@@ -271,6 +285,7 @@ export const vocabularyData = [
       'obtuse',
       'tremulous',
     ],
+    etymology: 'From Latin obstinare, "to persist." An obstinate person stubbornly sticks to a course.',
   },
   {
     id: 17,
@@ -288,6 +303,7 @@ export const vocabularyData = [
       'empirical',
       'effulgent',
     ],
+    etymology: 'From Greek ephemeros, "lasting a day" (epi + hemera, day). It means short-lived.',
   },
   {
     id: 18,
@@ -305,7 +321,7 @@ export const vocabularyData = [
       'univocal',
       'utilitarian',
     ],
-    etymology: 'From Latin ubique, meaning "everywhere."',
+    etymology: 'From Latin ubique, "everywhere." If something is ubiquitous, you find it all over.',
   },
   {
     id: 19,
@@ -323,6 +339,7 @@ export const vocabularyData = [
       'belligerent',
       'benighted',
     ],
+    etymology: 'From Latin bene (well) + volens (wishing). A benevolent person wishes others well.',
   },
   {
     id: 20,
@@ -340,6 +357,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin garrulus, "talkative," from garrire, "to chatter." It means excessively chatty.',
   },
   {
     id: 21,
@@ -357,6 +375,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin prolixus, "poured forth" or extended. Prolix writing is tediously long-winded.',
   },
   {
     id: 22,
@@ -374,6 +393,7 @@ export const vocabularyData = [
       'empirical',
       'tenacious',
     ],
+    etymology: 'From Greek esoterikos, "inner." Esoteric knowledge is for a small inner circle of specialists.',
   },
   {
     id: 23,
@@ -391,6 +411,7 @@ export const vocabularyData = [
       'tenacious',
       'tremulous',
     ],
+    etymology: 'From Latin mendax, "lying." Mendacious means dishonest or untruthful.',
   },
   {
     id: 24,
@@ -408,6 +429,7 @@ export const vocabularyData = [
       'tenacious',
       'imprudent',
     ],
+    etymology: 'From Latin circum (around) + specere (to look). Look carefully around before you act.',
   },
   {
     id: 25,
@@ -425,7 +447,7 @@ export const vocabularyData = [
       'quiescent',
       'tremulous',
     ],
-    etymology: 'From Don Quixote, the idealistic knight of Cervantes\' novel.',
+    etymology: 'From Don Quixote, Cervantes\' idealistic knight. It means noble but hopelessly impractical.',
   },
   {
     id: 26,
@@ -443,6 +465,7 @@ export const vocabularyData = [
       'tenacious',
       'meticulous',
     ],
+    etymology: 'From Latin meretrix, "prostitute." It means flashy and alluring on the surface but hollow.',
   },
   {
     id: 27,
@@ -460,6 +483,7 @@ export const vocabularyData = [
       'redundant',
       'tremulous',
     ],
+    etymology: 'From Latin recondere, "to hide away." Recondite topics are obscure and little known.',
   },
   {
     id: 28,
@@ -477,6 +501,7 @@ export const vocabularyData = [
       'abject',
       'tenacious',
     ],
+    etymology: 'From Latin abstrudere, "to thrust away" or conceal. Abstruse ideas are hard to grasp.',
   },
   {
     id: 29,
@@ -494,6 +519,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin perspicax, "seeing through" (per + specere). Keen insight that sees through things.',
   },
   {
     id: 30,
@@ -511,6 +537,7 @@ export const vocabularyData = [
       'ludicrous',
       'tenacious',
     ],
+    etymology: 'From Latin lugere, "to mourn." Lugubrious means exaggeratedly mournful or gloomy.',
   },
   {
     id: 31,
@@ -528,6 +555,7 @@ export const vocabularyData = [
       'tremulous',
       'pertinacious',
     ],
+    etymology: 'From Latin petere, "to aim at" or attack. Petulant behaviour is peevish and sulky over small things.',
   },
   {
     id: 32,
@@ -545,6 +573,7 @@ export const vocabularyData = [
       'tremulous',
       'ossified',
     ],
+    etymology: 'From Latin obstrepere, "to make a noise against." Noisy, unruly resistance to control.',
   },
   {
     id: 33,
@@ -562,6 +591,7 @@ export const vocabularyData = [
       'supine',
       'sublime',
     ],
+    etymology: 'From Latin supercilium, "eyebrow." Raising the eyebrow — haughty, looking down on others.',
   },
   {
     id: 34,
@@ -579,6 +609,7 @@ export const vocabularyData = [
       'tremulous',
       'portentous',
     ],
+    etymology: 'From Latin pusillus (very small) + animus (spirit). Literally "tiny-spirited" — cowardly.',
   },
   {
     id: 35,
@@ -596,6 +627,7 @@ export const vocabularyData = [
       'tenacious',
       'tremulous',
     ],
+    etymology: 'From Latin magnus (great) + animus (spirit). Great-souled generosity, especially in forgiveness.',
   },
   {
     id: 36,
@@ -613,6 +645,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin in- (not) + transigere (to come to an agreement). Unwilling to compromise.',
   },
   {
     id: 37,
@@ -630,6 +663,7 @@ export const vocabularyData = [
       'recumbent',
       'redoubtable',
     ],
+    etymology: 'From Latin recalcitare, "to kick back" (like a stubborn mule). Stubbornly uncooperative.',
   },
   {
     id: 38,
@@ -647,6 +681,7 @@ export const vocabularyData = [
       'eremitic',
       'ethereal',
     ],
+    etymology: 'From Latin erudire, "to instruct" (e- + rudis, rough/untrained). Learned through study.',
   },
   {
     id: 39,
@@ -664,6 +699,7 @@ export const vocabularyData = [
       'indelible',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + effabilis (speakable). Too great or extreme to put into words.',
   },
   {
     id: 40,
@@ -681,6 +717,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From French in- (not) + souci (care). Carefree — casually unconcerned.',
   },
   {
     id: 41,
@@ -698,6 +735,7 @@ export const vocabularyData = [
       'tenacious',
       'quotidian',
     ],
+    etymology: 'From Latin queri, "to complain." Querulous means given to whining complaints.',
   },
   {
     id: 42,
@@ -715,6 +753,7 @@ export const vocabularyData = [
       'trenchant',
       'tranquil',
     ],
+    etymology: 'From Latin trux, "fierce." Truculent people are aggressively ready to fight or argue.',
   },
   {
     id: 43,
@@ -732,6 +771,7 @@ export const vocabularyData = [
       'jubilant',
       'judicious',
     ],
+    etymology: 'From Latin jejunus, "fasting" or empty. Jejune ideas feel thin, naive, and unnourishing.',
   },
   {
     id: 44,
@@ -749,6 +789,7 @@ export const vocabularyData = [
       'sequestered',
       'soporific',
     ],
+    etymology: 'From Latin scintilla, "spark." Scintillating talk sparkles with wit and liveliness.',
   },
   {
     id: 45,
@@ -766,6 +807,7 @@ export const vocabularyData = [
       'tremulous',
       'ominous',
     ],
+    etymology: 'From Latin obsequi, "to comply." Excessively eager to please — servile flattery.',
   },
   {
     id: 46,
@@ -783,6 +825,7 @@ export const vocabularyData = [
       'tremulous',
       'pertinacious',
     ],
+    etymology: 'From Latin perfungi, "to get through" a duty. Done with minimal care, just to finish it.',
   },
   {
     id: 47,
@@ -800,6 +843,7 @@ export const vocabularyData = [
       'asinine',
       'astute',
     ],
+    etymology: 'From Latin assidere, "to sit by" a task. Persistent, careful effort over time.',
   },
   {
     id: 48,
@@ -817,6 +861,7 @@ export const vocabularyData = [
       'venerable',
       'tenacious',
     ],
+    etymology: 'From Latin vorare, "to devour." Voracious means insatiably hungry for food or knowledge.',
   },
   {
     id: 49,
@@ -834,6 +879,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin reticere, "to keep silent." Reticent people hold back their thoughts and feelings.',
   },
   {
     id: 50,
@@ -851,6 +897,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin pugnare, "to fight" (pugnus, fist). Eager to quarrel or fight.',
   },
   {
     id: 51,
@@ -868,6 +915,7 @@ export const vocabularyData = [
       'amicable',
       'tremulous',
     ],
+    etymology: 'From Latin inimicus, "enemy" (in- + amicus, friend). Hostile or harmful to something.',
   },
   {
     id: 52,
@@ -885,6 +933,7 @@ export const vocabularyData = [
       'vindictive',
       'virulent',
     ],
+    etymology: 'From Latin vicarius, "substitute." Experienced through someone else rather than directly.',
   },
   {
     id: 53,
@@ -902,6 +951,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin per (through/against) + fides (faith). Literally breaking faith — treacherous.',
   },
   {
     id: 54,
@@ -919,6 +969,7 @@ export const vocabularyData = [
       'tenacious',
       'defamatory',
     ],
+    etymology: 'From Latin dilatus, "deferred." Dilatory tactics are meant to cause delay.',
   },
   {
     id: 55,
@@ -936,6 +987,7 @@ export const vocabularyData = [
       'tenacious',
       'tremulous',
     ],
+    etymology: 'From Latin multi (many) + farius (kinds). Made up of many different kinds.',
   },
   {
     id: 56,
@@ -953,7 +1005,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
-    etymology: 'From Latin sesqui plus ped, meaning "a foot and a half long."',
+    etymology: 'From Latin sesqui (one and a half) + pes (foot). "A foot and a half long" — fond of long words.',
   },
   {
     id: 57,
@@ -971,6 +1023,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin impetere, "to attack." Impetuous acts rush forward without careful thought.',
   },
   {
     id: 58,
@@ -988,6 +1041,7 @@ export const vocabularyData = [
       'oscillate',
       'ossify',
     ],
+    etymology: 'From Latin obfuscare, "to darken." To obfuscate is to make something harder to understand.',
   },
   {
     id: 59,
@@ -1005,7 +1059,7 @@ export const vocabularyData = [
       'paraphernalia',
       'tenacious',
     ],
-    etymology: 'From Greek palimpsēstos, meaning "scraped again."',
+    etymology: 'From Greek palimpsēstos, "scraped again." A reused manuscript where older writing still shows through.',
   },
   {
     id: 60,
@@ -1023,6 +1077,7 @@ export const vocabularyData = [
       'soothsayer',
       'sentinel',
     ],
+    etymology: 'From Greek sykophantēs (originally an informer). Now means a self-serving flatterer.',
   },
   {
     id: 61,
@@ -1040,6 +1095,7 @@ export const vocabularyData = [
       'anomalous',
       'amiable',
     ],
+    etymology: 'From Greek a- (without) + morphē (shape). Without a clear shape or structure.',
   },
   {
     id: 62,
@@ -1057,6 +1113,7 @@ export const vocabularyData = [
       'afflicted',
       'affected',
     ],
+    etymology: 'From Latin ad- (to) + fari (to speak). Easy and friendly to speak with.',
   },
   {
     id: 63,
@@ -1074,6 +1131,7 @@ export const vocabularyData = [
       'anomaly',
       'allegory',
     ],
+    etymology: 'From Latin alacer, "brisk" or lively. Cheerful readiness and prompt eagerness.',
   },
   {
     id: 64,
@@ -1091,6 +1149,7 @@ export const vocabularyData = [
       'austere',
       'tremulous',
     ],
+    etymology: 'From Latin auspex, a bird-diviner reading omens. Favourable signs of future success.',
   },
   {
     id: 65,
@@ -1108,6 +1167,7 @@ export const vocabularyData = [
       'benignant',
       'beatific',
     ],
+    etymology: 'From Latin bellum, "war." Bellicose means warlike or eager to fight.',
   },
   {
     id: 66,
@@ -1125,6 +1185,7 @@ export const vocabularyData = [
       'tremulous',
       'trenchant',
     ],
+    etymology: 'From Latin capax, "able to hold" (capere, to take). Spacious and able to hold a lot.',
   },
   {
     id: 67,
@@ -1142,6 +1203,7 @@ export const vocabularyData = [
       'complicit',
       'comportment',
     ],
+    etymology: 'From French complaire, "to please." Willing to go along with others\' wishes.',
   },
   {
     id: 68,
@@ -1159,6 +1221,7 @@ export const vocabularyData = [
       'creditworthy',
       'crepuscular',
     ],
+    etymology: 'From Latin credere, "to believe." Too ready to believe — easily deceived.',
   },
   {
     id: 69,
@@ -1176,6 +1239,7 @@ export const vocabularyData = [
       'decrepit',
       'defamatory',
     ],
+    etymology: 'From Latin decorus, "seemly." Proper, polite, and in good taste.',
   },
   {
     id: 70,
@@ -1193,6 +1257,7 @@ export const vocabularyData = [
       'diffluent',
       'difficult',
     ],
+    etymology: 'From Latin dis- (apart) + fidere (to trust). Lacking self-trust — shy and hesitant.',
   },
   {
     id: 71,
@@ -1210,6 +1275,7 @@ export const vocabularyData = [
       'dichondra',
       'dichotomize',
     ],
+    etymology: 'From Greek dicha (in two) + temnein (to cut). A division into two opposing parts.',
   },
   {
     id: 72,
@@ -1227,6 +1293,7 @@ export const vocabularyData = [
       'ebrious',
       'effete',
     ],
+    etymology: 'From Latin ebullire, "to boil over." Overflowing with cheerful energy.',
   },
   {
     id: 73,
@@ -1244,6 +1311,7 @@ export const vocabularyData = [
       'ecumenical',
       'economic',
     ],
+    etymology: 'From Greek eklegein, "to select." Choosing the best ideas from many different sources.',
   },
   {
     id: 74,
@@ -1261,6 +1329,7 @@ export const vocabularyData = [
       'equine',
       'equitable',
     ],
+    etymology: 'From Latin aequus (even) + animus (mind). An even mind — calm under stress.',
   },
   {
     id: 75,
@@ -1278,6 +1347,7 @@ export const vocabularyData = [
       'equitable',
       'tenacious',
     ],
+    etymology: 'From Latin aequus (equal) + vox (voice). Two equal "voices" of meaning — ambiguous.',
   },
   {
     id: 76,
@@ -1295,6 +1365,7 @@ export const vocabularyData = [
       'tenacious',
       'exorbitant',
     ],
+    etymology: 'From Latin exigere, "to demand." Exigent needs demand immediate attention.',
   },
   {
     id: 77,
@@ -1312,6 +1383,7 @@ export const vocabularyData = [
       'tenacious',
       'tremulous',
     ],
+    etymology: 'From Latin facetia, "jest." Treating serious matters with inappropriate humour.',
   },
   {
     id: 78,
@@ -1329,6 +1401,7 @@ export const vocabularyData = [
       'tremulous',
       'felicitous',
     ],
+    etymology: 'From Latin fallacia, "deception." Based on a false or misleading argument.',
   },
   {
     id: 79,
@@ -1346,6 +1419,7 @@ export const vocabularyData = [
       'tremulous',
       'fateful',
     ],
+    etymology: 'From Latin fatuus, "foolish." Silly and empty of real intelligence.',
   },
   {
     id: 80,
@@ -1363,6 +1437,7 @@ export const vocabularyData = [
       'florentine',
       'flotilla',
     ],
+    etymology: 'From Latin flos, "flower." Flowery — flushed in complexion or ornate in style.',
   },
   {
     id: 81,
@@ -1380,6 +1455,7 @@ export const vocabularyData = [
       'fortissimo',
       'fortification',
     ],
+    etymology: 'From Latin fors, "chance." Happening by chance (often luckily), not by design.',
   },
   {
     id: 82,
@@ -1397,6 +1473,7 @@ export const vocabularyData = [
       'fractured',
       'fractal',
     ],
+    etymology: 'From Latin frangere, "to break." Irritable and hard to manage — ready to "break" into quarrel.',
   },
   {
     id: 83,
@@ -1414,6 +1491,7 @@ export const vocabularyData = [
       'galvanism',
       'galvanometer',
     ],
+    etymology: 'Named after Luigi Galvani\'s electricity experiments. To shock someone into sudden action.',
   },
   {
     id: 84,
@@ -1431,6 +1509,7 @@ export const vocabularyData = [
       'tenacious',
       'grandeur',
     ],
+    etymology: 'From Italian grandioso, from Latin grandis, "great." Impressive in scale, often overly so.',
   },
   {
     id: 85,
@@ -1448,6 +1527,7 @@ export const vocabularyData = [
       'haggard',
       'haphazardly',
     ],
+    etymology: 'From "hap" (chance, as in happen) + hazard. Done by chance, without a plan.',
   },
   {
     id: 86,
@@ -1465,6 +1545,7 @@ export const vocabularyData = [
       'humility',
       'hubbub',
     ],
+    etymology: 'From Greek hybris, "wanton pride." Excessive arrogance that invites a fall.',
   },
   {
     id: 87,
@@ -1482,6 +1563,7 @@ export const vocabularyData = [
       'idiosyncratic',
       'idiomatic',
     ],
+    etymology: 'From Greek eidyllion, a short pastoral poem. Peacefully picturesque, like a perfect scene.',
   },
   {
     id: 88,
@@ -1499,6 +1581,7 @@ export const vocabularyData = [
       'tremulous',
       'imperative',
     ],
+    etymology: 'From Latin in- (not) + pertinere (to belong). Not belonging — rudely out of place.',
   },
   {
     id: 89,
@@ -1516,6 +1599,7 @@ export const vocabularyData = [
       'indigenous',
       'indigent',
     ],
+    etymology: 'From Latin in- (not) + dolere (to feel pain/effort). Avoiding effort — habitually lazy.',
   },
   {
     id: 90,
@@ -1533,6 +1617,7 @@ export const vocabularyData = [
       'ingrained',
       'inglorious',
     ],
+    etymology: 'From Latin ingenuus, "freeborn" and frank. Open, innocent, and candid.',
   },
   {
     id: 91,
@@ -1550,6 +1635,7 @@ export const vocabularyData = [
       'inoffensive',
       'inoperable',
     ],
+    etymology: 'From Latin in- (not) + ordinatus (ordered). Beyond normal limits — excessive.',
   },
   {
     id: 92,
@@ -1567,6 +1653,7 @@ export const vocabularyData = [
       'tremulous',
       'insolent',
     ],
+    etymology: 'From Latin insidiae, "ambush." Harm that creeps up subtly, like a trap.',
   },
   {
     id: 93,
@@ -1584,6 +1671,7 @@ export const vocabularyData = [
       'inviolate',
       'invincible',
     ],
+    etymology: 'From Latin in- + vetus (old). Long-established and deep-rooted, like an old habit.',
   },
   {
     id: 94,
@@ -1601,6 +1689,7 @@ export const vocabularyData = [
       'irritable',
       'irreverent',
     ],
+    etymology: 'From Latin ira, "anger." Quick to become angry.',
   },
   {
     id: 95,
@@ -1618,6 +1707,7 @@ export const vocabularyData = [
       'jocose',
       'jocularity',
     ],
+    etymology: 'From Latin jocus, "joke." Characterised by joking and humour.',
   },
   {
     id: 96,
@@ -1635,6 +1725,7 @@ export const vocabularyData = [
       'languish',
       'languisher',
     ],
+    etymology: 'From Latin languere, "to be faint." Weak, sluggish, and lacking energy.',
   },
   {
     id: 97,
@@ -1652,6 +1743,7 @@ export const vocabularyData = [
       'litigate',
       'litigiousness',
     ],
+    etymology: 'From Latin lis (lawsuit) + agere (to drive). Too ready to settle disputes in court.',
   },
   {
     id: 98,
@@ -1669,6 +1761,7 @@ export const vocabularyData = [
       'malignant',
       'malformed',
     ],
+    etymology: 'From Latin malleus, "hammer." Able to be hammered into shape — easily influenced.',
   },
   {
     id: 99,
@@ -1686,6 +1779,7 @@ export const vocabularyData = [
       'mitigator',
       'mitigant',
     ],
+    etymology: 'From Latin mitis (soft) + agere (to make). To make something milder or less severe.',
   },
   {
     id: 100,
@@ -1703,6 +1797,7 @@ export const vocabularyData = [
       'morass',
       'tenacious',
     ],
+    etymology: 'From Latin morosus, "peevish." Sullen and ill-tempered.',
   },
   {
     id: 101,
@@ -1720,6 +1815,7 @@ export const vocabularyData = [
       'nasal',
       'nascently',
     ],
+    etymology: 'From Latin nasci, "to be born." Just coming into being — beginning to develop.',
   },
   {
     id: 102,
@@ -1737,6 +1833,7 @@ export const vocabularyData = [
       'nebular',
       'nebulosity',
     ],
+    etymology: 'From Latin nebula, "cloud" or mist. Hazy, vague, and ill-defined.',
   },
   {
     id: 103,
@@ -1754,6 +1851,7 @@ export const vocabularyData = [
       'nullify',
       'nullity',
     ],
+    etymology: 'From Latin nugae, "trifles" or jokes. Of no real value or importance.',
   },
   {
     id: 104,
@@ -1771,6 +1869,7 @@ export const vocabularyData = [
       'official',
       'officinal',
     ],
+    etymology: 'From Latin officium, "duty" (in a busybody sense). Meddlesomely assertive about "helping."',
   },
   {
     id: 105,
@@ -1788,6 +1887,7 @@ export const vocabularyData = [
       'opuscule',
       'opulentia',
     ],
+    etymology: 'From Latin opes, "wealth." Ostentatiously rich and luxurious.',
   },
   {
     id: 106,
@@ -1805,6 +1905,7 @@ export const vocabularyData = [
       'pellitory',
       'pellucidity',
     ],
+    etymology: 'From Latin per (through) + lucere (to shine). So clear that light (and meaning) shines through.',
   },
   {
     id: 107,
@@ -1822,6 +1923,7 @@ export const vocabularyData = [
       'placable',
       'placidity',
     ],
+    etymology: 'From Latin placere, "to please" or calm. Calm, peaceful, and hard to upset.',
   },
   {
     id: 108,
@@ -1839,6 +1941,7 @@ export const vocabularyData = [
       'precocial',
       'precociously',
     ],
+    etymology: 'From Latin prae (before) + coquere (to cook/ripen). "Ripened early" — advanced for one\'s age.',
   },
   {
     id: 109,
@@ -1856,6 +1959,7 @@ export const vocabularyData = [
       'acerbity',
       'acerbate',
     ],
+    etymology: 'From Latin acerbus, "bitter" or harsh. Sharp and cutting in tone.',
   },
   {
     id: 110,
@@ -1873,6 +1977,7 @@ export const vocabularyData = [
       'anodize',
       'anodic',
     ],
+    etymology: 'From Greek an- (without) + odynē (pain). Originally a painkiller — now "harmlessly bland."',
   },
   {
     id: 111,
@@ -1890,7 +1995,7 @@ export const vocabularyData = [
       'antemeridian',
       'antedate',
     ],
-    etymology: 'From Latin ante (before) and diluvium (flood).',
+    etymology: 'From Latin ante (before) + diluvium (flood). Literally "before the flood" — ridiculously outdated.',
   },
   {
     id: 112,
@@ -1908,6 +2013,7 @@ export const vocabularyData = [
       'attenuate',
       'tenacious',
     ],
+    etymology: 'From Latin atra bilis, "black bile." Old medicine linked black bile to gloomy, irritable moods.',
   },
   {
     id: 113,
@@ -1925,6 +2031,7 @@ export const vocabularyData = [
       'audible',
       'audition',
     ],
+    etymology: 'From Latin audax, "bold" (audere, to dare). Daring enough to take bold risks.',
   },
   {
     id: 114,
@@ -1942,6 +2049,7 @@ export const vocabularyData = [
       'baleen',
       'balefire',
     ],
+    etymology: 'From Old English bealu, "evil" or harm. Threatening harm or disaster.',
   },
   {
     id: 115,
@@ -1959,6 +2067,7 @@ export const vocabularyData = [
       'bibliophile',
       'bibliography',
     ],
+    etymology: 'From Latin bibere, "to drink." Excessively fond of drinking alcohol.',
   },
   {
     id: 116,
@@ -1976,6 +2085,7 @@ export const vocabularyData = [
       'bombardier',
       'bombardon',
     ],
+    etymology: 'From bombast, padding used to stuff clothes. Language puffed up with empty grandeur.',
   },
   {
     id: 117,
@@ -1993,6 +2103,7 @@ export const vocabularyData = [
       'tremulous',
       'captivate',
     ],
+    etymology: 'From Latin capere, "to seize" or catch. Eager to catch people out with petty objections.',
   },
   {
     id: 118,
@@ -2010,6 +2121,7 @@ export const vocabularyData = [
       'cholesterol',
       'choler',
     ],
+    etymology: 'From Greek cholē, "bile." Old humour theory linked yellow bile to a quick temper.',
   },
   {
     id: 119,
@@ -2027,6 +2139,7 @@ export const vocabularyData = [
       'corpuscle',
       'corpulence',
     ],
+    etymology: 'From Latin corpus, "body." Having a large, bulky body.',
   },
   {
     id: 120,
@@ -2044,6 +2157,7 @@ export const vocabularyData = [
       'delegate',
       'tenacious',
     ],
+    etymology: 'From Greek dēlētērios, "destructive." Causing harm or damage.',
   },
   {
     id: 121,
@@ -2061,6 +2175,7 @@ export const vocabularyData = [
       'desultorily',
       'tenacious',
     ],
+    etymology: 'From Latin desultor, a circus rider who leaps between horses. Jumping randomly, without a plan.',
   },
   {
     id: 122,
@@ -2078,6 +2193,7 @@ export const vocabularyData = [
       'diaphonics',
       'diaphaneity',
     ],
+    etymology: 'From Greek dia (through) + phainein (to show). So light and sheer that you can see through it.',
   },
   {
     id: 123,
@@ -2095,6 +2211,7 @@ export const vocabularyData = [
       'didact',
       'didacticism',
     ],
+    etymology: 'From Greek didaskein, "to teach." Intended to instruct, often in a moral way.',
   },
   {
     id: 124,
@@ -2112,6 +2229,7 @@ export const vocabularyData = [
       'disincline',
       'tenacious',
     ],
+    etymology: 'From dis- (not) + ingenuous (frank). Not candid — pretending ignorance or innocence.',
   },
   {
     id: 125,
@@ -2129,6 +2247,7 @@ export const vocabularyData = [
       'egregiousness',
       'egregiously',
     ],
+    etymology: 'From Latin e grege, "out of the flock." Standing out — now for outstandingly bad faults.',
   },
   {
     id: 126,
@@ -2146,6 +2265,7 @@ export const vocabularyData = [
       'enervation',
       'tenacious',
     ],
+    etymology: 'From Latin enervare, "to cut the sinews" (e- + nervus). Draining strength and energy.',
   },
   {
     id: 127,
@@ -2163,7 +2283,7 @@ export const vocabularyData = [
       'epicurus',
       'epicureanism',
     ],
-    etymology: 'From Epicurus, the Greek philosopher associated with refined pleasure.',
+    etymology: 'From Epicurus, the Greek philosopher. Devoted to refined pleasure, especially fine food.',
   },
   {
     id: 128,
@@ -2181,6 +2301,7 @@ export const vocabularyData = [
       'execration',
       'tenacious',
     ],
+    etymology: 'From Latin exsecrari, "to curse." So bad as to deserve cursing — detestable.',
   },
   {
     id: 129,
@@ -2198,6 +2319,7 @@ export const vocabularyData = [
       'tenacious',
       'tremulous',
     ],
+    etymology: 'From Latin exiguus, "scanty." Extremely small in amount.',
   },
   {
     id: 130,
@@ -2215,6 +2337,7 @@ export const vocabularyData = [
       'expedition',
       'tenacious',
     ],
+    etymology: 'From Latin expedire, "to free the feet" for travel. Done with speed and efficiency.',
   },
   {
     id: 131,
@@ -2232,6 +2355,7 @@ export const vocabularyData = [
       'extemporize',
       'tenacious',
     ],
+    etymology: 'From Latin ex tempore, "out of the moment." Spoken or done without preparation.',
   },
   {
     id: 132,
@@ -2249,6 +2373,7 @@ export const vocabularyData = [
       'feckly',
       'tenacious',
     ],
+    etymology: 'From Scots feck (effect, value) + -less. Lacking effectiveness — irresponsibly weak.',
   },
   {
     id: 133,
@@ -2266,6 +2391,7 @@ export const vocabularyData = [
       'fecundate',
       'tenacious',
     ],
+    etymology: 'From Latin fecundus, "fruitful." Producing many offspring, ideas, or results.',
   },
   {
     id: 134,
@@ -2283,6 +2409,7 @@ export const vocabularyData = [
       'furtiveness',
       'tenacious',
     ],
+    etymology: 'From Latin fur, "thief." Secretive, as if stealing away to avoid notice.',
   },
   {
     id: 135,
@@ -2300,6 +2427,7 @@ export const vocabularyData = [
       'grandiloquently',
       'tenacious',
     ],
+    etymology: 'From Latin grandis (grand) + loqui (to speak). Pompous, lofty speech.',
   },
   {
     id: 136,
@@ -2317,7 +2445,7 @@ export const vocabularyData = [
       'heurism',
       'tenacious',
     ],
-    etymology: 'From Greek heuriskein, meaning "to find" or discover.',
+    etymology: 'From Greek heuriskein, "to find." A practical method that helps you discover answers by trying.',
   },
   {
     id: 137,
@@ -2335,6 +2463,7 @@ export const vocabularyData = [
       'iconoclasm',
       'iconography',
     ],
+    etymology: 'From Greek eikōn (image) + klastēs (breaker). Attacking cherished images, beliefs, or institutions.',
   },
   {
     id: 138,
@@ -2352,6 +2481,7 @@ export const vocabularyData = [
       'impecuniously',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + pecunia (money). Having little or no money.',
   },
   {
     id: 139,
@@ -2369,6 +2499,7 @@ export const vocabularyData = [
       'imperiousness',
       'tenacious',
     ],
+    etymology: 'From Latin imperium, "command." Domineering, as if entitled to give orders.',
   },
   {
     id: 140,
@@ -2386,6 +2517,7 @@ export const vocabularyData = [
       'imperturbably',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + perturbare (to disturb). Unable to be upset — calmly unshakable.',
   },
   {
     id: 141,
@@ -2403,6 +2535,7 @@ export const vocabularyData = [
       'imperviousness',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + pervius (passable). Nothing gets through — sealed against fluid or influence.',
   },
   {
     id: 142,
@@ -2420,6 +2553,7 @@ export const vocabularyData = [
       'indefatigability',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + defatigare (to tire out). Unable to be wearied — tirelessly persistent.',
   },
   {
     id: 143,
@@ -2437,6 +2571,7 @@ export const vocabularyData = [
       'indomitability',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + domitare (to tame). Impossible to subdue or defeat.',
   },
   {
     id: 144,
@@ -2454,6 +2589,7 @@ export const vocabularyData = [
       'inscrutability',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + scrutari (to search). Impossible to "search into" — enigmatic.',
   },
   {
     id: 145,
@@ -2471,6 +2607,7 @@ export const vocabularyData = [
       'insipidly',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + sapidus (tasty). Without flavour — dull and uninteresting.',
   },
   {
     id: 146,
@@ -2488,6 +2625,7 @@ export const vocabularyData = [
       'intrepidly',
       'tenacious',
     ],
+    etymology: 'From Latin in- (not) + trepidus (alarmed). Fearless and boldly adventurous.',
   },
   {
     id: 147,
@@ -2505,6 +2643,7 @@ export const vocabularyData = [
       'invidiousness',
       'tenacious',
     ],
+    etymology: 'From Latin invidia, "envy." Likely to cause resentment or unfair comparison.',
   },
   {
     id: 148,
@@ -2522,6 +2661,7 @@ export const vocabularyData = [
       'lachrymatory',
       'tenacious',
     ],
+    etymology: 'From Latin lacrima, "tear." Tearful or given to weeping.',
   },
   {
     id: 149,
@@ -2539,6 +2679,7 @@ export const vocabularyData = [
       'liminally',
       'tenacious',
     ],
+    etymology: 'From Latin limen, "threshold." At a boundary or transitional threshold.',
   },
   {
     id: 150,
@@ -2556,6 +2697,7 @@ export const vocabularyData = [
       'luculentness',
       'tenacious',
     ],
+    etymology: 'From Latin lux, "light." Brightly clear — lucid and easy to follow.',
   },
   {
     id: 151,
@@ -2573,7 +2715,7 @@ export const vocabularyData = [
       'machiavellianism',
       'tenacious',
     ],
-    etymology: 'From Niccolò Machiavelli, author of The Prince.',
+    etymology: 'From Niccolò Machiavelli, author of The Prince. Cunning and scheming in pursuit of power.',
   },
   {
     id: 152,
@@ -2591,6 +2733,7 @@ export const vocabularyData = [
       'mellifluousness',
       'tenacious',
     ],
+    etymology: 'From Latin mel (honey) + fluere (to flow). Sweet and smoothly flowing, especially sound.',
   },
   {
     id: 153,
@@ -2608,6 +2751,7 @@ export const vocabularyData = [
       'mordancy',
       'tenacious',
     ],
+    etymology: 'From Latin mordere, "to bite." Sharply biting humour or criticism.',
   },
   {
     id: 154,
@@ -2625,6 +2769,7 @@ export const vocabularyData = [
       'nefariousness',
       'tenacious',
     ],
+    etymology: 'From Latin nefas, "crime" or wrong. Wickedly criminal or villainous.',
   },
   {
     id: 155,
@@ -2642,6 +2787,7 @@ export const vocabularyData = [
       'obduracy',
       'tenacious',
     ],
+    etymology: 'From Latin ob- + durus (hard). Hardened against persuasion — stubbornly unyielding.',
   },
   {
     id: 156,
@@ -2659,6 +2805,7 @@ export const vocabularyData = [
       'oleaginousness',
       'tenacious',
     ],
+    etymology: 'From Latin oleum, "oil." Oily — unpleasantly smooth and flattering.',
   },
   {
     id: 157,
@@ -2676,6 +2823,7 @@ export const vocabularyData = [
       'ostensibility',
       'tenacious',
     ],
+    etymology: 'From Latin ostendere, "to show." The outward, stated reason — not necessarily the real one.',
   },
   {
     id: 158,
@@ -2693,6 +2841,7 @@ export const vocabularyData = [
       'pejorativeness',
       'tenacious',
     ],
+    etymology: 'From Latin pejor, "worse." Expressing a worse, contemptuous sense of a word.',
   },
   {
     id: 159,
@@ -2710,6 +2859,7 @@ export const vocabularyData = [
       'penuriousness',
       'tenacious',
     ],
+    etymology: 'From Latin penuria, "want" or scarcity. Extremely poor, or stingily tight with money.',
   },
   {
     id: 160,
@@ -2727,6 +2877,7 @@ export const vocabularyData = [
       'perniciousness',
       'tenacious',
     ],
+    etymology: 'From Latin pernicies, "destruction." Gradually destructive and harmful.',
   },
   {
     id: 161,
@@ -2744,6 +2895,7 @@ export const vocabularyData = [
       'perspicuousness',
       'tenacious',
     ],
+    etymology: 'From Latin per (through) + specere (to see). Clear enough to see through — easy to understand.',
   },
   {
     id: 162,
@@ -2761,6 +2913,7 @@ export const vocabularyData = [
       'phlegmaticness',
       'tenacious',
     ],
+    etymology: 'From Greek phlegma, "phlegm." Old humour theory linked phlegm to a calm, unemotional temperament.',
   },
   {
     id: 163,
@@ -2778,6 +2931,7 @@ export const vocabularyData = [
       'platitudinize',
       'tenacious',
     ],
+    etymology: 'From platitude (a flat, trite remark), from French plat, "flat." Full of dull, obvious clichés.',
   },
   {
     id: 164,
@@ -2795,6 +2949,7 @@ export const vocabularyData = [
       'approbatory',
       'tenacious',
     ],
+    etymology: 'From Latin ad- (to) + probare (to test/approve). Formal approval or praise.',
   },
   {
     id: 165,
@@ -2812,6 +2967,7 @@ export const vocabularyData = [
       'catalyze',
       'catalytic',
     ],
+    etymology: 'From Greek kata (down) + lyein (to loosen). In chemistry it speeds a reaction — in life, it sparks change.',
   },
   {
     id: 166,
@@ -2829,6 +2985,7 @@ export const vocabularyData = [
       'conundrumist',
       'tenacious',
     ],
+    etymology: 'Origin uncertain (perhaps a university joke-word). A puzzling problem or riddle.',
   },
   {
     id: 167,
@@ -2846,6 +3003,7 @@ export const vocabularyData = [
       'epiphanous',
       'tenacious',
     ],
+    etymology: 'From Greek epiphaneia, "manifestation" or appearance. A sudden moment of revelation.',
   },
   {
     id: 168,
@@ -2863,6 +3021,7 @@ export const vocabularyData = [
       'haranguing',
       'tenacious',
     ],
+    etymology: 'From Old French harangue, a public address. A long, aggressive speech or tirade.',
   },
   {
     id: 169,
@@ -2880,6 +3039,7 @@ export const vocabularyData = [
       'lacunal',
       'tenacious',
     ],
+    etymology: 'From Latin lacuna, "pool" or hole. A gap or missing portion in a text or sequence.',
   },
   {
     id: 170,
@@ -2897,6 +3057,7 @@ export const vocabularyData = [
       'nadirs',
       'tenacious',
     ],
+    etymology: 'From Arabic nazīr, "opposite" (the sky point opposite the zenith). The lowest point.',
   },
   {
     id: 171,
@@ -2914,7 +3075,7 @@ export const vocabularyData = [
       'nemesism',
       'nemesize',
     ],
-    etymology: 'From Greek Nemesis, goddess of retribution.',
+    etymology: 'From Greek Nemesis, goddess of retribution. A source of downfall — or a long-standing rival.',
   },
   {
     id: 172,
@@ -2932,6 +3093,7 @@ export const vocabularyData = [
       'panaceas',
       'tenacious',
     ],
+    etymology: 'From Greek pan (all) + akos (cure). A supposed cure for all problems.',
   },
   {
     id: 173,
@@ -2949,6 +3111,7 @@ export const vocabularyData = [
       'tirading',
       'tenacious',
     ],
+    etymology: 'From French tirade, a long speech. An extended angry outburst of criticism.',
   },
   {
     id: 174,
@@ -2966,6 +3129,7 @@ export const vocabularyData = [
       'absconding',
       'tenacious',
     ],
+    etymology: 'From Latin abs (away) + condere (to hide). To leave secretly and hide from justice or custody.',
   },
   {
     id: 175,
@@ -2983,6 +3147,7 @@ export const vocabularyData = [
       'adumbrative',
       'tenacious',
     ],
+    etymology: 'From Latin ad- + umbra (shadow). To sketch in outline or foreshadow faintly, like a shadow.',
   },
   {
     id: 176,
@@ -3000,6 +3165,7 @@ export const vocabularyData = [
       'denigrative',
       'tenacious',
     ],
+    etymology: 'From Latin de- + nigrare (to blacken). To blacken someone\'s reputation unfairly.',
   },
   {
     id: 177,
@@ -3017,6 +3183,7 @@ export const vocabularyData = [
       'equivocator',
       'tenacious',
     ],
+    etymology: 'From Latin aequus (equal) + vox (voice). To speak with "equal voices" — deliberately ambiguous.',
   },
   {
     id: 178,
@@ -3034,6 +3201,7 @@ export const vocabularyData = [
       'eschewer',
       'tenacious',
     ],
+    etymology: 'From Old French eschiver, "to avoid." To deliberately abstain from or steer clear of something.',
   },
   {
     id: 179,
@@ -3051,6 +3219,7 @@ export const vocabularyData = [
       'impugner',
       'tenacious',
     ],
+    etymology: 'From Latin in- + pugnare (to fight). To attack the truth or honesty of a claim.',
   },
   {
     id: 180,
@@ -3068,5 +3237,6 @@ export const vocabularyData = [
       'prevaricator',
       'tenacious',
     ],
+    etymology: 'From Latin praevaricari, "to walk crookedly." To speak evasively and dodge the truth.',
   },
 ];
