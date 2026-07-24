@@ -3,7 +3,7 @@ import {
   simulateTrajectory,
   evaluateMission,
   summarizeTrajectory,
-} from '../../assets/games/rocketlaunchsimulationPhysics.js';
+} from '../rocketlaunchsimulationPhysics.js';
 
 const tests = [
   { stage1Fuel: 380000, stage2Fuel: 100000, finalPitch: 0.36, turnEndAlt: 60000 },

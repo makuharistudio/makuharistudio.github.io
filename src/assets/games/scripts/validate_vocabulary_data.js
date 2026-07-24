@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
  * Validates vocabularyData.js exports.
- * Run: node src/games/scripts/validate_vocabulary_data.js
+ * Run: node src/assets/games/scripts/validate_vocabulary_data.js
  */
 
-import { vocabularyData } from '../../assets/games/vocabularytrainerData.js';
+import { vocabularyData } from '../vocabularytrainerData.js';
 
 const FORBIDDEN = /[;:]/;
 const LO = 54;
@@ -23,11 +23,11 @@ function fail(msg) {
   failCount += 1;
 }
 
-// 1. count === 180
-if (vocabularyData.length === 180) {
-  pass(`count === 180 (${vocabularyData.length})`);
+// 1. non-empty dataset (size evolves as entries are added)
+if (vocabularyData.length >= 180) {
+  pass(`count >= 180 (${vocabularyData.length})`);
 } else {
-  fail(`count === 180 (got ${vocabularyData.length})`);
+  fail(`count >= 180 (got ${vocabularyData.length})`);
 }
 
 // 2. unique words
@@ -70,7 +70,40 @@ for (const e of vocabularyData) {
 }
 if (spreadOk) pass(`length spread per entry <= ${MAX_SPREAD} (target ${LO}-${HI} chars)`);
 
-// 5. no distractor word equals correct word
+// 5. distractor words: unique, not the answer, not in vocab, not morph variants
+function isMorphRelative(word, candidate) {
+  const w = word.toLowerCase();
+  const c = candidate.toLowerCase();
+  if (w === c) return true;
+  const pairs = [
+    [w, c],
+    [c, w],
+  ];
+  for (const [a, b] of pairs) {
+    if (b === `${a}s` || b === `${a}es` || b === `${a}'s`) return true;
+    if (a.endsWith('y') && b === `${a.slice(0, -1)}ies`) return true;
+    if (b.startsWith(a) && b.length > a.length) {
+      const rest = b.slice(a.length);
+      if (rest.length <= 4) return true;
+      if (
+        /^(s|es|ed|ing|er|ers|or|ors|ly|ness|ment|tion|ation|ive|al|ous|ious|able|ible|ity|ize|ise|ary|ory|ial|ism|ist|ists|ance|ence|ant|ent|ure|ship)$/.test(
+          rest
+        )
+      ) {
+        return true;
+      }
+    }
+  }
+  // long shared prefix + high similarity → same family (galvanize/galvanic)
+  let pref = 0;
+  for (let i = 0; i < Math.min(w.length, c.length); i += 1) {
+    if (w[i] !== c[i]) break;
+    pref += 1;
+  }
+  if (pref >= 6 && Math.abs(w.length - c.length) <= 5) return true;
+  return false;
+}
+
 let distractorOk = true;
 for (const e of vocabularyData) {
   if (e.distractor_words.includes(e.word)) {
@@ -89,8 +122,14 @@ for (const e of vocabularyData) {
     fail(`distractor word in vocabulary id ${e.id} (${e.word})`);
     distractorOk = false;
   }
+  for (const dw of e.distractor_words) {
+    if (isMorphRelative(e.word, dw)) {
+      fail(`morphological distractor id ${e.id} (${e.word} ~ ${dw})`);
+      distractorOk = false;
+    }
+  }
 }
-if (distractorOk) pass('no distractor word equals correct word');
+if (distractorOk) pass('distractor words are genuine confusable options');
 
 // Extra stats
 const intermediate = vocabularyData.filter((e) => e.level === 'intermediate').length;

@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
-"""Generate vocabularyData.js with 180 validated vocabulary entries."""
+"""Generate vocabularytrainerData.js with validated vocabulary entries."""
 
 import re
 import sys
 from pathlib import Path
 
+from collections import Counter
+
 from vocab_extra_data import INTERMEDIATE_NEW, ADVANCED_NEW
 from vocab_explanations import EXPLANATIONS
+from vocab_explanations_vn import EXPLANATIONS_VN
+from vocab_distractors import assign_distractors, assert_distractors_ok, is_morph_relative
 
-OUTPUT = Path(__file__).resolve().parents[2] / "assets/games/vocabularytrainerData.js"
+EXPLANATIONS = {**EXPLANATIONS, **EXPLANATIONS_VN}
+
+OUTPUT = Path(__file__).resolve().parents[1] / "vocabularytrainerData.js"
 FORBIDDEN = re.compile(r"[;:]")
 # Short natural extensions for length balancing (no colons/semicolons)
 EXPAND_CLAUSES = [
@@ -230,33 +236,9 @@ EXTERNAL_DISTRACTOR_POOL = [
 ]
 
 
-def sanitize_distractors(word, dws, vocab_words):
-    used = set()
-    clean = []
-    pool = [w for w in EXTERNAL_DISTRACTOR_POOL if w not in vocab_words and w != word]
-    pool_idx = 0
-
-    def next_fallback():
-        nonlocal pool_idx
-        while pool_idx < len(pool):
-            candidate = pool[pool_idx]
-            pool_idx += 1
-            if candidate != word and candidate not in used:
-                return candidate
-        raise ValueError(f"Exhausted distractor pool for {word}")
-
-    for w in dws:
-        if w == word or w in used or w in vocab_words:
-            w = next_fallback()
-        used.add(w)
-        clean.append(w)
-    if len(clean) != 3 or len(set(clean)) != 3 or word in clean:
-        raise ValueError(f"Bad distractors for {word}: {dws} -> {clean}")
-    return clean
-
-
 def build_entries():
     vocab_words = {row[0] for row in RAW}
+    usage = Counter()
     items = []
     for i, row in enumerate(RAW, start=1):
         word, pos, level, defn, dd1, dd2, dd3, dw1, dw2, dw3 = row[:10]
@@ -264,7 +246,10 @@ def build_entries():
         # Prefer curated learning tips from vocab_explanations; fall back to inline ety
         explanation = EXPLANATIONS.get(word) or ety
         meanings = normalize_meanings([defn, dd1, dd2, dd3])
-        dws = sanitize_distractors(word, [dw1, dw2, dw3], vocab_words)
+        # Rebuild meaning→word distractors from confusable/lookalike banks.
+        # Ignore source dw1–dw3: they were mostly plurals and same-family stems.
+        dws = assign_distractors(word, pos, vocab_words, usage)
+        assert_distractors_ok(word, dws, vocab_words)
         obj = {
             "id": i,
             "word": word,
@@ -283,10 +268,11 @@ def build_entries():
 def validate(items):
     errors = []
     words = [it["word"] for it in items]
-    if len(items) != 180:
-        errors.append(f"count === 180: FAIL ({len(items)})")
+    expected = len(RAW)
+    if len(items) != expected:
+        errors.append(f"count === {expected}: FAIL ({len(items)})")
     else:
-        errors.append("count === 180: PASS")
+        errors.append(f"count === {expected}: PASS")
 
     if len(words) != len(set(words)):
         dupes = [w for w in words if words.count(w) > 1]
@@ -311,6 +297,11 @@ def validate(items):
         overlap = [w for w in it["distractor_words"] if w in vocab_set]
         if overlap:
             errors.append(f"distractor in vocab: FAIL id {it['id']} {it['word']}: {overlap}")
+        for dw in it["distractor_words"]:
+            if is_morph_relative(it["word"], dw):
+                errors.append(
+                    f"morph distractor: FAIL id {it['id']} {it['word']} ~ {dw}"
+                )
         for t in texts:
             core = t[:-1] if t.endswith(".") else t
             if core.endswith(BAD_ENDINGS):

@@ -4,7 +4,7 @@ import {
   simulateTrajectory,
   evaluateMission,
   summarizeTrajectory,
-} from '../../assets/games/rocketlaunchsimulationPhysics.js';
+} from '../rocketlaunchsimulationPhysics.js';
 
 const base = paramsForSiteAndMission('spacex_lc39a', 'gto');
 const tests = [

@@ -2,7 +2,7 @@ import {
   paramsForSiteAndMission,
   simulateTrajectory,
   summarizeTrajectory,
-} from '../../assets/games/rocketlaunchsimulationPhysics.js';
+} from '../rocketlaunchsimulationPhysics.js';
 
 for (const id of ['gto', 'geo', 'meo_gps']) {
   const base = paramsForSiteAndMission('spacex_lc39a', id);

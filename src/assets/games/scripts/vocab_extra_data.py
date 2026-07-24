@@ -126,5 +126,17 @@ ADVANCED_NEW = [
 ("prevaricate","verb","advanced","To speak evasively and avoid telling the truth.","To answer frankly and disclose fully.","To confess openly without deception.","To state facts plainly and directly.","prevarication","prevaricator","prevaricate",None),
 ]
 
-assert len(INTERMEDIATE_NEW) == 48
-assert len(ADVANCED_NEW) == 72
+from vocab_verbs_nouns import INTERMEDIATE_VN, ADVANCED_VN
+
+INTERMEDIATE_NEW = INTERMEDIATE_NEW + INTERMEDIATE_VN
+ADVANCED_NEW = ADVANCED_NEW + ADVANCED_VN
+
+assert len(INTERMEDIATE_NEW) == 48 + len(INTERMEDIATE_VN)
+assert len(ADVANCED_NEW) == 72 + len(ADVANCED_VN)
+assert all(row[1] in ("adjective", "verb", "noun") for row in INTERMEDIATE_NEW + ADVANCED_NEW)
+assert all(row[2] in ("intermediate", "advanced") for row in INTERMEDIATE_NEW + ADVANCED_NEW)
+# No duplicate headwords across the full extra set
+_extra_words = [row[0] for row in INTERMEDIATE_NEW + ADVANCED_NEW]
+assert len(_extra_words) == len(set(_extra_words)), (
+    f"duplicate extra words: {[w for w in _extra_words if _extra_words.count(w) > 1]}"
+)

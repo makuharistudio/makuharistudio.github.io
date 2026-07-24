@@ -4,7 +4,7 @@ import {
   evaluateMission,
   summarizeTrajectory,
   MISSION_SUCCESS_THRESHOLD,
-} from '../../assets/games/rocketlaunchsimulationPhysics.js';
+} from '../rocketlaunchsimulationPhysics.js';
 
 const base = paramsForSiteAndMission('spacex_lc39a', 'suborbital');
 const results = [];

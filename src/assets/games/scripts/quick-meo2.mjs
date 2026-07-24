@@ -5,7 +5,7 @@ import {
   evaluateMission,
   summarizeTrajectory,
   monteCarloSuccess,
-} from '../../assets/games/rocketlaunchsimulationPhysics.js';
+} from '../rocketlaunchsimulationPhysics.js';
 
 const base = paramsForSiteAndMission('spacex_lc39a', 'meo_gps');
 const tests = [

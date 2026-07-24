@@ -6,7 +6,7 @@ import {
   monteCarloSuccess,
   summarizeTrajectory,
   MISSION_SUCCESS_THRESHOLD,
-} from '../../assets/games/rocketlaunchsimulationPhysics.js';
+} from '../rocketlaunchsimulationPhysics.js';
 
 const siteId = 'spacex_lc39a';
 const mcRuns = 12;

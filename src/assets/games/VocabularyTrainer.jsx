@@ -9,7 +9,7 @@ desc: Intermediate to advanced English vocabulary multiple choice questions.
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { vocabularyData } from './vocabularytrainerData.js';
 
-// vocabularyData: 180 entries — see vocabularytrainerData.js (regenerate via src/games/scripts/generate_vocabulary_data.py)
+// vocabularyData — see vocabularytrainerData.js (regenerate via src/assets/games/scripts/generate_vocabulary_data.py)
 
 // ─── Constants ─────────────────────────────────────────────────────────────
 
@@ -27,10 +27,20 @@ const MODES = {
 };
 
 const DIFFICULTIES = {
+  mixed: { id: 'mixed', label: 'Mixed' },
   intermediate: { id: 'intermediate', label: 'Intermediate' },
   advanced: { id: 'advanced', label: 'Advanced' },
-  mixed: { id: 'mixed', label: 'Mixed' },
 };
+
+/** Word-class (POS) filter options. Mixed balances selection across classes. */
+const WORD_CLASSES = {
+  mixed: { id: 'mixed', label: 'Mixed' },
+  adjective: { id: 'adjective', label: 'Adjective' },
+  noun: { id: 'noun', label: 'Noun' },
+  verb: { id: 'verb', label: 'Verb' },
+};
+
+const POS_ORDER = ['adjective', 'noun', 'verb'];
 
 const QUESTION_COUNTS = [10, 15, 20];
 const BASE_POINTS = 10;
@@ -64,6 +74,89 @@ function filterByDifficulty(pool, difficulty) {
   return pool.filter((entry) => entry.level === difficulty);
 }
 
+function filterByWordClass(pool, wordClass) {
+  if (wordClass === 'mixed') return pool;
+  return pool.filter((entry) => entry.pos === wordClass);
+}
+
+/**
+ * Pick up to `count` entries with equal counts per word class.
+ * When count is not divisible, extras go to classes with fewer records
+ * (the class with the most records gets fewer / no extras).
+ * If a class cannot fill its share, surplus is redistributed to others.
+ */
+function selectBalancedByPos(pool, count) {
+  if (!pool.length || count <= 0) return [];
+
+  const byPos = new Map();
+  for (const entry of pool) {
+    if (!byPos.has(entry.pos)) byPos.set(entry.pos, []);
+    byPos.get(entry.pos).push(entry);
+  }
+
+  for (const [pos, list] of byPos) {
+    byPos.set(pos, shuffle(list));
+  }
+
+  const classes = [...byPos.keys()]
+    .filter((pos) => byPos.get(pos).length > 0)
+    .sort((a, b) => {
+      const ia = POS_ORDER.indexOf(a);
+      const ib = POS_ORDER.indexOf(b);
+      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    });
+
+  if (!classes.length) return [];
+
+  const target = Math.min(count, pool.length);
+  const k = classes.length;
+
+  // Prefer smaller classes when handing out remainder slots
+  const bySizeAsc = [...classes].sort(
+    (a, b) => byPos.get(a).length - byPos.get(b).length || a.localeCompare(b)
+  );
+
+  const alloc = Object.fromEntries(classes.map((c) => [c, Math.floor(target / k)]));
+  let remainder = target % k;
+  for (let i = 0; i < remainder; i += 1) {
+    alloc[bySizeAsc[i]] += 1;
+  }
+
+  // Cap by availability; collect surplus
+  let surplus = 0;
+  for (const c of classes) {
+    const avail = byPos.get(c).length;
+    if (alloc[c] > avail) {
+      surplus += alloc[c] - avail;
+      alloc[c] = avail;
+    }
+  }
+
+  // Redistribute surplus to classes that still have room (prefer smaller pools)
+  if (surplus > 0) {
+    const room = () =>
+      bySizeAsc.filter((c) => alloc[c] < byPos.get(c).length);
+    let guard = 0;
+    while (surplus > 0 && room().length && guard < target + 50) {
+      const candidates = room();
+      for (const c of candidates) {
+        if (surplus <= 0) break;
+        if (alloc[c] < byPos.get(c).length) {
+          alloc[c] += 1;
+          surplus -= 1;
+        }
+      }
+      guard += 1;
+    }
+  }
+
+  const selected = [];
+  for (const c of classes) {
+    selected.push(...byPos.get(c).slice(0, alloc[c]));
+  }
+  return shuffle(selected);
+}
+
 function buildQuestion(entry, mode) {
   if (mode === 'wordToMeaning') {
     const options = shuffle([
@@ -94,13 +187,18 @@ function buildQuestion(entry, mode) {
   };
 }
 
-function selectSessionWords(difficulty, count, excludeIds = []) {
-  const pool = filterByDifficulty(vocabularyData, difficulty).filter(
+function selectSessionWords(difficulty, count, wordClass = 'mixed', excludeIds = []) {
+  let pool = filterByDifficulty(vocabularyData, difficulty).filter(
     (e) => !excludeIds.includes(e.id)
   );
-  const shuffled = shuffle(pool);
-  const n = Math.min(count, shuffled.length);
-  return shuffled.slice(0, n);
+
+  if (wordClass !== 'mixed') {
+    pool = filterByWordClass(pool, wordClass);
+    const shuffled = shuffle(pool);
+    return shuffled.slice(0, Math.min(count, shuffled.length));
+  }
+
+  return selectBalancedByPos(pool, count);
 }
 
 function loadHighScore() {
@@ -150,10 +248,11 @@ function appendSessionHistory(record) {
   }
 }
 
-function filterSessions(sessions, { mode, difficulty, questionCount }) {
+function filterSessions(sessions, { mode, difficulty, wordClass, questionCount }) {
   return sessions.filter((s) => {
     if (mode !== 'all' && s.modeId !== mode) return false;
     if (difficulty !== 'all' && s.difficulty !== difficulty) return false;
+    if (wordClass !== 'all' && (s.wordClass ?? 'mixed') !== wordClass) return false;
     if (questionCount !== 'all' && s.questionCount !== questionCount) return false;
     return true;
   });
@@ -310,6 +409,43 @@ function primaryBtn(palette, compact, active = false) {
     fontWeight: 600,
     transition: 'border-color 0.15s, color 0.15s',
     touchAction: 'manipulation',
+    boxSizing: 'border-box',
+  };
+}
+
+/**
+ * Equal-width choice chips for settings rows (difficulty, word class, etc.).
+ * Labels stay fully inside the border; row buttons share a uniform height.
+ */
+function choiceBtn(palette, compact, active = false) {
+  return {
+    background: palette.panel,
+    // Theme border when idle; accent when active. Always 2px so chips don't jump size.
+    border: active ? `2px solid ${palette.accent}` : 'var(--border)',
+    borderWidth: 2,
+    color: active ? palette.accent : palette.button,
+    borderRadius: 8,
+    cursor: 'pointer',
+    fontFamily: palette.titleFont,
+    fontWeight: 600,
+    transition: 'border-color 0.15s, color 0.15s',
+    touchAction: 'manipulation',
+    boxSizing: 'border-box',
+    // Share row width evenly; minWidth 0 lets long labels shrink inside the flex item
+    flex: '1 1 0',
+    minWidth: 0,
+    width: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    whiteSpace: 'normal',
+    overflowWrap: 'break-word',
+    lineHeight: 1.2,
+    padding: compact ? '0.5rem 0.28rem' : '0.6rem 0.4rem',
+    fontSize: compact ? '0.75rem' : '0.88rem',
+    minHeight: compact ? '2.75rem' : '3rem',
+    alignSelf: 'stretch',
   };
 }
 
@@ -468,6 +604,7 @@ function SessionScoresOverlay({
 }) {
   const [filterMode, setFilterMode] = useState('all');
   const [filterDifficulty, setFilterDifficulty] = useState('all');
+  const [filterWordClass, setFilterWordClass] = useState('all');
   const [filterQuestions, setFilterQuestions] = useState('all');
 
   const filtered = useMemo(
@@ -475,9 +612,10 @@ function SessionScoresOverlay({
       filterSessions(sessions, {
         mode: filterMode,
         difficulty: filterDifficulty,
+        wordClass: filterWordClass,
         questionCount: filterQuestions,
       }).sort((a, b) => a.sessionNumber - b.sessionNumber),
-    [sessions, filterMode, filterDifficulty, filterQuestions]
+    [sessions, filterMode, filterDifficulty, filterWordClass, filterQuestions]
   );
 
   const accuracyData = useMemo(
@@ -626,6 +764,27 @@ function SessionScoresOverlay({
 
           <div>
             <span style={{ fontFamily: palette.titleFont, fontSize: '0.8rem', color: palette.accent }}>
+              Word class
+            </span>
+            <div style={{ display: 'flex', gap: '0.35rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
+              <button type="button" onClick={() => setFilterWordClass('all')} style={filterChipBtn(palette, compact, filterWordClass === 'all')}>
+                All
+              </button>
+              {Object.values(WORD_CLASSES).map((w) => (
+                <button
+                  key={w.id}
+                  type="button"
+                  onClick={() => setFilterWordClass(w.id)}
+                  style={filterChipBtn(palette, compact, filterWordClass === w.id)}
+                >
+                  {w.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span style={{ fontFamily: palette.titleFont, fontSize: '0.8rem', color: palette.accent }}>
               Questions
             </span>
             <div style={{ display: 'flex', gap: '0.35rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
@@ -744,6 +903,8 @@ function SessionScoresOverlay({
                   {' · '}
                   {DIFFICULTIES[s.difficulty]?.label ?? s.difficulty}
                   {' · '}
+                  {WORD_CLASSES[s.wordClass]?.label ?? (s.wordClass ? s.wordClass : 'Mixed')}
+                  {' · '}
                   {s.questionCount} Q
                 </span>
               </li>
@@ -767,6 +928,7 @@ const VocabularyTrainer = () => {
   const [screen, setScreen] = useState('welcome'); // welcome | playing | finished | reviewAll
   const [modeId, setModeId] = useState('wordToMeaning');
   const [difficulty, setDifficulty] = useState('mixed');
+  const [wordClass, setWordClass] = useState('mixed');
   const [questionCount, setQuestionCount] = useState(15);
   const [useTimer, setUseTimer] = useState(true);
 
@@ -826,6 +988,7 @@ const VocabularyTrainer = () => {
         meta ?? {
           modeId: sessionMode,
           difficulty,
+          wordClass,
           questionCount,
           useTimer,
         }
@@ -835,11 +998,11 @@ const VocabularyTrainer = () => {
       setElapsedMs(0);
       setScreen('playing');
     },
-    [modeId, difficulty, questionCount, useTimer]
+    [modeId, difficulty, wordClass, questionCount, useTimer]
   );
 
   const handleStart = () => {
-    const words = selectSessionWords(difficulty, questionCount);
+    const words = selectSessionWords(difficulty, questionCount, wordClass);
     startSession(words);
   };
 
@@ -871,6 +1034,7 @@ const VocabularyTrainer = () => {
       const updated = appendSessionHistory({
         modeId: sessionMeta.modeId,
         difficulty: sessionMeta.difficulty,
+        wordClass: sessionMeta.wordClass ?? 'mixed',
         questionCount: sessionMeta.questionCount,
         useTimer: sessionMeta.useTimer,
         totalQuestions: questions.length,
@@ -1033,13 +1197,21 @@ const VocabularyTrainer = () => {
             <span style={{ fontFamily: palette.titleFont, fontSize: '0.85rem', color: palette.accent }}>
               Difficulty
             </span>
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.4rem' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.4rem',
+                marginTop: '0.4rem',
+                alignItems: 'stretch',
+                width: '100%',
+              }}
+            >
               {Object.values(DIFFICULTIES).map((d) => (
                 <button
                   key={d.id}
                   type="button"
                   onClick={() => setDifficulty(d.id)}
-                  style={{ ...primaryBtn(palette, compact, difficulty === d.id), flex: 1 }}
+                  style={choiceBtn(palette, compact, difficulty === d.id)}
                 >
                   {d.label}
                 </button>
@@ -1049,15 +1221,49 @@ const VocabularyTrainer = () => {
 
           <div>
             <span style={{ fontFamily: palette.titleFont, fontSize: '0.85rem', color: palette.accent }}>
+              Word class
+            </span>
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.4rem',
+                marginTop: '0.4rem',
+                alignItems: 'stretch',
+                width: '100%',
+              }}
+            >
+              {Object.values(WORD_CLASSES).map((w) => (
+                <button
+                  key={w.id}
+                  type="button"
+                  onClick={() => setWordClass(w.id)}
+                  style={choiceBtn(palette, compact, wordClass === w.id)}
+                >
+                  {w.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span style={{ fontFamily: palette.titleFont, fontSize: '0.85rem', color: palette.accent }}>
               Questions
             </span>
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.4rem' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.4rem',
+                marginTop: '0.4rem',
+                alignItems: 'stretch',
+                width: '100%',
+              }}
+            >
               {QUESTION_COUNTS.map((n) => (
                 <button
                   key={n}
                   type="button"
                   onClick={() => setQuestionCount(n)}
-                  style={{ ...primaryBtn(palette, compact, questionCount === n), flex: 1 }}
+                  style={choiceBtn(palette, compact, questionCount === n)}
                 >
                   {n}
                 </button>

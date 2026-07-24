@@ -4,7 +4,7 @@ import {
   evaluateMission,
   summarizeTrajectory,
   MISSION_SUCCESS_THRESHOLD,
-} from '../../assets/games/rocketlaunchsimulationPhysics.js';
+} from '../rocketlaunchsimulationPhysics.js';
 
 for (const id of ['gto', 'geo']) {
   const base = paramsForSiteAndMission('spacex_lc39a', id);
