@@ -1,12 +1,12 @@
 // bg-space-earth.js
 import * as THREE from 'three';
-import { 
-  star, 
-  earth_mosaic_1, 
-  earth_mosaic_2_specular, 
-  earth_mosaic_3_bump, 
-  earth_mosaic_4_lights, 
-  earth_mosaic_5_clouds, 
+import {
+  star,
+  earth_mosaic_1,
+  earth_mosaic_2_specular,
+  earth_mosaic_3_bump,
+  earth_mosaic_4_lights,
+  earth_mosaic_5_clouds,
   earth_mosaic_6_clouds_transparent,
   moon_luna_mosaic_1,
   moon_luna_mosaic_3_bump
