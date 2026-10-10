@@ -16,7 +16,7 @@ I purged React based on my own experience **[moving from React Native to Kotlin]
    ```
 
 3. Install dependencies
-   `sudo dnf install -y typescript`
+   `sudo dnf install -y typescript esbuild`
 
 4. Clone repository, build then preview site
    ```
