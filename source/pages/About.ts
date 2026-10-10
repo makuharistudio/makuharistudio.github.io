@@ -55,10 +55,6 @@ export function renderAbout(): void {
   const list = document.createElement('ul');
   list.append(
     creditItem(
-      'https://www.linkedin.com/learning/react-creating-and-hosting-a-full-stack-site-24928483/defining-environment-variables',
-      'Creating a React site with URL path management by Shaun Wassell.',
-    ),
-    creditItem(
       'https://www.youtube.com/watch?v=gT1v33oA1gI&list=PLASldBPN_pkBfRXOkBOaeCJYzCnISw5-Z',
       'JavaScript that renders multiple page data from markdown by Will Ward.',
     ),
