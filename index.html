@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ｍａｋｕｈａｒｉｓｔｕｄｉｏ</title>
+    <link rel="icon" href="assets/theme/favicon.ico" type="image/x-icon">
+    <!-- Color mode and its stylesheet, before first paint. ACTIVE_THEME matches source/main.ts. -->
+    <script>
+        (function () {
+            var ACTIVE_THEME = 'space';
+            var saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+            var prefersDark = true;
+            try {
+                prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    || !window.matchMedia('(prefers-color-scheme: light)').matches;
+            } catch (e) { prefersDark = true; }
+            var theme = (saved === 'light' || saved === 'dark') ? saved : (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+            var link = document.createElement('link');
+            link.id = 'theme-stylesheet';
+            link.rel = 'stylesheet';
+            link.href = 'themes/' + ACTIVE_THEME + '/' + theme + '/' + ACTIVE_THEME + '-' + theme + '.css';
+            document.head.appendChild(link);
+        })();
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
