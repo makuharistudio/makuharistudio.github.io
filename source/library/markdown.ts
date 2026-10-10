@@ -147,120 +147,418 @@ function escapeHtml(text: string): string {
     .replace(/"/g, '&quot;');
 }
 
-function inlineMarkdown(text: string): string {
-  const escaped = escapeHtml(text);
-  const withImages = escaped.replace(
-    /!\[([^\]]*)\]\(([^)]+)\)/g,
-    '<img alt="$1" src="$2" loading="lazy">',
-  );
-  return withImages
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>')
-    .replace(/\[([^\]]+)]\(([^)\s]+)\)/g, (_m, label: string, href: string) => {
-      const safeHref = href.replace(/"/g, '%22');
-      const external = safeHref.startsWith('http://') || safeHref.startsWith('https://');
-      const attrs = external ? ' target="_blank" rel="noreferrer"' : '';
-      return `<a href="${safeHref}"${attrs}>${label}</a>`;
-    });
-}
-
-interface Block {
-  type: 'h' | 'p' | 'ul' | 'ol' | 'pre' | 'hr' | 'blank';
-  level?: number;
+interface InlineToken {
+  type: 'text' | 'code' | 'em' | 'strong' | 'link' | 'image';
   text?: string;
-  items?: string[];
-  lang?: string;
+  href?: string;
+  children?: InlineToken[];
 }
 
-function parseBlocks(source: string): Block[] {
-  const lines = source.replace(/\r\n/g, '\n').split('\n');
-  const blocks: Block[] = [];
+function isWhitespace(ch: string | undefined): boolean {
+  return ch !== undefined && /\s/.test(ch);
+}
+
+function isPunctuation(ch: string | undefined): boolean {
+  return ch !== undefined && /[!"#$%&'()*+,\-./:;<=>?@[\\\]^`{|}~]/.test(ch);
+}
+
+/**
+ * Left-flanking: can open emphasis.
+ * A run of the other emphasis marker counts as punctuation, so _**term**_
+ * and **"quoted"** both open. A letter or digit still blocks an intra-word _.
+ */
+function canOpen(source: string, index: number, length: number, marker: '*' | '_'): boolean {
+  const after = source[index + length];
+  if (after === undefined || isWhitespace(after)) return false;
+  if (marker === '*') return true;
+  const before = source[index - 1];
+  return before === undefined || isWhitespace(before) || isPunctuation(before) || before === '*';
+}
+
+/** Right-flanking: can close emphasis. Same exception for the other marker. */
+function canClose(source: string, closerStart: number, used: number, marker: '*' | '_'): boolean {
+  const before = source[closerStart - 1];
+  if (before === undefined || isWhitespace(before)) return false;
+  if (marker === '*') return true;
+  const after = source[closerStart + used];
+  return after === undefined || isWhitespace(after) || isPunctuation(after) || after === '*';
+}
+
+function findCloser(source: string, from: number, marker: '*' | '_', need: number): number {
+  for (let j = from; j < source.length; j++) {
+    if (source[j] === '\\') {
+      j++;
+      continue;
+    }
+    if (source[j] === '`') {
+      const end = source.indexOf('`', j + 1);
+      j = end === -1 ? source.length : end;
+      continue;
+    }
+    if (source[j] !== marker) continue;
+    let length = 0;
+    while (source[j + length] === marker) length++;
+    if (length >= need && canClose(source, j, need, marker)) return j;
+    j += length - 1;
+  }
+  return -1;
+}
+
+/**
+ * Emphasis used by the posts: * / _ italic, ** / __ bold, *** both,
+ * and mixed wrappers such as _**bold italic**_.
+ * Markers inside code spans stay literal. HTML is escaped later.
+ */
+function tokenizeInline(source: string): InlineToken[] {
+  const tokens: InlineToken[] = [];
+  let text = '';
   let i = 0;
 
-  while (i < lines.length) {
-    const line = lines[i] ?? '';
+  const flush = (): void => {
+    if (text.length === 0) return;
+    tokens.push({ type: 'text', text });
+    text = '';
+  };
 
-    if (line.startsWith('```')) {
-      const lang = line.slice(3).trim();
-      const code: string[] = [];
-      i++;
-      while (i < lines.length && !(lines[i] ?? '').startsWith('```')) {
-        code.push(lines[i] ?? '');
-        i++;
-      }
-      if (i < lines.length) i++;
-      blocks.push({ type: 'pre', text: code.join('\n'), lang });
+  while (i < source.length) {
+    const ch = source[i] ?? '';
+
+    if (ch === '\\' && i + 1 < source.length) {
+      text += source[i + 1];
+      i += 2;
       continue;
     }
 
-    if (/^(-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
+    if (ch === '`') {
+      const end = source.indexOf('`', i + 1);
+      if (end !== -1) {
+        flush();
+        tokens.push({ type: 'code', text: source.slice(i + 1, end) });
+        i = end + 1;
+        continue;
+      }
+    }
+
+    if (ch === '!') {
+      const image = /^!\[([^\]]*)\]\(([^)\s]+)\)/.exec(source.slice(i));
+      if (image) {
+        flush();
+        tokens.push({ type: 'image', text: image[1] ?? '', href: image[2] ?? '' });
+        i += image[0].length;
+        continue;
+      }
+    }
+
+    if (ch === '[') {
+      const link = /^\[([^\]]+)\]\(([^)\s]+)\)/.exec(source.slice(i));
+      if (link) {
+        flush();
+        tokens.push({
+          type: 'link',
+          href: link[2] ?? '',
+          children: tokenizeInline(link[1] ?? ''),
+        });
+        i += link[0].length;
+        continue;
+      }
+    }
+
+    if (ch === '*' || ch === '_') {
+      const marker = ch;
+      let length = 0;
+      while (source[i + length] === marker) length++;
+      const openLen = Math.min(length, 3);
+      const closeAt = canOpen(source, i, openLen, marker)
+        ? findCloser(source, i + openLen, marker, openLen)
+        : -1;
+      if (closeAt !== -1) {
+        flush();
+        const children = tokenizeInline(source.slice(i + openLen, closeAt));
+        if (openLen === 3) tokens.push({ type: 'em', children: [{ type: 'strong', children }] });
+        else if (openLen === 2) tokens.push({ type: 'strong', children });
+        else tokens.push({ type: 'em', children });
+        i = closeAt + openLen;
+        continue;
+      }
+      text += source.slice(i, i + length);
+      i += length;
+      continue;
+    }
+
+    text += ch;
+    i++;
+  }
+
+  flush();
+  return tokens;
+}
+
+function renderInlineTokens(tokens: InlineToken[]): string {
+  return tokens.map((token) => {
+    if (token.type === 'text') return escapeHtml(token.text ?? '');
+    if (token.type === 'code') return `<code>${escapeHtml(token.text ?? '')}</code>`;
+    if (token.type === 'image') {
+      return `<img alt="${escapeHtml(token.text ?? '')}" src="${escapeHtml(token.href ?? '')}" loading="lazy">`;
+    }
+    const inner = renderInlineTokens(token.children ?? []);
+    if (token.type === 'em') return `<em>${inner}</em>`;
+    if (token.type === 'strong') return `<strong>${inner}</strong>`;
+    const href = escapeHtml(token.href ?? '');
+    const external = href.startsWith('http://') || href.startsWith('https://');
+    const attrs = external ? ' target="_blank" rel="noreferrer"' : '';
+    return `<a href="${href}"${attrs}>${inner}</a>`;
+  }).join('');
+}
+
+function inlineMarkdown(text: string): string {
+  return renderInlineTokens(tokenizeInline(text));
+}
+
+interface ListItem {
+  text: string;
+  blocks: Block[];
+}
+
+interface Block {
+  type: 'h' | 'p' | 'ul' | 'ol' | 'pre' | 'hr';
+  level?: number;
+  text?: string;
+  items?: ListItem[];
+  lang?: string;
+  ordered?: boolean;
+  marker?: string;
+}
+
+const BULLET_RE = /^(\s*)([-*]|\d+\.)\s+(\S.*)$/;
+const FENCE_RE = /^(\s*)```(.*)$/;
+
+function indentOf(line: string): number {
+  return /^(\s*)/.exec(line)?.[1]?.length ?? 0;
+}
+
+function parseBlocks(source: string, baseIndent = 0): { blocks: Block[]; next: number } {
+  const lines = source.replace(/\r\n/g, '\n').split('\n');
+  return parseBlockLines(lines, 0, lines.length, baseIndent);
+}
+
+function parseBlockLines(
+  lines: string[],
+  start: number,
+  end: number,
+  baseIndent: number,
+): { blocks: Block[]; next: number } {
+  const blocks: Block[] = [];
+  let i = start;
+
+  while (i < end) {
+    const line = lines[i] ?? '';
+    if (line.trim() === '') {
+      i++;
+      continue;
+    }
+    if (indentOf(line) < baseIndent) break;
+
+    const fence = FENCE_RE.exec(line);
+    if (fence && (fence[1]?.length ?? 0) >= baseIndent) {
+      const code: string[] = [];
+      i++;
+      while (i < end && !/^\s*```/.test(lines[i] ?? '')) {
+        code.push(lines[i] ?? '');
+        i++;
+      }
+      if (i < end) i++;
+      blocks.push({ type: 'pre', text: code.join('\n'), lang: (fence[2] ?? '').trim() });
+      continue;
+    }
+
+    if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(line) && indentOf(line) <= baseIndent) {
       blocks.push({ type: 'hr' });
       i++;
       continue;
     }
 
-    const heading = /^(#{1,6})\s+(.*)$/.exec(line);
-    if (heading) {
-      blocks.push({ type: 'h', level: heading[1]?.length ?? 1, text: heading[2] ?? '' });
+    const heading = /^(\s*)(#{1,6})\s+(.*)$/.exec(line);
+    if (heading && (heading[1]?.length ?? 0) <= baseIndent) {
+      blocks.push({ type: 'h', level: heading[2]?.length ?? 1, text: heading[3] ?? '' });
       i++;
       continue;
     }
 
-    if (/^\s*[-*]\s+/.test(line)) {
-      const items: string[] = [];
-      while (i < lines.length && /^\s*[-*]\s+/.test(lines[i] ?? '')) {
-        const raw = lines[i] ?? '';
-        const nested = /^\s{2,}[-*]\s+/.test(raw);
-        const text = raw.replace(/^\s*[-*]\s+/, '');
-        if (nested && items.length > 0) {
-          const last = items[items.length - 1] ?? '';
-          items[items.length - 1] = `${last}<br>• ${text}`;
-        } else {
-          items.push(text);
-        }
-        i++;
-      }
-      blocks.push({ type: 'ul', items });
+    const marker = BULLET_RE.exec(line);
+    if (marker && (marker[1]?.length ?? 0) >= baseIndent) {
+      const parsed = parseList(lines, i, end, marker[1]?.length ?? 0);
+      blocks.push(parsed.block);
+      i = parsed.next;
       continue;
     }
 
-    if (/^\s*\d+\.\s+/.test(line)) {
-      const items: string[] = [];
-      while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i] ?? '')) {
-        items.push((lines[i] ?? '').replace(/^\s*\d+\.\s+/, ''));
-        i++;
-      }
-      blocks.push({ type: 'ol', items });
-      continue;
-    }
-
-    if (line.trim() === '') {
-      i++;
-      continue;
-    }
-
-    const para: string[] = [line];
+    const para: string[] = [line.trim()];
     i++;
-    while (i < lines.length) {
+    while (i < end) {
       const next = lines[i] ?? '';
+      if (next.trim() === '' || indentOf(next) < baseIndent) break;
       if (
-        next.trim() === '' ||
-        next.startsWith('```') ||
-        next.startsWith('#') ||
-        /^\s*[-*]\s+/.test(next) ||
-        /^\s*\d+\.\s+/.test(next) ||
-        /^(-{3,}|\*{3,}|_{3,})\s*$/.test(next)
+        FENCE_RE.test(next) ||
+        /^\s*#{1,6}\s+/.test(next) ||
+        BULLET_RE.test(next) ||
+        /^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(next)
       ) {
         break;
       }
-      para.push(next);
+      para.push(next.trim());
       i++;
     }
     blocks.push({ type: 'p', text: para.join(' ') });
   }
 
-  return blocks;
+  return { blocks, next: i };
+}
+
+function skipFence(lines: string[], index: number, end: number): number {
+  let i = index + 1;
+  while (i < end && !/^\s*```/.test(lines[i] ?? '')) i++;
+  return i < end ? i + 1 : i;
+}
+
+function nextSignificant(lines: string[], index: number, end: number): number {
+  let i = index;
+  while (i < end && (lines[i] ?? '').trim() === '') i++;
+  return i;
+}
+
+/** A blank line or unindented fence still belongs to the item when a deeper marker follows it. */
+function followingBelongsToItem(lines: string[], index: number, end: number, listIndent: number): boolean {
+  const at = nextSignificant(lines, index, end);
+  if (at >= end) return false;
+  const line = lines[at] ?? '';
+  const indent = indentOf(line);
+  if (indent < listIndent) return false;
+  if (FENCE_RE.test(line)) {
+    return followingBelongsToItem(lines, skipFence(lines, at, end), end, listIndent);
+  }
+  const marker = BULLET_RE.exec(line);
+  if (marker) return (marker[1]?.length ?? 0) > listIndent;
+  if (/^\s*#{1,6}\s+/.test(line)) return false;
+  return indent > listIndent;
+}
+
+function lineBelongsToItem(lines: string[], index: number, end: number, listIndent: number): boolean {
+  if (index >= end) return false;
+  const line = lines[index] ?? '';
+  if (line.trim() === '') return followingBelongsToItem(lines, index + 1, end, listIndent);
+  if (FENCE_RE.test(line) && indentOf(line) <= listIndent) {
+    return followingBelongsToItem(lines, skipFence(lines, index, end), end, listIndent);
+  }
+  if (indentOf(line) < listIndent) return false;
+  const marker = BULLET_RE.exec(line);
+  if (marker && (marker[1]?.length ?? 0) <= listIndent) return false;
+  if (/^\s*#{1,6}\s+/.test(line) && indentOf(line) <= listIndent) return false;
+  if (indentOf(line) === listIndent && !FENCE_RE.test(line)) return false;
+  return true;
+}
+
+function parseList(
+  lines: string[],
+  start: number,
+  end: number,
+  listIndent: number,
+): { block: Block; next: number } {
+  const first = BULLET_RE.exec(lines[start] ?? '');
+  const ordered = /^\d+\.$/.test(first?.[2] ?? '');
+  const items: ListItem[] = [];
+  let i = start;
+
+  while (i < end) {
+    while (i < end && (lines[i] ?? '').trim() === '') i++;
+    if (i >= end) break;
+
+    const marker = BULLET_RE.exec(lines[i] ?? '');
+    const markerIndent = marker?.[1]?.length ?? -1;
+    if (!marker || markerIndent !== listIndent) break;
+    if (/^\d+\.$/.test(marker[2] ?? '') !== ordered) break;
+
+    const itemLines = [`${' '.repeat(listIndent)}${marker[3] ?? ''}`];
+    i++;
+    while (i < end && lineBelongsToItem(lines, i, end, listIndent)) {
+      const next = lines[i] ?? '';
+      if (FENCE_RE.test(next)) {
+        const after = skipFence(lines, i, end);
+        while (i < after) {
+          itemLines.push(lines[i] ?? '');
+          i++;
+        }
+        continue;
+      }
+      itemLines.push(next);
+      i++;
+    }
+
+    const nested = parseBlockLines(itemLines, 0, itemLines.length, listIndent);
+    const [firstBlock, ...rest] = nested.blocks;
+    items.push({
+      text: firstBlock?.type === 'p' ? firstBlock.text ?? '' : '',
+      blocks: firstBlock?.type === 'p' ? rest : nested.blocks,
+    });
+  }
+
+  return {
+    block: { type: ordered ? 'ol' : 'ul', items, ordered, marker: first?.[2] ?? '' },
+    next: i,
+  };
+}
+
+function appendBlocks(parent: HTMLElement, blocks: Block[]): void {
+  for (const block of blocks) {
+    parent.appendChild(renderBlock(block));
+  }
+}
+
+function renderBlock(block: Block): HTMLElement {
+  if (block.type === 'hr') return document.createElement('hr');
+
+  if (block.type === 'h') {
+    const level = Math.min(6, Math.max(1, block.level ?? 1));
+    const el = document.createElement(`h${level}`);
+    el.innerHTML = inlineMarkdown(block.text ?? '');
+    return el;
+  }
+
+  if (block.type === 'pre') {
+    const pre = document.createElement('pre');
+    const code = document.createElement('code');
+    code.textContent = block.text ?? '';
+    pre.appendChild(code);
+    return pre;
+  }
+
+  if (block.type === 'ul' || block.type === 'ol') {
+    const list = document.createElement(block.type);
+    if (block.marker === '-') list.className = 'md-dash';
+    for (const item of block.items ?? []) {
+      const li = document.createElement('li');
+      if (item.text) {
+        const span = document.createElement('span');
+        span.innerHTML = inlineMarkdown(item.text);
+        li.appendChild(span);
+      }
+      appendBlocks(li, item.blocks);
+      list.appendChild(li);
+    }
+    return list;
+  }
+
+  const text = block.text ?? '';
+  const imageOnly = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(text.trim());
+  if (imageOnly) {
+    const img = document.createElement('img');
+    img.alt = imageOnly[1] ?? '';
+    img.src = imageOnly[2] ?? '';
+    img.loading = 'lazy';
+    return img;
+  }
+  const p = document.createElement('p');
+  p.innerHTML = inlineMarkdown(text);
+  return p;
 }
 
 /** Render markdown used by the old posts: headings, p, strong/em, links, images, fenced code, lists, hr. HTML is escaped. */
@@ -268,53 +566,6 @@ export function renderMarkdown(body: string, fallbackKind: ContentKind): HTMLEle
   const rewritten = rewriteImagePaths(body, fallbackKind);
   const root = document.createElement('div');
   root.className = 'markdown-body';
-
-  for (const block of parseBlocks(rewritten)) {
-    if (block.type === 'hr') {
-      root.appendChild(document.createElement('hr'));
-      continue;
-    }
-    if (block.type === 'h') {
-      const level = Math.min(6, Math.max(1, block.level ?? 1));
-      const el = document.createElement(`h${level}`);
-      el.innerHTML = inlineMarkdown(block.text ?? '');
-      root.appendChild(el);
-      continue;
-    }
-    if (block.type === 'pre') {
-      const pre = document.createElement('pre');
-      const code = document.createElement('code');
-      code.textContent = block.text ?? '';
-      pre.appendChild(code);
-      root.appendChild(pre);
-      continue;
-    }
-    if (block.type === 'ul' || block.type === 'ol') {
-      const list = document.createElement(block.type);
-      for (const item of block.items ?? []) {
-        const li = document.createElement('li');
-        li.innerHTML = inlineMarkdown(item);
-        list.appendChild(li);
-      }
-      root.appendChild(list);
-      continue;
-    }
-    if (block.type === 'p') {
-      const text = block.text ?? '';
-      const imageOnly = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(text.trim());
-      if (imageOnly) {
-        const img = document.createElement('img');
-        img.alt = imageOnly[1] ?? '';
-        img.src = imageOnly[2] ?? '';
-        img.loading = 'lazy';
-        root.appendChild(img);
-      } else {
-        const p = document.createElement('p');
-        p.innerHTML = inlineMarkdown(text);
-        root.appendChild(p);
-      }
-    }
-  }
-
+  appendBlocks(root, parseBlocks(rewritten).blocks);
   return root;
 }

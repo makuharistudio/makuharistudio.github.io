@@ -375,8 +375,73 @@ content h1, h2, h3, h4, h5, h6, p {
   padding-right: 1rem;
 }
 
-content ul, ol {
+content ul,
+content ol {
   padding-right: 1rem;
+}
+
+/* Each ordered list numbers itself. A bare `ol` selector would share one
+   counter across every list in the page, so each item would show 1. */
+content ol {
+  list-style: none;
+  counter-reset: md-item;
+  padding-left: 2.25em;
+}
+
+content ol > li {
+  position: relative;
+  counter-increment: md-item;
+}
+
+content ol > li::before {
+  content: counter(md-item) '.';
+  position: absolute;
+  left: -1.75em;
+  top: 0;
+}
+
+/* Nested marker starts on the parent item text, not under the parent marker. */
+content li > ul,
+content li > ol {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  margin-left: 0;
+  padding-left: 1.25em;
+  list-style: none;
+}
+
+content li > ul > li,
+content li > ol > li {
+  position: relative;
+}
+
+content li > ul > li::before,
+content li > ol > li::before {
+  position: absolute;
+  left: -1.25em;
+  top: 0;
+}
+
+content li > ul > li::before {
+  content: '•';
+}
+
+content li > ul.md-dash > li::before {
+  content: '-';
+}
+
+content li > ol {
+  counter-reset: md-item;
+  padding-left: 1.75em;
+}
+
+content li > ol > li {
+  counter-increment: md-item;
+}
+
+content li > ol > li::before {
+  content: counter(md-item) '.';
+  left: -1.75em;
 }
 
 content a { color: var(--button-font-color); }
@@ -671,6 +736,8 @@ content pre code::-webkit-scrollbar-track {
     min-height: 2em;
     line-height: 1.125;
     display: flex;
+    justify-content: center;
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
   }
@@ -679,6 +746,8 @@ content pre code::-webkit-scrollbar-track {
     min-height: 4.5em;
     line-height: 1.125;
     display: flex;
+    justify-content: center;
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
   }

@@ -36,7 +36,28 @@
 - About page: Keep certifications. LinkList shows X and GitHub only; LinkedIn code commented out (easy to toggle).
 - Build output folder: dist/ (contains index.html + js/ + copied assets with relative paths).
 - Responsive: Follow old App.css exactly — @media (max-aspect-ratio: 17/20) for portrait (hide header, show footer, 1-col grids); opposite for landscape.
-- Markdown: Preserve exact old frontmatter. Support used constructs (headings, p, strong/em, links, images, fenced code, ul, hr). Rewrite old image paths. Escape HTML. Derive excerpt for posts without description.
+- Markdown: Preserve exact old frontmatter. Support the constructs used by the posts (see Markdown rules below). Rewrite old image paths. Escape HTML. Derive excerpt for posts without description.
+
+## Markdown rules
+The custom renderer in `source/library/markdown.ts` is the whole dialect. `react-markdown` is gone. Markers are consumed; they do not appear in the page.
+
+Emphasis, including inside list items and link text:
+- `*text*` and `_text_` render as italic. Underscores stay literal inside a word (`intra_word`).
+- `**text**` and `__text__` render as bold.
+- `***text***` renders as bold italic.
+- `_**text**_` and `**_text_**` render as bold italic. The outer marker may sit against the inner marker, as in `_**bars and millibars**_`.
+- `_"quoted"_` renders as italic, including the quotation marks, with the underscores consumed.
+- `` `code` `` is literal. Emphasis markers inside a code span stay as characters.
+
+Lists:
+- `*`, `-`, and `1.` / `2.` are list markers. A blank line between items still belongs to the same list.
+- Ordered items keep and continue the written numbers. Each `<ol>` numbers itself. A later list starts again at 1.
+- A marker indented under an item is a nested list, not a new top-level item and not a `<br>`.
+- `*` renders as `•`. `-` renders as `-`, including a dash list nested under a bullet.
+- A nested marker lines up with the first letter of its parent item. It does not sit under the parent marker.
+- Fenced code indented under an item stays inside that item.
+
+Also supported: headings, paragraphs, links, images, fenced code, and `---`. HTML in the source is escaped.
 
 ## Open questions
 - (None — all prior questions resolved in this update)
@@ -69,3 +90,5 @@
 - 2026-10-09 (theme folders): Moved accent and background out of source/assets/theme into source/themes/space/light and source/themes/space/dark. Each mode has its css, accent/, and background/{images,scripts}. Shared fonts, logos, avatars, favicon stay in source/assets/theme. ACTIVE_THEME const in main.ts selects the pack. No-flash script loads themes/<name>/<mode>/<name>-<mode>.css. Verified in Firefox: dark Earth + dark panel/menu SVGs, light city + light panel/menu SVGs, stylesheet swap on toggle.
 - 2026-10-09 (games): Ported Dual N-Back, Rocket Launch Simulation, Satellite Coverage Optimiser, and Vocabulary Trainer. Each .ts file has a typed meta header (slug = basename). JSX compiles to the local h() runtime (no React). Physics, weather, and vocabulary data stay as @ts-nocheck modules. Each game supplies initialiseBackground; Layout disposes the previous scene before the next and restores the theme scene on leave. Earth mosaics come from getEarthTextureBase(). Card photos copy to dist/assets/games. Verified in Firefox: 4 cards with images, unknown slug message, Dual N-Back start, Vocabulary welcome, Satellite and Rocket canvases, theme Earth restored after exit, portrait footer / landscape header.
 - 2026-10-09 (port): Implemented the non-game site against the old React codebase (read-only). Layout (header/footer menus, aspect-ratio show/hide), space light/dark CSS ported from App.css + accent.css, panel frames, theme toggle icons, LinkList (X + GitHub; LinkedIn commented), certifications, about + credits, tag-filtered lists, markdown detail pages. `build.sh` embeds markdown via generated `markdown-raw.ts`. Three.js r173 vendored for the dark Earth background; light theme uses the scrolling city. Games route is a stub. Verified in Firefox: about, blog (23 posts, DAX filter shows 3), post with code and images, projects (9), readings (7), 404, theme toggle, portrait footer. WebGL Earth rendered. Games still excluded.
+- 2026-10-10: Markdown renderer now emits real nested lists (no literal `<br>•`) and emphasis for `*`, `_`, `**`, `__`, `***`, and `_**bold italic**_`. Nested markers indent under the parent item text.
+- 2026-10-10 (markdown fixes): Ordered lists each reset their own counter (the bare `ol` selector made every item render as 1.). Nested dash markers align with the parent item text. Underscore emphasis opens and closes against `*` and punctuation, so `_**term**_` is bold italic and `_"quote"_` is italic. Rules recorded under Markdown rules.
