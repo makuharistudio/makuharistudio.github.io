@@ -376,17 +376,26 @@ content h1, h2, h3, h4, h5, h6, p {
   padding-right: 1rem;
 }
 
+/* One blank line between blocks is the paragraph margin. Each further blank
+   line in the source is one more break, matching a paragraph's line-height. */
+content .md-gap {
+  height: 1.5em;
+  line-height: 1.5;
+}
+
 content ul,
 content ol {
   padding-right: 1rem;
 }
 
 /* Each ordered list numbers itself. A bare `ol` selector would share one
-   counter across every list in the page, so each item would show 1. */
+   counter across every list in the page, so each item would show 1.
+   The 1rem margin is the same inset paragraphs and headings use. */
 content ol {
   list-style: none;
   counter-reset: md-item;
-  padding-left: 2.25em;
+  margin-left: 1rem;
+  padding-left: 1.75em;
 }
 
 content ol > li {
@@ -463,6 +472,18 @@ content img {
   margin-left: auto;
   margin-right: auto;
   border: var(--border);
+}
+
+/* A fence at a list item's own indent stays in the item so a following
+   nested marker remains nested. The block is widened back to the content
+   width, so it lines up with a top-level fence. 40px is the list's
+   padding-left; 1rem is its padding-right. */
+content .markdown-body > ul > li > pre.md-flush,
+content .markdown-body > ol > li > pre.md-flush {
+  box-sizing: border-box;
+  width: calc(100% + 40px + 1rem);
+  margin-left: -40px;
+  margin-right: -1rem;
 }
 
 content pre code {

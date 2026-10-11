@@ -61,8 +61,23 @@ function applyGridEdgeFade(gridLayer: HTMLElement, fadeSize: number): void {
   gridLayer.style.setProperty('-webkit-mask-composite', 'source-in');
 }
 
+/** A few pixels means the stylesheet has not given #bg-space its viewport size yet. */
+const MIN_LAID_OUT = 50;
+
+function viewportSize(container: HTMLElement): { width: number; height: number; ready: boolean } {
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  const ready = width >= MIN_LAID_OUT && height >= MIN_LAID_OUT;
+  return {
+    ready,
+    width: ready ? width : Math.max(window.innerWidth, 1),
+    height: ready ? height : Math.max(window.innerHeight, 1),
+  };
+}
+
 function applyMiniViewportLayout(container: HTMLElement, miniViewport: HTMLElement, gridLayer: HTMLElement): number {
-  const metrics = getMiniViewportMetrics(container.clientWidth, container.clientHeight);
+  const viewport = viewportSize(container);
+  const metrics = getMiniViewportMetrics(viewport.width, viewport.height);
   miniViewport.style.left = `${metrics.left}px`;
   miniViewport.style.top = `${metrics.top}px`;
   miniViewport.style.width = `${Math.max(0, metrics.width)}px`;
@@ -103,24 +118,45 @@ export function initialiseBackground(container: HTMLElement, imageBase: string):
   gridLayer.style.backgroundColor = 'transparent';
   miniViewport.appendChild(gridLayer);
 
-  let cellSize = applyMiniViewportLayout(container, miniViewport, gridLayer);
-  let tileWidth = container.clientHeight * IMAGE_ASPECT;
+  let cellSize = 0;
+  let tileWidth = 0;
+  let laidOutWidth = -1;
+  let laidOutHeight = -1;
   let cityOffset = 0;
   let gridOffsetX = 0;
   let gridOffsetY = 0;
-  let lastTime = performance.now();
+  let lastTime = 0;
   let animationId = 0;
   let stopped = false;
   const gridSpeed = SCROLL_SPEED * GRID_SCROLL_RATIO;
 
   const updateCityBackgroundSize = (): void => {
-    tileWidth = Math.max(10, container.clientHeight * IMAGE_ASPECT);
-    cityLayer.style.backgroundSize = `${tileWidth}px 100%`;
+    const viewport = viewportSize(container);
+    tileWidth = Math.max(10, viewport.height * IMAGE_ASPECT);
+    // A percentage height is resolved against the element's own height, which
+    // is still 0 when a new tab paints this layer. A pixel height matches the
+    // container, so the tile is correct on the first frame.
+    cityLayer.style.backgroundSize = `${tileWidth}px ${viewport.height}px`;
   };
-  updateCityBackgroundSize();
+
+  const layout = (): void => {
+    const viewport = viewportSize(container);
+    if (viewport.ready && viewport.width === laidOutWidth && viewport.height === laidOutHeight) return;
+    // Do not lock a fallback size. The next frame replaces it once the
+    // container actually has the viewport size.
+    laidOutWidth = viewport.ready ? viewport.width : -1;
+    laidOutHeight = viewport.ready ? viewport.height : -1;
+    cellSize = applyMiniViewportLayout(container, miniViewport, gridLayer);
+    updateCityBackgroundSize();
+  };
+  layout();
 
   const animate = (time: number): void => {
     if (stopped) return;
+    // The first frames of a new tab can report a tiny container. Measuring
+    // again here corrects the tile before those strips stay on screen.
+    layout();
+    if (lastTime === 0) lastTime = time;
     const delta = (time - lastTime) * 0.001;
     lastTime = time;
     cityOffset += SCROLL_SPEED * delta;
@@ -135,16 +171,33 @@ export function initialiseBackground(container: HTMLElement, imageBase: string):
   };
 
   const handleResize = (): void => {
-    cellSize = applyMiniViewportLayout(container, miniViewport, gridLayer);
-    updateCityBackgroundSize();
+    layout();
+  };
+
+  // A new tab can run this before the theme stylesheet gives #bg-space a
+  // height. Measuring then locks a few-pixel tile, which paints as vertical
+  // strips. ResizeObserver and the first visible frame measure again.
+  const resizeObserver = new ResizeObserver(() => {
+    layout();
+  });
+  resizeObserver.observe(container);
+
+  const handleVisibility = (): void => {
+    if (document.visibilityState === 'visible') layout();
   };
 
   animationId = requestAnimationFrame(animate);
   window.addEventListener('resize', handleResize);
+  document.addEventListener('visibilitychange', handleVisibility);
+  requestAnimationFrame(() => {
+    layout();
+  });
 
   return () => {
     stopped = true;
+    resizeObserver.disconnect();
     window.removeEventListener('resize', handleResize);
+    document.removeEventListener('visibilitychange', handleVisibility);
     cancelAnimationFrame(animationId);
     for (const el of [miniViewport, overlayLayer, cityLayer]) {
       if (el.parentNode === container) container.removeChild(el);

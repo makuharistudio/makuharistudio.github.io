@@ -56,6 +56,8 @@ Lists:
 - `*` renders as `•`. `-` renders as `-`, including a dash list nested under a bullet.
 - A nested marker lines up with the first letter of its parent item. It does not sit under the parent marker.
 - Fenced code indented under an item stays inside that item.
+- A fence at the item's own indent stays inside the item when a nested marker follows it, so that marker remains nested. The fence is flushed so its block lines up with a top-level fence.
+- One blank line between blocks is a paragraph break. Each further blank line is one extra line break.
 
 Also supported: headings, paragraphs, links, images, fenced code, and `---`. HTML in the source is escaped.
 
@@ -92,3 +94,4 @@ Also supported: headings, paragraphs, links, images, fenced code, and `---`. HTM
 - 2026-10-09 (port): Implemented the non-game site against the old React codebase (read-only). Layout (header/footer menus, aspect-ratio show/hide), space light/dark CSS ported from App.css + accent.css, panel frames, theme toggle icons, LinkList (X + GitHub; LinkedIn commented), certifications, about + credits, tag-filtered lists, markdown detail pages. `build.sh` embeds markdown via generated `markdown-raw.ts`. Three.js r173 vendored for the dark Earth background; light theme uses the scrolling city. Games route is a stub. Verified in Firefox: about, blog (23 posts, DAX filter shows 3), post with code and images, projects (9), readings (7), 404, theme toggle, portrait footer. WebGL Earth rendered. Games still excluded.
 - 2026-10-10: Markdown renderer now emits real nested lists (no literal `<br>•`) and emphasis for `*`, `_`, `**`, `__`, `***`, and `_**bold italic**_`. Nested markers indent under the parent item text.
 - 2026-10-10 (markdown fixes): Ordered lists each reset their own counter (the bare `ol` selector made every item render as 1.). Nested dash markers align with the parent item text. Underscore emphasis opens and closes against `*` and punctuation, so `_**term**_` is bold italic and `_"quote"_` is italic. Rules recorded under Markdown rules.
+- 2026-10-11: A fence at a list item's own indent stays a sibling, so a later nested marker no longer indents that code. Extra blank lines beyond a paragraph break render as extra line breaks. Standalone lists use the same 1rem left margin as paragraphs. The light city background sizes its tile in pixels and remeasures when the container gets a size, so a new tab no longer paints stretched vertical strips.

@@ -320,13 +320,19 @@ interface ListItem {
 }
 
 interface Block {
-  type: 'h' | 'p' | 'ul' | 'ol' | 'pre' | 'hr';
+  type: 'h' | 'p' | 'ul' | 'ol' | 'pre' | 'hr' | 'gap';
   level?: number;
   text?: string;
   items?: ListItem[];
   lang?: string;
   ordered?: boolean;
   marker?: string;
+  /** Extra blank lines beyond the one a paragraph break already implies. */
+  blanks?: number;
+  /** Column where a fence opened, so a same-indent fence can be flushed. */
+  indent?: number;
+  /** Fence sat at the item indent, so it must line up with a top-level fence. */
+  flush?: boolean;
 }
 
 const BULLET_RE = /^(\s*)([-*]|\d+\.)\s+(\S.*)$/;
@@ -349,17 +355,26 @@ function parseBlockLines(
 ): { blocks: Block[]; next: number } {
   const blocks: Block[] = [];
   let i = start;
+  let pendingBlanks = 0;
 
   while (i < end) {
     const line = lines[i] ?? '';
     if (line.trim() === '') {
+      pendingBlanks++;
       i++;
       continue;
     }
+    // One blank line is the ordinary paragraph break. Each further blank line
+    // is an extra break the author wrote on purpose.
+    if (blocks.length > 0 && pendingBlanks > 1) {
+      blocks.push({ type: 'gap', blanks: pendingBlanks - 1 });
+    }
+    pendingBlanks = 0;
     if (indentOf(line) < baseIndent) break;
 
     const fence = FENCE_RE.exec(line);
     if (fence && (fence[1]?.length ?? 0) >= baseIndent) {
+      const fenceIndent = fence[1]?.length ?? 0;
       const code: string[] = [];
       i++;
       while (i < end && !/^\s*```/.test(lines[i] ?? '')) {
@@ -367,7 +382,12 @@ function parseBlockLines(
         i++;
       }
       if (i < end) i++;
-      blocks.push({ type: 'pre', text: code.join('\n'), lang: (fence[2] ?? '').trim() });
+      blocks.push({
+        type: 'pre',
+        text: code.join('\n'),
+        lang: (fence[2] ?? '').trim(),
+        indent: fenceIndent,
+      });
       continue;
     }
 
@@ -426,7 +446,11 @@ function nextSignificant(lines: string[], index: number, end: number): number {
   return i;
 }
 
-/** A blank line or unindented fence still belongs to the item when a deeper marker follows it. */
+/**
+ * A blank line or a fence at the item's own indent still belongs to the item
+ * when a deeper marker follows it. The fence stays in the item so that marker
+ * remains nested, and the renderer lines the fence up with a top-level block.
+ */
 function followingBelongsToItem(lines: string[], index: number, end: number, listIndent: number): boolean {
   const at = nextSignificant(lines, index, end);
   if (at >= end) return false;
@@ -447,7 +471,7 @@ function lineBelongsToItem(lines: string[], index: number, end: number, listInde
   const line = lines[index] ?? '';
   if (line.trim() === '') return followingBelongsToItem(lines, index + 1, end, listIndent);
   if (FENCE_RE.test(line) && indentOf(line) <= listIndent) {
-    return followingBelongsToItem(lines, skipFence(lines, index, end), end, listIndent);
+    return followingBelongsToItem(lines, index, end, listIndent);
   }
   if (indentOf(line) < listIndent) return false;
   const marker = BULLET_RE.exec(line);
@@ -494,6 +518,11 @@ function parseList(
     }
 
     const nested = parseBlockLines(itemLines, 0, itemLines.length, listIndent);
+    for (const nestedBlock of nested.blocks) {
+      if (nestedBlock.type === 'pre' && (nestedBlock.indent ?? 0) <= listIndent) {
+        nestedBlock.flush = true;
+      }
+    }
     const [firstBlock, ...rest] = nested.blocks;
     items.push({
       text: firstBlock?.type === 'p' ? firstBlock.text ?? '' : '',
@@ -514,6 +543,15 @@ function appendBlocks(parent: HTMLElement, blocks: Block[]): void {
 }
 
 function renderBlock(block: Block): HTMLElement {
+  if (block.type === 'gap') {
+    const gap = document.createElement('div');
+    gap.className = 'md-gap';
+    gap.setAttribute('aria-hidden', 'true');
+    const lines = Math.max(1, block.blanks ?? 1);
+    gap.style.height = `calc(${lines} * 1.5em)`;
+    return gap;
+  }
+
   if (block.type === 'hr') return document.createElement('hr');
 
   if (block.type === 'h') {
@@ -525,6 +563,7 @@ function renderBlock(block: Block): HTMLElement {
 
   if (block.type === 'pre') {
     const pre = document.createElement('pre');
+    if (block.flush) pre.className = 'md-flush';
     const code = document.createElement('code');
     code.textContent = block.text ?? '';
     pre.appendChild(code);
