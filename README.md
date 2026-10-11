@@ -46,13 +46,19 @@ I purged React based on my own experience **[moving from React Native to Kotlin]
        - If it matches, type yes and press Enter. SSH will add GitHub to your known_hosts file and you won't see this again.
        - It will reply "You've successfully authenticated"
 
-6. Still inside toolbox, configure your identity based on the masking email in GitHub > Settings > Email
+6. Still inside toolbox, witch the repository remote from HTTPS to SSH (to make `git push` use your SSH key and not username/password)
+   ```
+   git remote set-url origin git@github.com:makuharistudio/makuharistudio.github.io.git
+   git remote -v   # confirm both fetch and push now show the git@github.com URL
+   ```
+
+7. Still inside toolbox, configure your identity based on the masking email in GitHub > Settings > Email
    ```
    git config --global user.name "makuharistudio"
    git config --global user.email "48945612+makuharistudio@users.noreply.github.com"
    ```
 
-7. Set up for delta updates
+8. Set up for delta updates
    **Important!** Pushing from Terminal updates all files, whereas GitHub Desktop for Windows only pushes deltas. Use GitHub Actions to push deltas from a Linux OS.
    - Create a workflow file
      `mkdir -p .github/workflows`
@@ -104,7 +110,7 @@ jobs:
      git push origin main
      ```
 
-8. Go to your site's repo > Settings > Pages and set Source to "Deploy from  branch"
+9. Go to your site's repo > Settings > Pages and set Source to "Deploy from  branch"
    - Choose branch `gh-pages` and folder `/ (root)`
 
 
