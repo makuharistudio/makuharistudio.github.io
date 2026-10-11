@@ -76,8 +76,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install TypeScript
-        run: sudo apt-get update && sudo apt-get install -y typescript
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install build tools
+        run: |
+          npm install -g typescript esbuild
 
       - name: Build
         run: |
@@ -89,7 +95,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          force_orphan: true   # optional: keeps gh-pages history clean
+          force_orphan: true
 ```
    - Commit and push the source code
      ```
