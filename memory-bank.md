@@ -1,8 +1,6 @@
 # Memory bank
 
 ## Restrictions
-- Work exclusively in /home/guardian/Projects/makuharistudio.
-- Old React site (/home/guardian/Projects/makuharistudio.github.io) is reference only — read it, do not modify, move, or commit to it.
 - Framework-free: only HTML, CSS, TypeScript. No React, no Tailwind, no runtime npm dependencies, no Vite-as-framework.
 - Ship only plain JS to browser (dev-only tsc allowed).
 - Vendored libs (if needed, e.g. Three.js) go in /source/library/ with version/origin note.
@@ -33,7 +31,7 @@
 - Games: Each provides its own unique background initializer. Layout must cleanly dispose previous background (call cleanup, remove nodes, dispose Three.js resources) before new one to prevent memory leaks/invisible running scenes.
 - First visit: match prefers-color-scheme; fallback to dark for space theme.
 - Theme storage key: 'theme' (localStorage + data-theme on documentElement). Apply before first paint.
-- About page: Keep certifications. LinkList shows X and GitHub only; LinkedIn code commented out (easy to toggle).
+- About page: Keep certifications. Experience timeline sits between certifications and site credits. Career records live as a JSON-like array in ExperienceList.ts; role text is painted to canvas so it is not in the DOM. LinkList shows X and GitHub only; LinkedIn code commented out (easy to toggle).
 - Build output folder: dist/ (contains index.html + js/ + copied assets with relative paths).
 - Responsive: Follow old App.css exactly — @media (max-aspect-ratio: 17/20) for portrait (hide header, show footer, 1-col grids); opposite for landscape.
 - Markdown: Preserve exact old frontmatter. Support the constructs used by the posts (see Markdown rules below). Rewrite old image paths. Escape HTML. Derive excerpt for posts without description.
@@ -75,7 +73,7 @@ Also supported: headings, paragraphs, links, images, fenced code, and `---`. HTM
 - [x] hash router
 - [x] markdown parser + renderer (library/) with build-time raw embed
 - [x] layout (menus via aspect-ratio, IDs, background container with cleanup)
-- [x] about page (avatar, bio, certifications, LinkList with X/GitHub)
+- [x] about page (avatar, bio, certifications, experience timeline, LinkList with X/GitHub)
 - [x] blog list + detail (tag filters, excerpts, image rewrite)
 - [x] projects list + detail
 - [x] readings list + detail
@@ -95,3 +93,4 @@ Also supported: headings, paragraphs, links, images, fenced code, and `---`. HTM
 - 2026-10-10: Markdown renderer now emits real nested lists (no literal `<br>•`) and emphasis for `*`, `_`, `**`, `__`, `***`, and `_**bold italic**_`. Nested markers indent under the parent item text.
 - 2026-10-10 (markdown fixes): Ordered lists each reset their own counter (the bare `ol` selector made every item render as 1.). Nested dash markers align with the parent item text. Underscore emphasis opens and closes against `*` and punctuation, so `_**term**_` is bold italic and `_"quote"_` is italic. Rules recorded under Markdown rules.
 - 2026-10-11: A fence at a list item's own indent stays a sibling, so a later nested marker no longer indents that code. Extra blank lines beyond a paragraph break render as extra line breaks. Standalone lists use the same 1rem left margin as paragraphs. The light city background sizes its tile in pixels and remeasures when the container gets a size, so a new tab no longer paints stretched vertical strips.
+- 2026-10-22: About page gained an Experience section between Certifications and Site Credits. Same centered h2 + Panel pattern as Site Credits. Vertical timeline grouped by location then business. Theme colors come from --experience-* tokens in space dark/light CSS. Career JSON stays in ExperienceList.ts for edits; canvas painting keeps role text out of the DOM.

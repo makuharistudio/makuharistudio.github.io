@@ -1,6 +1,7 @@
 import { Panel } from '../components/Panel.ts';
 import { LinkList } from '../components/LinkList.ts';
 import { CertificationList } from '../components/CertificationList.ts';
+import { ExperienceList } from '../components/ExperienceList.ts';
 import { setOutlet } from '../components/Layout.ts';
 import { loadAll } from '../library/content.ts';
 
@@ -42,6 +43,8 @@ export function renderAbout(): void {
   content.appendChild(document.createElement('br'));
   content.appendChild(CertificationList());
   content.appendChild(document.createElement('br'));
+  content.appendChild(ExperienceList());
+  content.appendChild(document.createElement('br'));
 
   const creditsTitle = document.createElement('center');
   const creditsH = document.createElement('h2');
@@ -51,7 +54,7 @@ export function renderAbout(): void {
 
   const credits = document.createElement('div');
   const intro = document.createElement('p');
-  intro.textContent = 'I designed this site and incorporated code from:';
+  intro.textContent = 'This site was vibe-coded using Grok with code from:';
   const list = document.createElement('ul');
   list.append(
     creditItem(

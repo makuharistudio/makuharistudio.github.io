@@ -16,11 +16,11 @@ I purged React based on my own experience **[moving from React Native to Kotlin]
    ```
 
 3. Install dependencies
-   `sudo dnf install -y typescript`
+   `sudo dnf install -y typescript esbuild`
 
 4. Clone repository, build then preview site
    ```
-   cd ~/GitHub
+   mkdir -p ~/Projects
    git clone https://github.com/makuharistudio/makuharistudio.github.io.git
    cd makuharistudio.github.io
    chmod +x build.sh
@@ -120,7 +120,7 @@ jobs:
 1. Enter the toolbox and the project
    ```
    toolbox enter toolbox-makuharistudio-site
-   cd ~/GitHub/makuharistudio.github.io
+   cd ~/Projects/makuharistudio.github.io
    ```
 
 2. Add or edit content
@@ -165,5 +165,3 @@ Remove the old toolbox, which includes the React dependencies.
 If SSH Key was previously set up, no need to set it up again as it exists on the host, outside the container.
 
 You do not neet to delete the `gh-pages` branch, as the workflow above will override its contents.
-
-Last updated: 2026-10-10.
