@@ -40,7 +40,7 @@ type EffectHook = {
 
 type Hook = StateHook | RefHook | MemoHook | EffectHook;
 
-type ComponentFn = (props: Record<string, unknown>) => Node;
+type ComponentFn = (props: Record<string, unknown>) => Node | null | undefined | false;
 
 type Fiber = {
   fn: ComponentFn;
@@ -150,13 +150,17 @@ function commit(fiber: Fiber): void {
   const parent = current;
   current = fiber;
   fiber.cursor = 0;
-  let node: Node;
+  let node: Node | null | undefined | false;
   try {
     node = fiber.fn(fiber.props);
   } finally {
     current = parent;
   }
-  fiber.host.replaceChildren(node);
+  if (node == null || node === false) {
+    fiber.host.replaceChildren();
+  } else {
+    fiber.host.replaceChildren(node);
+  }
   const effects = fiber.hooks.filter((hook): hook is EffectHook => hook.kind === 'effect' && hook.pending);
   if (effects.length === 0) return;
   queueMicrotask(() => {

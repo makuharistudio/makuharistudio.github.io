@@ -3,8 +3,14 @@
  * Each game supplies its own initializer. Layout disposes the previous
  * scene (cleanup, nodes, WebGL) before this runs, and again on leave.
  */
+import { getThemeName } from '../library/theme.ts';
 
-function fill(color: string, painter: (ctx: CanvasRenderingContext2D, w: number, h: number) => void): (container: HTMLElement) => () => void {
+function cssVar(name: string, fallback: string): string {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return value || fallback;
+}
+
+function fill(painter: (ctx: CanvasRenderingContext2D, w: number, h: number) => void): (container: HTMLElement) => () => void {
   return (container) => {
     const canvas = document.createElement('canvas');
     canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;';
@@ -19,7 +25,7 @@ function fill(color: string, painter: (ctx: CanvasRenderingContext2D, w: number,
         canvas.height = h;
       }
       if (ctx) {
-        ctx.fillStyle = color;
+        ctx.fillStyle = cssVar('--content-background', '#070b14');
         ctx.fillRect(0, 0, w, h);
         painter(ctx, w, h);
       }
@@ -41,9 +47,17 @@ function fill(color: string, painter: (ctx: CanvasRenderingContext2D, w: number,
   };
 }
 
-/** Quiet grid. The game itself is DOM; this only replaces the theme Earth/city. */
+/** Quiet Precision uses the theme page wash. Space keeps the drifting grid. */
 export function dualNBackBackground(container: HTMLElement): () => void {
-  return fill('#070b14', (ctx, w, h) => {
+  if (getThemeName() === 'quietprecision') {
+    return () => {
+      /* Theme CSS already paints #bg-space. */
+    };
+  }
+  return fill((ctx, w, h) => {
+    ctx.save();
+    ctx.fillStyle = '#070b14';
+    ctx.fillRect(0, 0, w, h);
     ctx.strokeStyle = 'rgba(56, 189, 248, 0.16)';
     ctx.lineWidth = 1;
     const gap = 48;
@@ -60,18 +74,26 @@ export function dualNBackBackground(container: HTMLElement): () => void {
       ctx.lineTo(w, y);
       ctx.stroke();
     }
+    ctx.restore();
   })(container);
 }
 
-/** Soft type-case wash behind the quiz cards. */
+/** Quiet Precision uses the theme page wash. Space keeps the type-case wash. */
 export function vocabularyBackground(container: HTMLElement): () => void {
-  return fill('#12081c', (ctx, w, h) => {
+  if (getThemeName() === 'quietprecision') {
+    return () => {
+      /* Theme CSS already paints #bg-space. */
+    };
+  }
+  return fill((ctx, w, h) => {
     const t = Date.now() / 1000;
     const grd = ctx.createLinearGradient(0, 0, w, h);
-    grd.addColorStop(0, `rgba(167, 139, 250, ${0.08 + 0.04 * Math.sin(t)})`);
+    grd.addColorStop(0, cssVar('--accent-soft', 'rgba(167, 139, 250, 0.12)'));
     grd.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = grd;
+    ctx.globalAlpha = 0.85 + 0.15 * Math.sin(t);
     ctx.fillRect(0, 0, w, h);
+    ctx.globalAlpha = 1;
   })(container);
 }
 
@@ -80,8 +102,14 @@ export function vocabularyBackground(container: HTMLElement): () => void {
  * This initializer only clears the theme scene so two Earths do not run at once.
  */
 export function gameSceneBackground(container: HTMLElement): () => void {
-  container.style.backgroundColor = '#000';
+  const apply = (): void => {
+    container.style.backgroundColor = cssVar('--content-background', '#000');
+  };
+  apply();
+  const observer = new MutationObserver(apply);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   return () => {
+    observer.disconnect();
     container.style.backgroundColor = '';
   };
 }

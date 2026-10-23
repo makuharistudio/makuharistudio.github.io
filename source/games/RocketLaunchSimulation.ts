@@ -1030,8 +1030,10 @@ const RocketLaunchSimulation = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    mount.innerHTML = '';
-    mount.appendChild(renderer.domElement);
+    const canvasEl = renderer.domElement;
+    canvasEl.style.cssText = 'display:block;position:absolute;inset:0;width:100%;height:100%;';
+    if (getComputedStyle(mount).position === 'static') mount.style.position = 'relative';
+    mount.replaceChildren(canvasEl);
     rendererRef.current = renderer;
 
     scene.add(new THREE.AmbientLight(0x334466, 0.08));
@@ -1395,7 +1397,9 @@ const RocketLaunchSimulation = () => {
   useEffect(() => {
     const cleanup = initThree();
     return cleanup;
-  }, [initThree]);
+    // Init once. Rebuilding the tree must not dispose the WebGL context.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDark]);
 
   useEffect(() => {
     updateSiteMarkers(siteId);
@@ -1453,6 +1457,35 @@ const RocketLaunchSimulation = () => {
     window.addEventListener('resize', updateViewportSize);
     return () => window.removeEventListener('resize', updateViewportSize);
   }, [updateViewportSize]);
+
+  // The game runtime rebuilds the tree on each state change. Keep the WebGL
+  // canvas on the new mount node so Simulate / playback do not drop Earth.
+  useEffect(() => {
+    const mount = mountRef.current;
+    const renderer = rendererRef.current;
+    const camera = cameraRef.current;
+    if (!mount || !renderer) return undefined;
+    if (renderer.domElement.parentNode !== mount) {
+      mount.appendChild(renderer.domElement);
+    }
+    const cw = mount.clientWidth;
+    const ch = mount.clientHeight;
+    if (cw && ch && camera) {
+      camera.aspect = cw / ch;
+      camera.updateProjectionMatrix();
+      renderer.setSize(cw, ch);
+    }
+    const observer = new ResizeObserver(() => {
+      const w = mount.clientWidth;
+      const h = mount.clientHeight;
+      if (!w || !h || !cameraRef.current || !rendererRef.current) return;
+      cameraRef.current.aspect = w / h;
+      cameraRef.current.updateProjectionMatrix();
+      rendererRef.current.setSize(w, h);
+    });
+    observer.observe(mount);
+    return () => observer.disconnect();
+  });
 
   const hudState = trajectory[playIndex] || trajectory[trajectory.length - 1];
 
@@ -1538,7 +1571,7 @@ const RocketLaunchSimulation = () => {
                       : 'Peak altitude', ' ', (result.finalAltKm).toFixed(0), ' km ', result.fuelMarginNote === 'overshoot' ? ' · overshoot reduced fuel-margin score' : '')
               ))
           ))
-      ), h('div', {style: { flex: 1, position: 'relative', minHeight: 0, paddingTop: siteLayout.viewportPadTop, boxSizing: 'border-box' }}, h('div', {ref: mountRef, style: { width: '100%', height: '100%' }}), compact && (
+      ), h('div', {style: { flex: 1, position: 'relative', minHeight: 0, minWidth: 0, paddingTop: siteLayout.viewportPadTop, boxSizing: 'border-box' }}, h('div', {ref: mountRef, style: { position: 'absolute', inset: 0, width: '100%', height: '100%' }}), compact && (
           h('div', {style: { position: 'absolute', top: '0.5rem', left: '0.5rem', zIndex: 2 }}, h('button', {type: "button", onClick: () => setShowConfig((v) => !v), style: btnStyle(palette)}, showConfig ? 'Hide config' : 'Config'))
         ), troubleshooting && selectedMeshPoint && (
           h('div', {style: {

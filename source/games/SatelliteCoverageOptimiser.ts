@@ -405,8 +405,12 @@ const SatelliteCoverageOptimiser = () => {
       : { covered: [0.08, 0.5, 0.24], uncovered: [0.73, 0.11, 0.11], idle: [0.55, 0.55, 0.6] };
   }, [isDark]);
   const [satellites, setSatellites] = useState([]);
+  const satellitesRef = useRef(satellites);
+  satellitesRef.current = satellites;
   const [coveragePercent, setCoveragePercent] = useState(0);
   const [timeScale, setTimeScale] = useState(3600);
+  const timeScaleRef = useRef(timeScale);
+  timeScaleRef.current = timeScale;
   const [isPortrait, setIsPortrait] = useState(window.innerHeight > window.innerWidth);
   const [selectedSatId, setSelectedSatId] = useState(null);
   const [missionMode, setMissionMode] = useState('emergency');
@@ -621,6 +625,8 @@ const SatelliteCoverageOptimiser = () => {
     setCoveragePercent(Math.round((coveredCount / groundUnits.length) * 100));
     updateMissionMetrics(elapsedSeconds);
   }, [satellites, countVisibleSats, updateMissionMetrics]);
+  const calculateCoverageRef = useRef(calculateCoverage);
+  calculateCoverageRef.current = calculateCoverage;
 
   const generateSamplePoints = () => {
     const points = [];
@@ -671,8 +677,10 @@ const SatelliteCoverageOptimiser = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    mountRef.current.innerHTML = '';
-    mountRef.current.appendChild(renderer.domElement);
+    const canvasEl = renderer.domElement;
+    canvasEl.style.cssText = 'display:block;position:absolute;inset:0;width:100%;height:100%;';
+    if (getComputedStyle(mount).position === 'static') mount.style.position = 'relative';
+    mount.replaceChildren(canvasEl);
     rendererRef.current = renderer;
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.025));
@@ -786,12 +794,12 @@ const SatelliteCoverageOptimiser = () => {
       if (earthRef.current) earthRef.current.rotation.y = elapsed * 0.4;
 
       satMeshesRef.current.forEach((mesh, id) => {
-        const sat = satellites.find(s => s.id === id);
-        if (sat) mesh.position.copy(getSatellitePosition(sat, elapsed * timeScale));
+        const sat = satellitesRef.current.find((s) => s.id === id);
+        if (sat) mesh.position.copy(getSatellitePosition(sat, elapsed * timeScaleRef.current));
       });
 
       if (elapsed - lastUpdate > 0.25) {
-        calculateCoverage(elapsed * timeScale);
+        calculateCoverageRef.current(elapsed * timeScaleRef.current);
         lastUpdate = elapsed;
 
         if (samplePointsRef.current) {
@@ -799,8 +807,8 @@ const SatelliteCoverageOptimiser = () => {
           const groundUnits = samplePositionsKmRef.current;
           for (let i = 0; i < groundUnits.length; i++) {
             let covered = false;
-            for (const sat of satellites) {
-              if (isPointCoveredBySat(groundUnits[i], getSatellitePosition(sat, elapsed * timeScale))) {
+            for (const sat of satellitesRef.current) {
+              if (isPointCoveredBySat(groundUnits[i], getSatellitePosition(sat, elapsed * timeScaleRef.current))) {
                 covered = true;
                 break;
               }
@@ -1024,15 +1032,30 @@ const SatelliteCoverageOptimiser = () => {
       window.removeEventListener('orientationchange', handleResize);
       if (typeof disposeScene === 'function') disposeScene();
     };
-  }, [initThree, handleResize, updateViewportSize]);
+    // Init once per theme. Rebuilding the tree must not dispose WebGL.
+  }, [isDark]);
 
+  // The game runtime rebuilds the tree on each state change. Keep the WebGL
+  // canvas on the new mount node so Add Satellite / edits do not drop Earth.
   useEffect(() => {
     const mount = mountRef.current;
-    if (!mount) return undefined;
+    const renderer = rendererRef.current;
+    const camera = cameraRef.current;
+    if (!mount || !renderer) return undefined;
+    if (renderer.domElement.parentNode !== mount) {
+      mount.appendChild(renderer.domElement);
+    }
+    const cw = mount.clientWidth;
+    const ch = mount.clientHeight;
+    if (cw && ch && camera) {
+      camera.aspect = cw / ch;
+      camera.updateProjectionMatrix();
+      renderer.setSize(cw, ch);
+    }
     const observer = new ResizeObserver(() => updateViewportSize());
     observer.observe(mount);
     return () => observer.disconnect();
-  }, [updateViewportSize, isPortrait]);
+  });
 
   const inputStyle = {
     width: '100%',
@@ -1091,6 +1114,7 @@ const SatelliteCoverageOptimiser = () => {
         position: 'relative',
         minHeight: 0,
         width: '100%',
+        height: '100%',
         overflow: 'hidden',
         zIndex: 0,
         background: palette.canvasWash,

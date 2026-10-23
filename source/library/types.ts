@@ -1,4 +1,4 @@
-export type ThemeName = 'space';
+export type { ThemeName } from './theme-registry.ts';
 export type ColorMode = 'light' | 'dark';
 export type ContentKind = 'posts' | 'projects' | 'readings';
 
