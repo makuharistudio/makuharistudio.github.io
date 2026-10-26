@@ -65,3 +65,14 @@ export interface MenuLink {
   footerLight: string;
   footerLightActive: string;
 }
+
+/** Theme-provided menu specification. Footer class names are theme-defined. */
+export interface MenuSpec {
+  hash: string;
+  label: string;
+  match: (path: string) => boolean;
+  /** Key used to look up icon paths from ThemeAccent (e.g. 'about') */
+  iconKey: 'about' | 'project' | 'blog' | 'reading' | 'game';
+  footerLight: string;
+  footerLightActive: string;
+}

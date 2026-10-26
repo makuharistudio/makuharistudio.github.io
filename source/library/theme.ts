@@ -1,4 +1,4 @@
-import type { ColorMode, ThemeName } from './types.ts';
+import type { ColorMode, ThemeName, MenuSpec } from './types.ts';
 import { themeRegistry } from './theme-registry.ts';
 
 const THEME_KEY = 'theme';
@@ -25,7 +25,53 @@ export interface ThemePack {
   stylesheet: (mode: ColorMode) => string;
   assets: (mode: ColorMode) => ThemeAccent;
   initialiseBackground: (container: HTMLElement, mode: ColorMode) => () => void;
+  /** Optional per-theme menu configuration. Provides iconKey + footer classes. */
+  menuSpecs?: (mode: ColorMode) => MenuSpec[];
 }
+
+/** Default menu specs (space theme behaviour). Components use these when a pack does not provide its own. */
+const DEFAULT_MENU_SPECS: MenuSpec[] = [
+  {
+    hash: '#/',
+    label: 'ABOUT',
+    match: (path) => path === '/' || path === '',
+    iconKey: 'about',
+    footerLight: 'menu-footer-light-highlight-teal',
+    footerLightActive: 'menu-footer-light-highlight-red',
+  },
+  {
+    hash: '#/projects',
+    label: 'PROJECT',
+    match: (path) => path.includes('/project'),
+    iconKey: 'project',
+    footerLight: 'menu-footer-light-highlight-teal',
+    footerLightActive: 'menu-footer-light-highlight-purple',
+  },
+  {
+    hash: '#/blog',
+    label: 'BLOG',
+    match: (path) => path.includes('/blog'),
+    iconKey: 'blog',
+    footerLight: 'menu-footer-light-highlight-teal',
+    footerLightActive: 'menu-footer-light-highlight-purple',
+  },
+  {
+    hash: '#/readings',
+    label: 'READING',
+    match: (path) => path.includes('/reading'),
+    iconKey: 'reading',
+    footerLight: 'menu-footer-light-highlight-teal',
+    footerLightActive: 'menu-footer-light-highlight-blue',
+  },
+  {
+    hash: '#/games',
+    label: 'GAME',
+    match: (path) => path.includes('/game'),
+    iconKey: 'game',
+    footerLight: 'menu-footer-light-highlight-teal',
+    footerLightActive: 'menu-footer-light-highlight-orange',
+  },
+];
 
 function packNamed(name: string): ThemePack | undefined {
   if (Object.prototype.hasOwnProperty.call(themeRegistry, name)) {
@@ -79,6 +125,14 @@ export function getThemeName(): ThemeName {
 
 export function getAccent(): ThemeAccent {
   return activeTheme.assets(currentTheme);
+}
+
+/** Returns menu specs from the active theme pack, or the default space-style specs. */
+export function getMenuSpecs(): MenuSpec[] {
+  if (activeTheme.menuSpecs) {
+    return activeTheme.menuSpecs(currentTheme);
+  }
+  return DEFAULT_MENU_SPECS;
 }
 
 export function onThemeChange(listener: (mode: ColorMode) => void): () => void {

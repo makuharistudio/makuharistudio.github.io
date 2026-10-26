@@ -1,75 +1,30 @@
 import type { MenuLink } from '../library/types.ts';
-import { getAccent, type ThemeAccent } from '../library/theme.ts';
-
-interface MenuSpec {
-  hash: string;
-  label: string;
-  match: (path: string) => boolean;
-  icon: (accent: ThemeAccent) => string;
-  iconActive: (accent: ThemeAccent) => string;
-  footerLight: string;
-  footerLightActive: string;
-}
-
-const MENU_SPECS: MenuSpec[] = [
-  {
-    hash: '#/',
-    label: 'ABOUT',
-    match: (path) => path === '/' || path === '',
-    icon: (accent) => accent.about,
-    iconActive: (accent) => accent.aboutActive,
-    footerLight: 'menu-footer-light-highlight-teal',
-    footerLightActive: 'menu-footer-light-highlight-red',
-  },
-  {
-    hash: '#/projects',
-    label: 'PROJECT',
-    match: (path) => path.includes('/project'),
-    icon: (accent) => accent.project,
-    iconActive: (accent) => accent.projectActive,
-    footerLight: 'menu-footer-light-highlight-teal',
-    footerLightActive: 'menu-footer-light-highlight-purple',
-  },
-  {
-    hash: '#/blog',
-    label: 'BLOG',
-    match: (path) => path.includes('/blog'),
-    icon: (accent) => accent.blog,
-    iconActive: (accent) => accent.blogActive,
-    footerLight: 'menu-footer-light-highlight-teal',
-    footerLightActive: 'menu-footer-light-highlight-purple',
-  },
-  {
-    hash: '#/readings',
-    label: 'READING',
-    match: (path) => path.includes('/reading'),
-    icon: (accent) => accent.reading,
-    iconActive: (accent) => accent.readingActive,
-    footerLight: 'menu-footer-light-highlight-teal',
-    footerLightActive: 'menu-footer-light-highlight-blue',
-  },
-  {
-    hash: '#/games',
-    label: 'GAME',
-    match: (path) => path.includes('/game'),
-    icon: (accent) => accent.game,
-    iconActive: (accent) => accent.gameActive,
-    footerLight: 'menu-footer-light-highlight-teal',
-    footerLightActive: 'menu-footer-light-highlight-orange',
-  },
-];
+import { getAccent, getMenuSpecs } from '../library/theme.ts';
 
 function links(): MenuLink[] {
   const accent = getAccent();
-  return MENU_SPECS.map((spec) => ({
-    hash: spec.hash,
-    label: spec.label,
-    match: spec.match,
-    icon: spec.icon(accent),
-    iconActive: spec.iconActive(accent),
-    footerLight: spec.footerLight,
-    footerLightActive: spec.footerLightActive,
-  }));
+  const specs = getMenuSpecs();
+  return specs.map((spec) => {
+    const icon = (spec.iconKey === 'about') ? accent.about :
+                 (spec.iconKey === 'project') ? accent.project :
+                 (spec.iconKey === 'blog') ? accent.blog :
+                 (spec.iconKey === 'reading') ? accent.reading :
+                 accent.game;
+    const iconActive = (spec.iconKey === 'about') ? accent.aboutActive :
+                       (spec.iconKey === 'project') ? accent.projectActive :
+                       (spec.iconKey === 'blog') ? accent.blogActive :
+                       (spec.iconKey === 'reading') ? accent.readingActive :
+                       accent.gameActive;
+    return {
+      hash: spec.hash,
+      label: spec.label,
+      match: spec.match,
+      icon,
+      iconActive,
+      footerLight: spec.footerLight,
+      footerLightActive: spec.footerLightActive,
+    };
+  });
 }
 
 function currentPath(): string {

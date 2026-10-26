@@ -82,9 +82,9 @@ export function bindPreviewExpand(): () => void {
       fitImage(img);
     };
     img.addEventListener('load', onFit);
-    img.addEventListener('click', (event) => {
+    overlay.addEventListener('click', (event) => {
+      // Close when clicking anywhere on the overlay (entire screen + image)
       event.preventDefault();
-      event.stopPropagation();
       closeOverlay();
     });
     window.addEventListener('resize', onFit);

@@ -49,7 +49,7 @@
 }
 
 :root {
-  --scrollbar-width: 4px;
+  --scrollbar-width: 4px; /* physical device metric, keep px */
   --content-font-size: 1.2rem;
 
   --title-font: 'Outfit', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Segoe UI', system-ui, sans-serif;
@@ -63,6 +63,26 @@
   --menu-footer-button-width: 15vw;
 
   --menu-header-height: 5vh;
+
+  /* Relative sizing scale. Most layout uses rem/em or multiples of these.
+     Borders and hairlines remain px as permitted. */
+  --sz-1: 0.25rem;
+  --sz-2: 0.5rem;
+  --sz-3: 0.75rem;
+  --sz-4: 1rem;
+  --sz-5: 1.25rem;
+  --sz-6: 1.5rem;
+  --sz-8: 2rem;
+
+  /* Small fixed decorative values (border-radius, outlines) may stay px. */
+  --border-radius: 2px;
+  --outline-width: 2px;
+  --outline-offset: 3px;
+
+  /* Panel geometry converted to relative units */
+  --panel-inset: 0.75rem;
+  --panel-overshoot: 0.45rem;
+  --panel-corner: 3rem;
 }
 
 :root,
@@ -93,14 +113,23 @@
   --scrollbar-thumb-color: #7eb3d4;
   --menu-footer-highlight-bg: transparent;
 
+  /* Menu footer sizing tokens are identical in light and dark to prevent size jump on toggle.
+     These are duplicated here and in the light block so stylesheet swap cannot affect metrics. */
+  --menu-footer-button-width: 15vw;
+  --menu-footer-width: calc(100vw - var(--scrollbar-width));
+
+  /* Filter button vertical/horizontal padding multipliers (base). Portrait doubles the vertical ones. */
+  --filter-pad-v: 0.18;
+  --filter-pad-v-bot: 0.22;
+  --filter-pad-h: 0.8;
+
   --panel-border-color: rgba(126, 179, 212, 0.32);
   --panel-border-color-hover: #b7d7ea;
   --panel-fill: #232e3d;
   --panel-fill-hover: #2a3648;
   --panel-line: rgba(126, 179, 212, 0.165);
   --panel-line-hover: rgba(126, 179, 212, 0.3);
-  --panel-inset: 12px;
-  --panel-overshoot: 7px;
+  /* panel geometry already declared as relative in :root; keep overrides minimal */
 
   --elevation-soft: 0 1px 2px rgba(0, 0, 0, 0.18);
   --elevation: 0 1px 2px rgba(0, 0, 0, 0.16), 0 10px 28px rgba(0, 0, 0, 0.22);
@@ -123,7 +152,7 @@
 
 
 ::-webkit-scrollbar { width: var(--scrollbar-width); height: var(--scrollbar-width); }
-::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-color); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-color); border-radius: var(--border-radius); }
 ::-webkit-scrollbar-track { background: transparent; }
 
 html {
@@ -188,8 +217,8 @@ a:hover { color: var(--content-font-color-hover); }
 a:focus-visible,
 button:focus-visible,
 .experience-business-link:focus-visible {
-  outline: 2px solid var(--accent-strong);
-  outline-offset: 3px;
+  outline: var(--outline-width) solid var(--accent-strong);
+  outline-offset: var(--outline-offset);
 }
 
 nav {
@@ -217,7 +246,7 @@ nav {
   pointer-events: none;
   background-image: url('background/images/grain.svg');
   background-repeat: repeat;
-  background-size: 160px 160px;
+  background-size: 10rem 10rem;
 }
 
 body:not(:has(#game-root)) #bg-space > * {
@@ -233,7 +262,7 @@ content {
   background: var(--text-background);
   border: var(--border);
   box-shadow: var(--elevation);
-  border-radius: 2px;
+  border-radius: var(--border-radius);
   padding-top: 0.5rem;
   padding-bottom: 1.25rem;
 }
@@ -253,10 +282,10 @@ content {
   right: var(--content-font-size);
   position: fixed;
   margin: 0;
-  padding: 0.35rem 0.15rem;
+  padding: var(--sz-2) var(--sz-1);
   display: grid;
   grid-template-columns: repeat(5, max-content);
-  column-gap: 1.6rem;
+  column-gap: var(--sz-6);
   z-index: 9999;
 }
 
@@ -330,7 +359,7 @@ content {
 
 #menu-footer {
   margin: 0;
-  padding: 0.35rem 0 0.5rem;
+  padding: var(--sz-2) 0 var(--sz-3);
   width: var(--menu-footer-width);
   position: fixed;
   left: 0;
@@ -342,7 +371,7 @@ content {
   z-index: 998;
   background: color-mix(in srgb, var(--text-background) 92%, transparent);
   border-top: 1px solid var(--border-color);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(0.5rem);
 }
 
 #menu-footer a {
@@ -398,7 +427,14 @@ content {
 .menu-footer-button:has(img[alt="READING"])::after { content: '読'; }
 .menu-footer-button:has(img[alt="GAME"])::after { content: '遊'; }
 
-#menu-footer a:hover .menu-footer-button::after,
+#menu-footer a:hover .menu-footer-button::after {
+  background-color: var(--accent-soft);
+  border-color: var(--accent-strong);
+  color: var(--accent-strong);
+}
+
+/* Active/selected footer button uses the same selector structure as light for size stability.
+   Uses theme accent (no hanko red in dark). Line between circle and label untouched. */
 #menu-footer a:has(h6.menu-footer) .menu-footer-button::after {
   background-color: var(--accent-soft);
   border-color: var(--accent-strong);
@@ -501,8 +537,8 @@ content h4,
 content h5,
 content h6,
 content p {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding-left: var(--sz-5);
+  padding-right: var(--sz-5);
 }
 
 content .md-gap {
@@ -602,7 +638,7 @@ content img {
   margin-left: auto;
   margin-right: auto;
   border: var(--border);
-  border-radius: 2px;
+  border-radius: var(--border-radius);
 }
 
 content code {
@@ -611,14 +647,14 @@ content code {
   background: var(--inline-code-bg);
   color: var(--inline-code-color);
   padding: 0.08em 0.35em;
-  border-radius: 2px;
+  border-radius: var(--border-radius);
 }
 
 content .markdown-body > ul > li > pre.md-flush,
 content .markdown-body > ol > li > pre.md-flush {
   box-sizing: border-box;
-  width: calc(100% + 40px + 1rem);
-  margin-left: -40px;
+  width: calc(100% + 2.5rem + 1rem);
+  margin-left: -2.5rem;
   margin-right: -1rem;
 }
 
@@ -634,7 +670,87 @@ content pre code {
   color: var(--code-block-font-color);
   background-color: var(--code-block-background);
   border: var(--border);
-  border-radius: 2px;
+  border-radius: var(--border-radius);
+}
+
+/* Copy-to-clipboard for code blocks.
+   The wrapper is produced by the shared renderer in library/markdown.ts.
+   The wrapper is the relative container AND carries the visible border/background
+   so the absolutely-positioned copy button is guaranteed to be inside the
+   bordered code block (not outside it) in every theme. */
+content .code-block {
+  position: relative;
+  border: var(--border);
+  background-color: var(--code-block-background);
+  border-radius: var(--border-radius);
+}
+
+/* Inner pre/code become transparent and borderless; they only provide padding and scroll. */
+content .code-block pre {
+  margin: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+content .code-block pre code {
+  display: block;
+  margin: 0;
+  padding: 1rem 3.25rem 1rem 1.15rem; /* right side reserves room for the button */
+  overflow-x: auto;
+  font-family: ui-monospace, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.9em;
+  line-height: 1.55;
+  color: var(--code-block-font-color);
+  background: transparent;
+  border: none;
+}
+
+content .code-block .code-copy-btn {
+  position: absolute;
+  top: var(--sz-2);
+  right: var(--sz-2);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+content .code-block .code-copy-btn:hover,
+content .code-block .code-copy-btn:focus-visible {
+  opacity: 1;
+}
+content .code-block .code-copy-btn svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: var(--code-block-font-color);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+content .code-block .code-copy-status {
+  position: absolute;
+  top: calc(var(--sz-2) + 0.05rem);
+  right: 2.35rem;
+  font-size: 0.78em;
+  font-family: var(--content-font);
+  color: var(--code-block-font-color);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+content .code-block .code-copy-status.visible {
+  opacity: 0.95;
+  pointer-events: none;
 }
 
 content pre code::-webkit-scrollbar {
@@ -735,9 +851,9 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-scrollb
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
-  gap: 0.4rem;
-  margin: 0 1rem 2rem;
-  padding: 0.35rem 0.15rem 0.55rem;
+  gap: var(--sz-2);
+  margin: 0 var(--sz-4) var(--sz-6);
+  padding: var(--sz-2) var(--sz-1) var(--sz-3);
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
@@ -771,13 +887,13 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-scrollb
   letter-spacing: 0.04em;
   background-color: var(--filter-button-background);
   border: var(--border);
-  border-radius: 2px;
+  border-radius: var(--border-radius);
   margin: 0;
   padding:
-    calc(var(--content-font-size) * 0.18)
-    calc(var(--content-font-size) * 0.8)
-    calc(var(--content-font-size) * 0.22)
-    calc(var(--content-font-size) * 0.8);
+    calc(var(--content-font-size) * var(--filter-pad-v))
+    calc(var(--content-font-size) * var(--filter-pad-h))
+    calc(var(--content-font-size) * var(--filter-pad-v-bot))
+    calc(var(--content-font-size) * var(--filter-pad-h));
   transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
@@ -1014,7 +1130,7 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-scrollb
   border: var(--experience-hairline) solid var(--experience-card-border);
   border-left: var(--experience-line-width) solid var(--experience-line);
   padding: 0.62rem 0.75rem 0.7rem;
-  border-radius: 0 2px 2px 0;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 
 .experience-role-card-current {
@@ -1147,6 +1263,16 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-scrollb
   }
 
   .experience-veil-dates { justify-self: start; }
+
+  /* Mobile portrait (taller than wide): double the vertical padding inside the button border.
+     Base padding remains unchanged in all other viewports. */
+  .filter button {
+    padding:
+      calc(var(--content-font-size) * (var(--filter-pad-v) * 2))
+      calc(var(--content-font-size) * var(--filter-pad-h))
+      calc(var(--content-font-size) * (var(--filter-pad-v-bot) * 2))
+      calc(var(--content-font-size) * var(--filter-pad-h));
+  }
 }
 
 /* ---------- Landscape and larger ---------- */
@@ -1242,7 +1368,7 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-scrollb
 .panel-corners {
   position: relative;
   margin: 0;
-  padding: 6px;
+  padding: var(--sz-1);
   z-index: 2;
 }
 
@@ -1268,7 +1394,7 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-scrollb
     calc(var(--panel-inset) - var(--panel-overshoot)) calc(100% - var(--panel-inset));
   background-repeat: no-repeat;
   height: 100%;
-  border-radius: 2px;
+  border-radius: var(--border-radius);
   box-shadow: var(--elevation-soft);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -1286,15 +1412,15 @@ a:hover .panel-background {
 
 .panel-content {
   position: relative;
-  padding: 1.05rem 1.1rem;
-  min-width: 120px;
-  min-height: 120px;
+  padding: var(--sz-5) var(--sz-5);
+  min-width: 7.5rem;
+  min-height: 7.5rem;
   z-index: 4;
 }
 
 #certification-list .panel-content {
   min-height: 0;
-  padding: 0.55rem 0.9rem 0.6rem;
+  padding: var(--sz-3) calc(var(--sz-4) * 0.9) var(--sz-3);
 }
 
 #certification-list h3,
@@ -1312,19 +1438,19 @@ a:hover .panel-background {
 
 .panel-corner {
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: var(--panel-corner);
+  height: var(--panel-corner);
   z-index: 3;
   border: none;
   margin: 0;
   padding: 0;
   background: url('accent/panel-dark-corneredge.svg') no-repeat center center;
-  background-size: 48px 48px;
+  background-size: var(--panel-corner) var(--panel-corner);
 }
 
 a:hover .panel-corner {
   background: url('accent/panel-dark-corneredge-hover.svg') no-repeat center center;
-  background-size: 48px 48px;
+  background-size: var(--panel-corner) var(--panel-corner);
 }
 
 .panel-corner-top-left { top: 0; left: 0; }
@@ -1406,4 +1532,14 @@ content.content-no-bg > .panel-corners:last-child a:hover {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Calm opacity fade on main content when navigating (pure CSS, uses existing #outlet children) */
+@keyframes qp-content-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#outlet > *:not(br) {
+  animation: qp-content-fade 0.18s ease both;
 }

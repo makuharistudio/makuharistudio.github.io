@@ -562,12 +562,58 @@ function renderBlock(block: Block): HTMLElement {
   }
 
   if (block.type === 'pre') {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
     const pre = document.createElement('pre');
     if (block.flush) pre.className = 'md-flush';
     const code = document.createElement('code');
-    code.textContent = block.text ?? '';
+    const codeText = block.text ?? '';
+    code.textContent = codeText;
     pre.appendChild(code);
-    return pre;
+
+    // Copy button (top-right within code block). Works for all themes.
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.setAttribute('aria-label', 'Copy code to clipboard');
+    btn.innerHTML = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M2 4.5A1.5 1.5 0 0 1 3.5 3H11a1 1 0 0 1 1 1v9.5A1.5 1.5 0 0 1 10.5 15H3.5A1.5 1.5 0 0 1 2 13.5z"/><path d="M5 1.5A1.5 1.5 0 0 1 6.5 0H13a1 1 0 0 1 1 1v9.5A1.5 1.5 0 0 1 12.5 12H6.5A1.5 1.5 0 0 1 5 10.5z"/></svg>';
+
+    const status = document.createElement('span');
+    status.className = 'code-copy-status';
+    status.textContent = '';
+
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      try {
+        await navigator.clipboard.writeText(codeText);
+      } catch {
+        // Fallback for older browsers / restricted contexts
+        const ta = document.createElement('textarea');
+        ta.value = codeText;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { document.execCommand('copy'); } catch { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+      status.textContent = 'Copied!';
+      status.classList.add('visible');
+      window.setTimeout(() => {
+        status.classList.remove('visible');
+        // Clear after fade completes to avoid layout shift on re-use
+        window.setTimeout(() => {
+          if (!status.classList.contains('visible')) status.textContent = '';
+        }, 200);
+      }, 5000);
+    });
+
+    wrapper.appendChild(btn);
+    wrapper.appendChild(status);
+    wrapper.appendChild(pre);
+    return wrapper;
   }
 
   if (block.type === 'ul' || block.type === 'ol') {

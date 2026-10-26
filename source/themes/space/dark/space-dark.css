@@ -507,6 +507,58 @@ content pre code {
   border: var(--border);
 }
 
+/* Copy-to-clipboard for code blocks (applies across themes via markup; styles per-theme) */
+content .code-block {
+  position: relative;
+}
+content .code-block .code-copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+content .code-block .code-copy-btn:hover,
+content .code-block .code-copy-btn:focus-visible {
+  opacity: 1;
+}
+content .code-block .code-copy-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--code-block-font-color);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+content .code-block .code-copy-status {
+  position: absolute;
+  top: 8px;
+  right: 38px;
+  font-size: 0.78em;
+  font-family: var(--content-font);
+  color: var(--code-block-font-color);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+content .code-block .code-copy-status.visible {
+  opacity: 0.95;
+  pointer-events: none;
+}
+
 content pre code::-webkit-scrollbar { 
   display: block;
   height: var(--scrollbar-width); 
