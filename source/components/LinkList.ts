@@ -19,7 +19,7 @@ const LINKS: LinkItem[] = [
     light: `${LOGO}/x-black.svg`,
     lightActive: `${LOGO}/x-blue.svg`,
     dark: `${LOGO}/x-white.svg`,
-    darkActive: `${LOGO}/x-teal.svg`,
+    darkActive: `${LOGO}/x-blue.svg`,
   },
   {
     name: 'GITHUB',
@@ -27,7 +27,7 @@ const LINKS: LinkItem[] = [
     light: `${LOGO}/github-black.svg`,
     lightActive: `${LOGO}/github-blue.svg`,
     dark: `${LOGO}/github-white.svg`,
-    darkActive: `${LOGO}/github-teal.svg`,
+    darkActive: `${LOGO}/github-blue.svg`,
   },
   // {
   //   name: 'LINKEDIN',

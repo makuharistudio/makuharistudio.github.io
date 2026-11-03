@@ -15,6 +15,7 @@
 ## Hierarchy
 - /source/assets/blog, /projects, /readings
 - /source/assets/theme — shared only: fonts, logos, avatars, favicon. No accent, no background.
+  - Reminder: Place all theme font files (woff2, ttf, etc.) in /source/assets/theme/font. Do not duplicate fonts inside individual theme folders (e.g., source/themes/*/fonts). This prevents duplicate files across themes.
 - /source/games (TS modules + assets)
 - /source/markdown/posts, /projects, /readings
 - /source/library/ (shared: markdown parser/renderer, router, theme loader, types, catalog generator)
