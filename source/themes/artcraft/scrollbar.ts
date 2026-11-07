@@ -9,6 +9,9 @@ const SCROLLBAR_ID = 'artcraft-scrollbar';
 
 let rafId: number | null = null;
 let lastProgress = -1;
+let dragging = false;
+let dragPointerId: number | null = null;
+let hovering = false;
 
 function createElement(tag: string, className: string): HTMLElement {
   const el = document.createElement(tag);
@@ -131,6 +134,46 @@ function getCurrentScroll(): number {
   return window.scrollY || document.documentElement.scrollTop || 0;
 }
 
+function getViewportFraction(): number {
+  const doc = document.documentElement;
+  const scrollH = doc.scrollHeight;
+  const clientH = doc.clientHeight;
+  const max = Math.max(1, scrollH - clientH);
+  return Math.max(0, Math.min(1, clientH / max));
+}
+
+function applyScrollToFraction(root: HTMLElement, f: number): void {
+  f = Math.max(0, Math.min(1, f));
+
+  const doc = document.documentElement;
+  const maxScroll = Math.max(1, doc.scrollHeight - doc.clientHeight);
+  const targetScrollTop = f * maxScroll;
+
+  window.scrollTo(0, targetScrollTop);
+
+  lastProgress = f;
+
+  updateGreyRuler(root, targetScrollTop);
+  updateYearLabel(root);
+
+  const topPx = `${visibleTopForFraction(f)}px`;
+
+  const currentEl = root.querySelector<HTMLElement>('.as-current');
+  if (currentEl) {
+    currentEl.style.top = topPx;
+  }
+
+  const pctEl = root.querySelector<HTMLElement>('.as-percent');
+  if (pctEl) {
+    pctEl.style.top = topPx;
+    pctEl.style.transform = 'translateY(7px)';
+    const num = String(Math.round(f * 100)).padStart(3, '0');
+    pctEl.textContent = num + '%';
+  }
+
+  updateRange(root);
+}
+
 function updateGreyRuler(root: HTMLElement, scrollTop: number): void {
   root.querySelectorAll<HTMLElement>('.as-dash, .as-num').forEach((el) => {
     const fStr = el.dataset.f;
@@ -190,6 +233,54 @@ function updateYearLabel(root: HTMLElement): void {
   yl.style.top = `${visibleTopForFraction(y.frac)}px`;
 }
 
+function updateRange(root: HTMLElement): void {
+  const fill = root.querySelector<HTMLElement>('.as-range-fill');
+  const topL = root.querySelector<HTMLElement>('.as-range-top');
+  const botL = root.querySelector<HTMLElement>('.as-range-bottom');
+  if (!fill || !topL || !botL) return;
+
+  const info = getScrollInfo();
+  const fits = contentFitsViewport();
+  const progress = fits ? 1 : info.progress;
+  let vFrac = fits ? 1 : getViewportFraction();
+
+  let topF: number;
+  let botF: number;
+
+  if (fits) {
+    // Entire content is visible: range covers the full ruler span.
+    topF = 0;
+    botF = 1;
+  } else {
+    // Viewport range centered on the current position (blue line acts as middle reference).
+    topF = progress - vFrac / 2;
+    botF = progress + vFrac / 2;
+
+    // Clamp the window to [0,1] while preserving size when possible.
+    // This ensures top never goes above 0 and bottom never exceeds 1.
+    if (topF < 0) {
+      const shift = -topF;
+      topF = 0;
+      botF = Math.min(1, botF + shift);
+    }
+    if (botF > 1) {
+      const shift = botF - 1;
+      botF = 1;
+      topF = Math.max(0, topF - shift);
+    }
+  }
+
+  const topPx = `${visibleTopForFraction(topF)}px`;
+  const botPx = `${visibleTopForFraction(botF)}px`;
+  const h = Math.max(1, visibleTopForFraction(botF) - visibleTopForFraction(topF));
+  const heightPx = `${h}px`;
+
+  topL.style.top = topPx;
+  botL.style.top = botPx;
+  fill.style.top = topPx;
+  fill.style.height = heightPx;
+}
+
 function update(root: HTMLElement): void {
   const info = getScrollInfo();
   const progress = info.progress;
@@ -201,6 +292,9 @@ function update(root: HTMLElement): void {
 
   // Year label is dynamic and must track scroll even when blue progress is stable.
   updateYearLabel(root);
+
+  // Range decoration (if active) must track the current viewport range on scroll.
+  updateRange(root);
 
   if (Math.abs(displayProgress - lastProgress) < 0.0005) {
     return;
@@ -264,6 +358,13 @@ export function bindArtcraftScrollbar(): () => void {
   yearLabel.textContent = '';
   root.appendChild(yearLabel);
 
+  // Hover-activated viewport range decoration: translucent fill + top/bottom boundary lines.
+  // Only visible on hover over the scrollbar area. Positioned/updated in updateRange.
+  const rangeFill = createElement('div', 'as-range-fill');
+  const rangeTop = createElement('div', 'as-range-top');
+  const rangeBottom = createElement('div', 'as-range-bottom');
+  root.append(rangeFill, rangeTop, rangeBottom);
+
   document.body.appendChild(root);
 
   // Enable clicks/taps on the ruler area (CSS defaults to none so it does not
@@ -283,42 +384,88 @@ export function bindArtcraftScrollbar(): () => void {
     // Primary button for mouse; all events for touch/pen.
     if (e.pointerType === 'mouse' && e.button !== 0) return;
 
-    const clientY = e.clientY;
     const start = getHeaderOffset();
     const visSpan = getVisibleRulerSpan();
-    let f = (clientY - start) / Math.max(1, visSpan);
+    let f = (e.clientY - start) / Math.max(1, visSpan);
     f = Math.max(0, Math.min(1, f));
 
-    // Map visible-ruler fraction (the area used for blue line and %) to scroll progress.
-    // This makes a click at the visual 40% position on the ruler scroll to 40%.
-    const doc = document.documentElement;
-    const maxScroll = Math.max(1, doc.scrollHeight - doc.clientHeight);
-    const targetScrollTop = f * maxScroll;
+    applyScrollToFraction(root, f);
 
-    window.scrollTo(0, targetScrollTop);
+    // Begin drag tracking for this pointer.
+    dragging = true;
+    dragPointerId = e.pointerId;
+    root.setPointerCapture(e.pointerId);
 
-    // Force immediate correct visuals for blue line, glow position, percentage,
-    // and ruler marks so feedback matches the clicked position without waiting
-    // for the scroll position to be reflected in subsequent rAF/scroll events.
-    lastProgress = f;
+    // Show range decoration immediately during active interaction (finger "hover" during drag).
+    hovering = true;
+    root.classList.add('is-hovering');
+  };
 
-    updateGreyRuler(root, targetScrollTop);
-    updateYearLabel(root);
+  const onPointerMove = (e: PointerEvent): void => {
+    if (!dragging || dragPointerId !== e.pointerId) return;
 
-    const topPx = `${visibleTopForFraction(f)}px`;
+    const start = getHeaderOffset();
+    const visSpan = getVisibleRulerSpan();
+    let f = (e.clientY - start) / Math.max(1, visSpan);
+    f = Math.max(0, Math.min(1, f));
 
-    const currentEl = root.querySelector<HTMLElement>('.as-current');
-    if (currentEl) {
-      currentEl.style.top = topPx;
+    applyScrollToFraction(root, f);
+  };
+
+  const onPointerUp = (e: PointerEvent): void => {
+    if (!dragging || dragPointerId !== e.pointerId) return;
+
+    dragging = false;
+    dragPointerId = null;
+    try {
+      root.releasePointerCapture(e.pointerId);
+    } catch {
+      /* ignore */
     }
+  };
 
+  const onPointerLeave = (e: PointerEvent): void => {
+    // End drag if pointer leaves while dragging (touch or mouse).
+    if (dragging && dragPointerId === e.pointerId) {
+      dragging = false;
+      dragPointerId = null;
+      try {
+        root.releasePointerCapture(e.pointerId);
+      } catch {
+        /* ignore */
+      }
+    }
+  };
+
+  const onPointerEnter = (): void => {
+    hovering = true;
+    root.classList.add('is-hovering');
+
+    // Immediately calculate the current viewport's top/bottom/middle (blue)
+    // relative to content and draw the range + ensure blue line position.
+    const info = getScrollInfo();
+    const fits = contentFitsViewport();
+    const displayF = fits ? 1 : info.progress;
+
+    // Force blue line and percent to current middle immediately.
+    const topPx = `${visibleTopForFraction(displayF)}px`;
+    const currentEl = root.querySelector<HTMLElement>('.as-current');
+    if (currentEl) currentEl.style.top = topPx;
     const pctEl = root.querySelector<HTMLElement>('.as-percent');
     if (pctEl) {
       pctEl.style.top = topPx;
       pctEl.style.transform = 'translateY(7px)';
-      const num = String(Math.round(f * 100)).padStart(3, '0');
+      const num = String(info.percent).padStart(3, '0');
       pctEl.textContent = num + '%';
     }
+
+    // Draw range with blue as the middle reference (clamped correctly).
+    updateRange(root);
+  };
+
+  const onPointerLeaveHover = (): void => {
+    hovering = false;
+    root.classList.remove('is-hovering');
   };
 
   // Initial paint
@@ -327,6 +474,11 @@ export function bindArtcraftScrollbar(): () => void {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize);
   root.addEventListener('pointerdown', onPointerDown);
+  root.addEventListener('pointermove', onPointerMove);
+  root.addEventListener('pointerup', onPointerUp);
+  root.addEventListener('pointerleave', onPointerLeave);
+  root.addEventListener('pointerenter', onPointerEnter);
+  root.addEventListener('pointerleave', onPointerLeaveHover);
 
   const outlet = document.getElementById('outlet') || document.body;
   const mo = new MutationObserver(() => {
@@ -343,8 +495,16 @@ export function bindArtcraftScrollbar(): () => void {
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', onResize);
     root.removeEventListener('pointerdown', onPointerDown);
+    root.removeEventListener('pointermove', onPointerMove);
+    root.removeEventListener('pointerup', onPointerUp);
+    root.removeEventListener('pointerleave', onPointerLeave);
+    root.removeEventListener('pointerenter', onPointerEnter);
+    root.removeEventListener('pointerleave', onPointerLeaveHover);
     mo.disconnect();
     root.remove();
+    dragging = false;
+    dragPointerId = null;
+    hovering = false;
     lastProgress = -1;
   };
 }

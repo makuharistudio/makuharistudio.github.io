@@ -1796,6 +1796,63 @@ content.content-no-bg > .panel-corners:last-child a:hover {
   opacity: 0.85;
 }
 
+/* Viewport range decoration (hover only).
+   Two boundary lines + translucent fill between them.
+   Layering inside the scrollbar (back to front):
+     0: range background box (furthest back)
+     1: ruler dashes + numbers + year label
+     2: range boundary lines + blue current line (and percent)
+   The range box is more transparent so ruler and blue remain clear. */
+.artcraft-scrollbar .as-range-fill,
+.artcraft-scrollbar .as-range-top,
+.artcraft-scrollbar .as-range-bottom {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+}
+
+/* Shown state on hover: lines are solid, box is very translucent. */
+.artcraft-scrollbar.is-hovering .as-range-fill {
+  opacity: 0.055;
+  transition: opacity 80ms ease-in;
+}
+.artcraft-scrollbar.is-hovering .as-range-top,
+.artcraft-scrollbar.is-hovering .as-range-bottom {
+  opacity: 1;
+  transition: opacity 80ms ease-in;
+}
+
+/* Range background box - furthest back (z 0). More transparent. */
+.artcraft-scrollbar .as-range-fill {
+  left: 32px;
+  width: 150px;
+  background: #676667;
+  z-index: 0;
+}
+
+/* Ruler dashes, numbers, and year label sit above the range box (z 1). */
+.artcraft-scrollbar .as-dash,
+.artcraft-scrollbar .as-num,
+.artcraft-scrollbar .as-year {
+  z-index: 1;
+}
+
+/* Range boundary lines (top/bottom) are "scrollbar lines" above the ruler (z 2). */
+.artcraft-scrollbar .as-range-top,
+.artcraft-scrollbar .as-range-bottom {
+  height: 1px;
+  background: #676667;
+  width: 100px;
+  z-index: 2;
+}
+
+/* Blue current indicator (and its glow/percent) is also a scrollbar line, above ruler (z 2). */
+.artcraft-scrollbar .as-current,
+.artcraft-scrollbar .as-percent {
+  z-index: 2;
+}
+
 /* Hide when game canvas takes over */
 body:has(#game-root) .artcraft-scrollbar {
   display: none;
