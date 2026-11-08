@@ -15,6 +15,7 @@ import type { MenuSpec } from '../../library/types.ts';
 import { bindFilterScroll } from './filter-scroll.ts';
 import { bindPreviewExpand } from './preview-expand.ts';
 import { bindArtcraftScrollbar } from './scrollbar.ts';
+import { bindScrollFade } from './scroll-fade.ts';
 
 const NAME = 'artcraft';
 
@@ -103,10 +104,12 @@ export const artcraftTheme: ThemePack = {
     const stopFilters = bindFilterScroll();
     const stopPreview = bindPreviewExpand();
     const stopScrollbar = bindArtcraftScrollbar();
+    const stopScrollFade = bindScrollFade();
     return () => {
       stopFilters();
       stopPreview();
       stopScrollbar();
+      stopScrollFade();
     };
   },
 };
