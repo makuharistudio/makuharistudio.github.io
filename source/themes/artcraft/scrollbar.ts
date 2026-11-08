@@ -69,6 +69,14 @@ function getPreviewListContainer(): HTMLElement | null {
   );
 }
 
+/** Temporarily force a specific transition duration on the grey markers. */
+function setMarkerTransition(root: HTMLElement, durationMs: number): void {
+  const ms = `${durationMs}ms`;
+  root.querySelectorAll<HTMLElement>('.as-dash, .as-num').forEach((el) => {
+    el.style.transition = `top ${ms} cubic-bezier(0.22, 1, 0.36, 1)`;
+  });
+}
+
 function computeVisibleYear(): { text: string; frac: number } | null {
   const list = getPreviewListContainer();
   if (!list) return null;
@@ -414,8 +422,13 @@ export function bindArtcraftScrollbar(): () => void {
   };
 
   const onPointerDown = (e: PointerEvent): void => {
-    // Primary button for mouse; all events for touch/pen.
     if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+    // Disable slow transition so range lines track the blue line immediately during drag.
+    const rangeEls = root.querySelectorAll<HTMLElement>('.as-range-fill, .as-range-top, .as-range-bottom');
+    rangeEls.forEach((el) => {
+      el.style.transition = 'none';
+    });
 
     const start = getHeaderOffset();
     const visSpan = getVisibleRulerSpan();
@@ -428,11 +441,9 @@ export function bindArtcraftScrollbar(): () => void {
     dragPointerId = e.pointerId;
     root.setPointerCapture(e.pointerId);
 
-    // Treat drag as hover: restretch grey markers onto viewport ruler.
     if (!hovering) {
       hovering = true;
       root.classList.add('is-hovering');
-      buildRuler(root);
     }
   };
 
@@ -457,6 +468,12 @@ export function bindArtcraftScrollbar(): () => void {
     } catch {
       /* ignore */
     }
+
+    // Restore the slow transition for hover enter/leave animations.
+    const rangeEls = root.querySelectorAll<HTMLElement>('.as-range-fill, .as-range-top, .as-range-bottom');
+    rangeEls.forEach((el) => {
+      el.style.transition = '';
+    });
   };
 
   const onPointerLeave = (e: PointerEvent): void => {
@@ -476,14 +493,23 @@ export function bindArtcraftScrollbar(): () => void {
     hovering = true;
     root.classList.add('is-hovering');
 
-    // Rebuild ruler so grey markers restretch across the viewport-height ruler.
-    buildRuler(root);
+    // Apply the 2500ms transition to the existing markers.
+    setMarkerTransition(root, 2500);
+
+    // Update existing markers in place (do not rebuild).
+    const scrollTop = getCurrentScroll();
+    root.querySelectorAll<HTMLElement>('.as-dash, .as-num').forEach((el) => {
+      const fStr = el.dataset.f;
+      if (fStr == null) return;
+      const f = parseFloat(fStr);
+      if (isNaN(f)) return;
+      el.style.top = `${rulerTopForFraction(f, scrollTop)}px`;
+    });
 
     const info = getScrollInfo();
     const fits = contentFitsViewport();
     const displayF = fits ? 1 : info.progress;
 
-    // Position blue + percent using the hover (viewport) ruler.
     const topPx = `${hoverTopForFraction(displayF)}px`;
     const currentEl = root.querySelector<HTMLElement>('.as-current');
     if (currentEl) currentEl.style.top = topPx;
@@ -499,17 +525,27 @@ export function bindArtcraftScrollbar(): () => void {
   };
 
   const onPointerLeaveHover = (): void => {
-    // Rebuild while transition rule is still active so the marker tops animate
-    // back from the hover (viewport) ruler to the full-content positions.
-    buildRuler(root);
+    // Apply the 3000ms transition before changing positions.
+    setMarkerTransition(root, 2500);
 
-    // Allow the top transition (now 3s) to play, then drop the hover state.
+    // Update existing markers in place so they animate back out.
+    const scrollTop = getCurrentScroll();
+    root.querySelectorAll<HTMLElement>('.as-dash, .as-num').forEach((el) => {
+      const fStr = el.dataset.f;
+      if (fStr == null) return;
+      const f = parseFloat(fStr);
+      if (isNaN(f)) return;
+      el.style.top = `${rulerTopForFraction(f, scrollTop)}px`;
+    });
+
     setTimeout(() => {
       hovering = false;
       root.classList.remove('is-hovering');
-      // Ensure final positions are correct for non-hover document ruler.
+      root.querySelectorAll<HTMLElement>('.as-dash, .as-num').forEach((el) => {
+        el.style.transition = '';
+      });
       scheduleUpdate(root);
-    }, 3000);
+    }, 2500);
   };
 
   // Initial paint
