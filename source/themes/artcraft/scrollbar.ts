@@ -117,6 +117,30 @@ function getVisibleRulerSpan(): number {
   return Math.max(1, window.innerHeight - start);
 }
 
+/** Small fixed buffer (px) so 0/100 labels remain fully visible when grey markers
+ *  are restretched across viewport height during hover. */
+const HOVER_LABEL_BUFFER = 10;
+
+function getHoverRulerSpan(): number {
+  const start = getHeaderOffset();
+  return Math.max(1, window.innerHeight - start - HOVER_LABEL_BUFFER * 2);
+}
+
+function hoverTopForFraction(f: number): number {
+  const start = getHeaderOffset();
+  return start + HOVER_LABEL_BUFFER + f * getHoverRulerSpan();
+}
+
+/** Map fraction [0,1] to a top pixel value inside the scrollbar container.
+ *  Non-hover: returns position relative to current document scroll (markers move with content).
+ *  Hover: returns fixed position on the viewport-height ruler (buffered). */
+function rulerTopForFraction(f: number, scrollTop: number): number {
+  if (hovering) {
+    return hoverTopForFraction(f);
+  }
+  return documentTopForFraction(f) - scrollTop;
+}
+
 function documentTopForFraction(f: number): number {
   return getHeaderOffset() + f * getDocumentRulerSpan();
 }
@@ -156,7 +180,10 @@ function applyScrollToFraction(root: HTMLElement, f: number): void {
   updateGreyRuler(root, targetScrollTop);
   updateYearLabel(root);
 
-  const topPx = `${visibleTopForFraction(f)}px`;
+  // Blue/percent follow the same ruler logic as grey marks when hovered.
+  const topPx = hovering
+    ? `${hoverTopForFraction(f)}px`
+    : `${visibleTopForFraction(f)}px`;
 
   const currentEl = root.querySelector<HTMLElement>('.as-current');
   if (currentEl) {
@@ -166,7 +193,7 @@ function applyScrollToFraction(root: HTMLElement, f: number): void {
   const pctEl = root.querySelector<HTMLElement>('.as-percent');
   if (pctEl) {
     pctEl.style.top = topPx;
-    pctEl.style.transform = 'translateY(7px)';
+    pctEl.style.transform = 'translateY(0.4375rem)';
     const num = String(Math.round(f * 100)).padStart(3, '0');
     pctEl.textContent = num + '%';
   }
@@ -175,46 +202,47 @@ function applyScrollToFraction(root: HTMLElement, f: number): void {
 }
 
 function updateGreyRuler(root: HTMLElement, scrollTop: number): void {
+  // While hovered the grey markers are fixed on the viewport ruler (restretched).
+  // Do not move them with scroll during hover.
+  if (hovering) return;
+
   root.querySelectorAll<HTMLElement>('.as-dash, .as-num').forEach((el) => {
     const fStr = el.dataset.f;
     if (fStr == null) return;
     const f = parseFloat(fStr);
     if (isNaN(f)) return;
-    el.style.top = `${documentTopForFraction(f) - scrollTop}px`;
+    el.style.top = `${rulerTopForFraction(f, scrollTop)}px`;
   });
 }
 
 /** Build the 5% ruler: long dashes + labels at 0,5,10,...,100; short dashes at 2.5,7.5,...
- *  Positions are computed in document space (so 0-100 span the full scroll range after header offset).
- *  When attached, they are placed relative to the current scroll so the ruler travels with the content.
+ *  Non-hover: positions are document-space relative to scroll (markers travel with content).
+ *  Hover: positions are computed against the viewport-height ruler (restretched 0-100).
  */
 function buildRuler(container: HTMLElement): void {
-  // Remove any previous ruler marks (dashes, numbers) so we can rebuild on resize/content change.
   container.querySelectorAll('.as-dash, .as-num').forEach((el) => el.remove());
 
   const scrollTop = getCurrentScroll();
 
-  // Long dashes and numbers every 5%
   for (let p = 0; p <= 100; p += 5) {
     const f = p / 100;
     const dash = createElement('div', 'as-dash as-dash-long');
     dash.dataset.f = String(f);
-    dash.style.top = `${documentTopForFraction(f) - scrollTop}px`;
+    dash.style.top = `${rulerTopForFraction(f, scrollTop)}px`;
     container.appendChild(dash);
 
     const num = createElement('div', 'as-num');
     num.dataset.f = String(f);
-    num.style.top = `${documentTopForFraction(f) - scrollTop}px`;
+    num.style.top = `${rulerTopForFraction(f, scrollTop)}px`;
     num.textContent = String(p);
     container.appendChild(num);
   }
 
-  // Short dashes (half length) at the intermediate 2.5% offsets
   for (let p = 2.5; p < 100; p += 5) {
     const f = p / 100;
     const dash = createElement('div', 'as-dash as-dash-short');
     dash.dataset.f = String(f);
-    dash.style.top = `${documentTopForFraction(f) - scrollTop}px`;
+    dash.style.top = `${rulerTopForFraction(f, scrollTop)}px`;
     container.appendChild(dash);
   }
 }
@@ -230,7 +258,10 @@ function updateYearLabel(root: HTMLElement): void {
     return;
   }
   yl.textContent = y.text;
-  yl.style.top = `${visibleTopForFraction(y.frac)}px`;
+  // Year label follows the same ruler as blue/range: viewport ruler on hover.
+  yl.style.top = hovering
+    ? `${hoverTopForFraction(y.frac)}px`
+    : `${visibleTopForFraction(y.frac)}px`;
 }
 
 function updateRange(root: HTMLElement): void {
@@ -248,16 +279,12 @@ function updateRange(root: HTMLElement): void {
   let botF: number;
 
   if (fits) {
-    // Entire content is visible: range covers the full ruler span.
     topF = 0;
     botF = 1;
   } else {
-    // Viewport range centered on the current position (blue line acts as middle reference).
     topF = progress - vFrac / 2;
     botF = progress + vFrac / 2;
 
-    // Clamp the window to [0,1] while preserving size when possible.
-    // This ensures top never goes above 0 and bottom never exceeds 1.
     if (topF < 0) {
       const shift = -topF;
       topF = 0;
@@ -270,9 +297,18 @@ function updateRange(root: HTMLElement): void {
     }
   }
 
-  const topPx = `${visibleTopForFraction(topF)}px`;
-  const botPx = `${visibleTopForFraction(botF)}px`;
-  const h = Math.max(1, visibleTopForFraction(botF) - visibleTopForFraction(topF));
+  // When hovered, the grey markers occupy a viewport-height ruler (buffered).
+  // The range (3 lines + fill) must be placed inside that same ruler.
+  const topPx = hovering
+    ? `${hoverTopForFraction(topF)}px`
+    : `${visibleTopForFraction(topF)}px`;
+  const botPx = hovering
+    ? `${hoverTopForFraction(botF)}px`
+    : `${visibleTopForFraction(botF)}px`;
+
+  const topVal = hovering ? hoverTopForFraction(topF) : visibleTopForFraction(topF);
+  const botVal = hovering ? hoverTopForFraction(botF) : visibleTopForFraction(botF);
+  const h = Math.max(1, botVal - topVal);
   const heightPx = `${h}px`;
 
   topL.style.top = topPx;
@@ -287,13 +323,10 @@ function update(root: HTMLElement): void {
   const fits = contentFitsViewport();
   const displayProgress = fits ? 1 : progress;
 
-  // Grey ruler marks must move with the document content on every scroll update.
+  // Grey ruler marks: non-hover move with content; hover restretches across viewport ruler.
   updateGreyRuler(root, info.scrollTop);
 
-  // Year label is dynamic and must track scroll even when blue progress is stable.
   updateYearLabel(root);
-
-  // Range decoration (if active) must track the current viewport range on scroll.
   updateRange(root);
 
   if (Math.abs(displayProgress - lastProgress) < 0.0005) {
@@ -301,20 +334,20 @@ function update(root: HTMLElement): void {
   }
   lastProgress = displayProgress;
 
-  // Blue current and % always use the visible viewport ruler span so they stay inside the fixed container.
-  const topPx = `${visibleTopForFraction(displayProgress)}px`;
+  // Blue current and percent use the same ruler as the grey markers when hovered.
+  const topPx = hovering
+    ? `${hoverTopForFraction(displayProgress)}px`
+    : `${visibleTopForFraction(displayProgress)}px`;
 
-  // Current position blue dash
   const current = root.querySelector<HTMLElement>('.as-current');
   if (current) {
     current.style.top = topPx;
   }
 
-  // Percentage directly beneath the blue dash: 009%
   const pctEl = root.querySelector<HTMLElement>('.as-percent');
   if (pctEl) {
     pctEl.style.top = topPx;
-    pctEl.style.transform = 'translateY(7px)';
+    pctEl.style.transform = 'translateY(0.4375rem)';
     const num = String(info.percent).padStart(3, '0');
     pctEl.textContent = num + '%';
   }
@@ -391,14 +424,16 @@ export function bindArtcraftScrollbar(): () => void {
 
     applyScrollToFraction(root, f);
 
-    // Begin drag tracking for this pointer.
     dragging = true;
     dragPointerId = e.pointerId;
     root.setPointerCapture(e.pointerId);
 
-    // Show range decoration immediately during active interaction (finger "hover" during drag).
-    hovering = true;
-    root.classList.add('is-hovering');
+    // Treat drag as hover: restretch grey markers onto viewport ruler.
+    if (!hovering) {
+      hovering = true;
+      root.classList.add('is-hovering');
+      buildRuler(root);
+    }
   };
 
   const onPointerMove = (e: PointerEvent): void => {
@@ -441,31 +476,40 @@ export function bindArtcraftScrollbar(): () => void {
     hovering = true;
     root.classList.add('is-hovering');
 
-    // Immediately calculate the current viewport's top/bottom/middle (blue)
-    // relative to content and draw the range + ensure blue line position.
+    // Rebuild ruler so grey markers restretch across the viewport-height ruler.
+    buildRuler(root);
+
     const info = getScrollInfo();
     const fits = contentFitsViewport();
     const displayF = fits ? 1 : info.progress;
 
-    // Force blue line and percent to current middle immediately.
-    const topPx = `${visibleTopForFraction(displayF)}px`;
+    // Position blue + percent using the hover (viewport) ruler.
+    const topPx = `${hoverTopForFraction(displayF)}px`;
     const currentEl = root.querySelector<HTMLElement>('.as-current');
     if (currentEl) currentEl.style.top = topPx;
     const pctEl = root.querySelector<HTMLElement>('.as-percent');
     if (pctEl) {
       pctEl.style.top = topPx;
-      pctEl.style.transform = 'translateY(7px)';
+      pctEl.style.transform = 'translateY(0.4375rem)';
       const num = String(info.percent).padStart(3, '0');
       pctEl.textContent = num + '%';
     }
 
-    // Draw range with blue as the middle reference (clamped correctly).
     updateRange(root);
   };
 
   const onPointerLeaveHover = (): void => {
-    hovering = false;
-    root.classList.remove('is-hovering');
+    // Rebuild while transition rule is still active so the marker tops animate
+    // back from the hover (viewport) ruler to the full-content positions.
+    buildRuler(root);
+
+    // Allow the top transition to play, then drop the hover state.
+    setTimeout(() => {
+      hovering = false;
+      root.classList.remove('is-hovering');
+      // Ensure final positions are correct for non-hover document ruler.
+      scheduleUpdate(root);
+    }, 180);
   };
 
   // Initial paint

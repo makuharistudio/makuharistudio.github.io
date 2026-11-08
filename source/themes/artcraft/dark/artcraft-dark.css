@@ -1628,13 +1628,13 @@ content.content-no-bg > .panel-corners:last-child a:hover {
   position: fixed;
   top: 0;
   right: 0;
-  width: 72px;
+  width: 4.5rem;
   height: 100vh;
   z-index: 9500;
   pointer-events: none;
   font-family: 'ArtcraftMono', ui-monospace, Menlo, Consolas, monospace;
-  font-size: 9px;
-  letter-spacing: 0.5px;
+  font-size: 0.5625rem;
+  letter-spacing: 0.03em;
   overflow: hidden;
   user-select: none;
   /* Frosted glass: horizontal gradient, mostly transparent on left ~60%,
@@ -1647,7 +1647,7 @@ content.content-no-bg > .panel-corners:last-child a:hover {
     rgba(255, 255, 255, 0.11) 92%,
     rgba(255, 255, 255, 0.22) 99%
   );
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(0.0625rem);
 }
 
 /* Base dash: horizontal mark. Long and short variants.
@@ -1659,30 +1659,34 @@ content.content-no-bg > .panel-corners:last-child a:hover {
   transform: none;
   pointer-events: none;
   height: 1px;
+  /* Smooth transition for restretch between full-content and viewport-height rulers. */
+  transition: top 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Longer (5%) dashes: only the horizontal length differs. Thickness comes from .as-dash.
    Right end flush with viewport edge. */
 .artcraft-scrollbar .as-dash-long {
-  width: 22px;
+  width: 1.375rem;
 }
 
 /* Shorter intermediate dashes: only the horizontal length differs. Thickness comes from .as-dash.
    Right end flush with viewport edge. */
 .artcraft-scrollbar .as-dash-short {
-  width: 11px;
+  width: 0.6875rem;
 }
 
 /* Numbers for 5% marks. Placed left of the ruler and left of the percentage display. */
 .artcraft-scrollbar .as-num {
   position: absolute;
-  right: 30px;
-  width: 18px;
+  right: 1.875rem;
+  width: 1.125rem;
   text-align: right;
   color: #8d94a0;
   line-height: 1;
-  transform: translateY(-4px);
+  transform: translateY(-0.25rem);
   pointer-events: none;
+  /* Smooth transition for restretch between rulers. */
+  transition: top 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Current position wrapper (moves with scroll). No visible vertical line. */
@@ -1695,27 +1699,27 @@ content.content-no-bg > .panel-corners:last-child a:hover {
   z-index: 1;
 }
 
-/* The blue current dash itself (longer than grey long markers) */
+/* The blue current dash. Flush right, same width as range boundary lines. */
 .artcraft-scrollbar .as-dash-current {
   position: absolute;
-  left: 32px;
-  top: -1px;
-  width: 150px;
+  right: 0;
+  top: -0.0625rem;
+  width: 9.375rem;
   height: 1px;
   background: #2d81ff;
-  box-shadow: 0 0 4px #2d81ff;
+  box-shadow: 0 0 0.25rem #2d81ff;
   pointer-events: none;
 }
 
 /* Animated vertical glow/fade extending above and below the blue dash.
    Glow is as wide as the blue line. Center white transitioning to the current blue.
-   Edges are a lighter blue. Height reduced to ~15% of previous. */
+   Edges are a lighter blue. */
 .artcraft-scrollbar .as-glow {
   position: absolute;
-  left: -42px;
-  top: -4px;
-  width: 84px;
-  height: 3px;
+  right: -2.625rem;
+  top: -0.25rem;
+  width: 5.25rem;
+  height: 0.1875rem;
   background: linear-gradient(
     to bottom,
     transparent 0%,
@@ -1745,11 +1749,11 @@ content.content-no-bg > .panel-corners:last-child a:hover {
 /* Current percentage: 009% format, directly under the blue dash. */
 .artcraft-scrollbar .as-percent {
   position: absolute;
-  right: 5px;
-  width: 20px;
+  right: 0.3125rem;
+  width: 1.25rem;
   text-align: right;
   color: #29a2ff;
-  font-size: 9px;
+  font-size: 0.5625rem;
   line-height: 1;
   pointer-events: none;
   white-space: nowrap;
@@ -1760,14 +1764,14 @@ content.content-no-bg > .panel-corners:last-child a:hover {
    Styled similarly to previous section label but without fixed top. */
 .artcraft-scrollbar .as-year {
   position: absolute;
-  right: 32px;
-  width: 20px;
+  right: 2rem;
+  width: 1.25rem;
   text-align: right;
   color: #9d9d9b;
-  font-size: 24px;
-  font-weight: 1400;
+  font-size: 1.5rem;
+  font-weight: 700;
   line-height: 1.05;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.02em;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   pointer-events: none;
@@ -1789,23 +1793,25 @@ content.content-no-bg > .panel-corners:last-child a:hover {
   pointer-events: none;
   opacity: 0;
   transition: opacity 120ms ease-out;
+  /* Range lines and fill also animate smoothly when hover ruler restretches. */
+  transition: top 180ms cubic-bezier(0.22, 1, 0.36, 1), height 180ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease-out;
 }
 
 /* Shown state on hover: lines are solid, box is very translucent. */
 .artcraft-scrollbar.is-hovering .as-range-fill {
   opacity: 0.055;
-  transition: opacity 80ms ease-in;
+  transition: top 180ms cubic-bezier(0.22, 1, 0.36, 1), height 180ms cubic-bezier(0.22, 1, 0.36, 1), opacity 80ms ease-in;
 }
 .artcraft-scrollbar.is-hovering .as-range-top,
 .artcraft-scrollbar.is-hovering .as-range-bottom {
   opacity: 1;
-  transition: opacity 80ms ease-in;
+  transition: top 180ms cubic-bezier(0.22, 1, 0.36, 1), height 180ms cubic-bezier(0.22, 1, 0.36, 1), opacity 80ms ease-in;
 }
 
 /* Range background box - furthest back (z 0). More transparent. */
 .artcraft-scrollbar .as-range-fill {
-  left: 32px;
-  width: 150px;
+  right: 0;
+  width: 9.375rem;
   background: #9d9d9b;
   z-index: 0;
 }
@@ -1817,12 +1823,14 @@ content.content-no-bg > .panel-corners:last-child a:hover {
   z-index: 1;
 }
 
-/* Range boundary lines (top/bottom) are "scrollbar lines" above the ruler (z 2). */
+/* Range boundary lines (top/bottom) are "scrollbar lines" above the ruler (z 2).
+   Same width as blue line, flush right with no gap. */
 .artcraft-scrollbar .as-range-top,
 .artcraft-scrollbar .as-range-bottom {
   height: 1px;
   background: #9d9d9b;
-  width: 100px;
+  right: 0;
+  width: 9.375rem;
   z-index: 2;
 }
 
