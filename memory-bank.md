@@ -11,7 +11,6 @@
 - Do not delete old content you do not understand.
 - After scaffold, stop and show folder tree + questions before porting all games and all posts.
 - Update this file before feature work and as each item is completed.
-- For all styling in CSS (and any inline style driven by theme code): prefer rem or em units. Avoid px except for hairlines, borders, and outlines that must remain exactly 1px (or 0) for crisp rendering on high-DPI screens. When editing artcraft theme files, convert fixed px values for widths, heights, offsets, font-sizes, gaps, and positions to rem/em. This rule is mandatory and applies to any future styling work in the artcraft theme.
 
 ## Hierarchy
 - /source/assets/blog, /projects, /readings

@@ -503,13 +503,13 @@ export function bindArtcraftScrollbar(): () => void {
     // back from the hover (viewport) ruler to the full-content positions.
     buildRuler(root);
 
-    // Allow the top transition to play, then drop the hover state.
+    // Allow the top transition (now 3s) to play, then drop the hover state.
     setTimeout(() => {
       hovering = false;
       root.classList.remove('is-hovering');
       // Ensure final positions are correct for non-hover document ruler.
       scheduleUpdate(root);
-    }, 180);
+    }, 3000);
   };
 
   // Initial paint
