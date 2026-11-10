@@ -2,6 +2,7 @@
 // esbuild --loader:.md=text turns each import into the file contents.
 // @ts-nocheck
 export const rawFiles: Record<string, string> = {
+  'posts/2026-11-10.md': posts_2026_11_10,
   'posts/2026-09-13.md': posts_2026_09_13,
   'posts/2026-05-18.md': posts_2026_05_18,
   'posts/2024-10-07.md': posts_2024_10_07,
@@ -43,6 +44,7 @@ export const rawFiles: Record<string, string> = {
   'readings/2025-03-16.md': readings_2025_03_16,
 };
 
+import posts_2026_11_10 from '../markdown/posts/2026-11-10.md';
 import posts_2026_09_13 from '../markdown/posts/2026-09-13.md';
 import posts_2026_05_18 from '../markdown/posts/2026-05-18.md';
 import posts_2024_10_07 from '../markdown/posts/2024-10-07.md';
