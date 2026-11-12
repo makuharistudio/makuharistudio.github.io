@@ -236,6 +236,7 @@ rm -f "$ESBUILD_TMP"
 echo "Syncing static assets..."
 
 sync_dir "$SOURCE/assets" "$DIST/assets"
+sync_dir "$SOURCE/assets" "$DIST/source/assets"
 sync_dir "$SOURCE/themes" "$DIST/themes"
 
 # Game card images (only the image files that sit next to the modules)

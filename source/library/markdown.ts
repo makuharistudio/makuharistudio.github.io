@@ -74,25 +74,7 @@ export function photoUrl(kind: ContentKind, photo: string): string {
   return `assets/${folder}/${filename}`;
 }
 
-/** Rewrite old /src/assets/... image paths to dist-relative assets/. */
-export function rewriteImagePaths(markdown: string, fallbackKind: ContentKind): string {
-  return markdown.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_full, alt: string, src: string) => {
-    const rewritten = resolveAssetPath(src.trim(), fallbackKind);
-    return `![${alt}](${rewritten})`;
-  });
-}
 
-export function resolveAssetPath(src: string, fallbackKind: ContentKind): string {
-  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('assets/')) return src;
-  const filename = src.split('/').pop()?.trim() ?? '';
-  if (!filename) return src;
-  let folder: string;
-  if (src.includes('/blog/') || src.startsWith('blog/')) folder = 'blog';
-  else if (src.includes('/projects/') || src.startsWith('projects/')) folder = 'projects';
-  else if (src.includes('/readings/') || src.startsWith('readings/')) folder = 'readings';
-  else folder = fallbackKind === 'posts' ? 'blog' : fallbackKind;
-  return `assets/${folder}/${filename}`;
-}
 
 function excerptFromBody(body: string): string {
   const plain = markdownToPlainText(body);
@@ -648,9 +630,8 @@ function renderBlock(block: Block): HTMLElement {
 
 /** Render markdown used by the old posts: headings, p, strong/em, links, images, fenced code, lists, hr. HTML is escaped. */
 export function renderMarkdown(body: string, fallbackKind: ContentKind): HTMLElement {
-  const rewritten = rewriteImagePaths(body, fallbackKind);
   const root = document.createElement('div');
   root.className = 'markdown-body';
-  appendBlocks(root, parseBlocks(rewritten).blocks);
+  appendBlocks(root, parseBlocks(body).blocks);
   return root;
 }
