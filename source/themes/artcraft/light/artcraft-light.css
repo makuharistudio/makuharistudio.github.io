@@ -1824,7 +1824,7 @@ content.content-no-bg > .panel-corners:last-child a:hover {
 /* Current percentage: 009% format, directly under the blue dash. */
 .artcraft-scrollbar .as-percent {
   position: absolute;
-  right: 0.234375rem;
+  right: 0.75rem;
   width: 0.9375rem;
   text-align: right;
   color: #1659c4;
