@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experience Encryptor</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f1114;
+      --panel: #181b20;
+      --border: #2a2f38;
+      --text: #e8e7e4;
+      --muted: #999998;
+      --accent: #d4d2d1;
+      --input-bg: #121316;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      letter-spacing: 0.02em;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .instructions {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .instructions h2 {
+      font-size: 1.05rem;
+      margin: 0 0 0.75rem;
+      color: var(--accent);
+    }
+    .instructions ol {
+      margin: 0.5rem 0 0;
+      padding-left: 1.25rem;
+    }
+    .instructions li {
+      margin: 0.35rem 0;
+    }
+    .instructions code {
+      font-family: var(--font-mono);
+      background: #0f1114;
+      padding: 0.1em 0.35em;
+      border-radius: 2px;
+    }
+    .warning {
+      background: #2a1f1f;
+      border: 1px solid #5c3a3a;
+      color: #e8b4b4;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    .section {
+      margin-bottom: 1.75rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+      color: var(--accent);
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      padding: 0.75rem;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    textarea {
+      min-height: 260px;
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+    .key-input {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+    }
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    button {
+      background: #24282f;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+    button:hover {
+      background: #2f343d;
+    }
+    button:active {
+      transform: translateY(1px);
+    }
+    button.primary {
+      background: #3a3f48;
+      border-color: var(--accent);
+    }
+    .result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      display: none;
+    }
+    .result.show {
+      display: block;
+    }
+    .result pre {
+      margin: 0.75rem 0 0;
+      padding: 1rem;
+      background: #0f1114;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow-x: auto;
+      font-size: 0.875rem;
+      line-height: 1.4;
+    }
+    .result-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .error {
+      color: #e88;
+      background: #2a1f1f;
+      border: 1px solid #5c3a3a;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin-top: 1rem;
+      display: none;
+    }
+    .example-note {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Experience Encryptor</h1>
+    <p class="subtitle">Client-side AES-GCM encryption for the work-experience timeline</p>
+
+    <div class="instructions">
+      <h2>How to use</h2>
+      <ol>
+        <li>Paste or edit the JSON array of experience records below. Each record must match the <code>ExperienceRecord</code> interface (Role, Business, BusinessURL, Country, State, City, YearMonthStart, YearMonthEnd, Description, Responsibilities, Activities, Achievement).</li>
+        <li>Enter the exact page title into the Key field. This must match <code>document.title</code> on the live site exactly.</li>
+        <li>Click <strong>Encrypt</strong>. The tool derives a key with PBKDF2 (SHA-256, 100000 iterations) and encrypts with AES-GCM.</li>
+        <li>Copy the displayed JSON or download <code>ExperienceEncrypted.json</code>.</li>
+        <li>Place the downloaded file at <code>source/assets/work/ExperienceEncrypted.json</code> so it is served at <code>/assets/work/ExperienceEncrypted.json</code> after build.</li>
+      </ol>
+      <div class="warning">
+        <strong>Important:</strong> The decryption key on the site is derived from <code>document.title</code>. Any mismatch (including invisible characters, case, or full-width vs half-width) will cause decryption to fail silently.
+      </div>
+    </div>
+
+    <div class="section">
+      <label for="key">Key (must match document.title from index.html exactly)</label>
+      <input id="key" type="text" class="key-input" value="??????????" spellcheck="false" />
+    </div>
+
+    <div class="section">
+      <label for="json">Experience records (JSON array)</label>
+      <textarea id="json" spellcheck="false"></textarea>
+      <p class="example-note">The textarea is pre-filled with a realistic example that matches the current site data structure.</p>
+    </div>
+
+    <div class="actions">
+      <button id="encrypt-btn" class="primary">Encrypt</button>
+      <button id="download-btn">Download ExperienceEncrypted.json</button>
+      <button id="reset-btn">Reset to example</button>
+    </div>
+
+    <div id="result" class="result">
+      <div class="result-label">Encrypted output (copy or download)</div>
+      <pre id="result-json"></pre>
+    </div>
+
+    <div id="error" class="error"></div>
+  </div>
+
+  <script>
+    const EXAMPLE_JSON = `[
+  {
+    "Role": "Job title 2",
+    "Business": "Company B",
+    "BusinessURL": "https://www.companyb.com",
+    "Country": "Australia",
+    "State": "Victoria",
+    "City": "Melbourne",
+    "YearMonthStart": "2024-07",
+    "YearMonthEnd": "",
+    "Description": "One sentence description of your job title 2",
+    "Responsibilities": [
+      "One sentence description of a responsibility",
+      "One sentence description of another responsibility"],
+    "Achievement": "A major achievement you made during your term"
+  },
+  {
+    "Role": "Career break",
+    "Country": "Australia",
+    "State": "Victoria",
+    "City": "Melbourne",
+    "YearMonthStart": "2024-01",
+    "YearMonthEnd": "2024-06",
+    "Description": "Reason for your career gap",
+    "Activities": [
+      "One sentence description of something you did on break",
+      "One sentence description of another thing you did on break"
+    ]
+  },
+  {
+    "Role": "Job title 1",
+    "Business": "Company A",
+    "BusinessURL": "https://www.companya.com",
+    "Country": "Australia",
+    "State": "New South Wales",
+    "City": "Sydney",
+    "YearMonthStart": "2020-01",
+    "YearMonthEnd": "2023-12",
+    "Description": "One sentence description of your job title 1",
+    "Responsibilities": [
+      "One sentence description of a responsibility",
+      "One sentence description of another responsibility"
+    ]
+  }
+]`;
+
+    const jsonEl = document.getElementById('json');
+    const keyEl = document.getElementById('key');
+    const encryptBtn = document.getElementById('encrypt-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const resultEl = document.getElementById('result');
+    const resultJsonEl = document.getElementById('result-json');
+    const errorEl = document.getElementById('error');
+
+    let lastEncrypted = null;
+
+    function setExample() {
+      jsonEl.value = EXAMPLE_JSON;
+      resultEl.classList.remove('show');
+      errorEl.style.display = 'none';
+      lastEncrypted = null;
+    }
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+      resultEl.classList.remove('show');
+    }
+
+    function clearError() {
+      errorEl.style.display = 'none';
+    }
+
+    async function deriveKey(password, salt) {
+      const enc = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        enc.encode(password),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveBits', 'deriveKey']
+      );
+      return crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt,
+          iterations: 100000,
+          hash: 'SHA-256'
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    async function encryptData(plaintext, password) {
+      const enc = new TextEncoder();
+      const data = enc.encode(plaintext);
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(password, salt);
+      const ciphertext = await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv },
+        key,
+        data
+      );
+      const combined = new Uint8Array(salt.length + iv.length + ciphertext.byteLength);
+      combined.set(salt, 0);
+      combined.set(iv, salt.length);
+      combined.set(new Uint8Array(ciphertext), salt.length + iv.length);
+      return btoa(String.fromCharCode(...combined));
+    }
+
+    async function handleEncrypt() {
+      clearError();
+      const key = keyEl.value.trim();
+      const jsonText = jsonEl.value.trim();
+
+      if (!key) {
+        showError('Key field cannot be empty. It must match document.title exactly.');
+        return;
+      }
+      if (!jsonText) {
+        showError('JSON textarea is empty.');
+        return;
+      }
+
+      let parsed;
+      try {
+        parsed = JSON.parse(jsonText);
+        if (!Array.isArray(parsed)) throw new Error('Root value must be an array');
+      } catch (e) {
+        showError('Invalid JSON: ' + e.message);
+        return;
+      }
+
+      try {
+        const base64 = await encryptData(JSON.stringify(parsed), key);
+        lastEncrypted = { encrypted: base64 };
+        resultJsonEl.textContent = JSON.stringify(lastEncrypted, null, 2);
+        resultEl.classList.add('show');
+      } catch (e) {
+        showError('Encryption failed: ' + e.message);
+      }
+    }
+
+    function handleDownload() {
+      if (!lastEncrypted) {
+        showError('Encrypt first before downloading.');
+        return;
+      }
+      const blob = new Blob([JSON.stringify(lastEncrypted, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ExperienceEncrypted.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function init() {
+      setExample();
+      encryptBtn.addEventListener('click', handleEncrypt);
+      downloadBtn.addEventListener('click', handleDownload);
+      resetBtn.addEventListener('click', setExample);
+
+      // Allow Enter in key field to trigger encrypt
+      keyEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleEncrypt();
+        }
+      });
+
+      // Helpful default: focus JSON for quick paste
+      jsonEl.focus();
+      jsonEl.setSelectionRange(0, 0);
+    }
+
+    init();
+  </script>
+</body>
+</html>

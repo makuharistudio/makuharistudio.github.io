@@ -1,11 +1,10 @@
 import { onThemeChange } from '../library/theme.ts';
 
 /**
- * Career records. Add or edit objects in this array; the timeline groups
- * by location (Country, State, City) then by Business, newest first.
- * YearMonthEnd: "" means the role is current.
+ * Career record shape used for the encrypted experience timeline.
+ * YearMonthEnd: "" or omitted means the role is current.
  */
-interface ExperienceRecord {
+export interface ExperienceRecord {
   Role: string;
   Business?: string;
   BusinessURL?: string;
@@ -19,117 +18,6 @@ interface ExperienceRecord {
   Activities?: string[];
   Achievement?: string;
 }
-
-const EXPERIENCE_RECORDS: ExperienceRecord[] = [
-  {
-    Role: 'Career break',
-    Country: 'International',
-    State: 'International',
-    City: 'International',
-    YearMonthStart: '2025-01',
-    YearMonthEnd: '',
-    Activities: ['Vibe-coded the Koe speech therapy app for Android', 'Travel'],
-  },
-  {
-    Role: 'Associate Professional Services Consultant',
-    Business: 'Mediaocean',
-    BusinessURL: 'https://www.mediaocean.com',
-    Country: 'Australia',
-    State: 'New South Wales',
-    City: 'Sydney',
-    YearMonthStart: '2023-10',
-    YearMonthEnd: '2024-12',
-    Description:
-      'Junior project manager providing software training for implementation projects and best practice consultations for clients',
-  },
-  {
-    Role: 'Customer Experience Team Lead',
-    Business: 'Mediaocean',
-    BusinessURL: 'https://www.mediaocean.com',
-    Country: 'Australia',
-    State: 'New South Wales',
-    City: 'Sydney',
-    YearMonthStart: '2021-03',
-    YearMonthEnd: '2023-09',
-    Description:
-      'Team lead for 2 separate customer support teams across regional and global software products',
-    Responsibilities: [
-      'Reporting on KPIs across 8 APAC support teams for monthly meetings',
-      'Creating Oracle SQL scripts for client-requested extracts as added revenue and for troubleshooting',
-      'Interviewing, training, and mentoring team members',
-      'Administrating support portal logins, content, and announcements',
-    ],
-    Achievement: 'Built Excel Power Pivot model with DAX measures for staff performance monitoring',
-  },
-  {
-    Role: 'Customer Experience Analyst',
-    Business: 'Mediaocean',
-    BusinessURL: 'https://www.mediaocean.com',
-    Country: 'Australia',
-    State: 'New South Wales',
-    City: 'Sydney',
-    YearMonthStart: '2020-03',
-    YearMonthEnd: '2021-02',
-    Description: 'Same as previous role.',
-    Responsibilities: [
-      'De facto lead for global software support team',
-      'Rebuilt department reports as part of a GoodData to Zendesk migration',
-      'Developed a Power BI report for software log and error tracking across versions',
-    ],
-    Achievement:
-      'Led team in cataloging 140+ user permissions and 350+ functions, involving 1,100+ test cases for software documentation',
-  },
-  {
-    Role: 'Support Specialist',
-    Business: 'Mediaocean',
-    BusinessURL: 'https://www.mediaocean.com',
-    Country: 'Australia',
-    State: 'New South Wales',
-    City: 'Sydney',
-    YearMonthStart: '2016-11',
-    YearMonthEnd: '2020-02',
-    Description:
-      'Customer support for advertising planning (Lumina), buying (MD), and BI software (MicroStrategy)',
-    Responsibilities: [
-      'De facto regional lead for global software support team',
-      'Rebuilt department reports as part of a GoodData to Zendesk migration',
-      'Delivering monthly national advertising spend data assets from ad agencies to the Standard Media Index',
-      'QA testing implementation projects whilst at New York office',
-    ],
-    Achievement: 'Developed a Power BI report for software log and error tracking across versions',
-  },
-  {
-    Role: 'Career break',
-    Country: 'Australia',
-    State: 'New South Wales',
-    City: 'Sydney',
-    YearMonthStart: '2015-08',
-    YearMonthEnd: '2016-10',
-    Description: 'Gap year after university attending tech meetups, conferences, and classroom short courses',
-    Activities: [
-      'SQL Course: Level 2b, September 2016',
-      'R-Programming - Stage 1, July 2016',
-      'Tableau Desktop II: Advanced, June to July 2016',
-      'Microsoft Excel: Level 3, June 2016',
-      'Microsoft Excel Financial Modelling, May 2016',
-    ],
-  },
-  {
-    Role: 'Client Database Officer',
-    Business: 'Douglass Hanly Moir Pathology',
-    BusinessURL: 'https://www.dhm.com.au',
-    Country: 'Australia',
-    State: 'New South Wales',
-    City: 'Sydney',
-    YearMonthStart: '2011-01',
-    YearMonthEnd: '2014-02',
-    Description: 'Pathology request investigation and account administration for medical professionals',
-    Responsibilities: [
-      'Monitoring SQL Server batch file jobs to produce company-wide daily worklists',
-      'Managed SharePoint Intranet and external website content',
-    ],
-  },
-];
 
 interface RoleView {
   record: ExperienceRecord;
@@ -827,20 +715,14 @@ function watchDetach(node: HTMLElement, dispose: () => void): void {
   observer.observe(outlet, { childList: true });
 }
 
-export function ExperienceList(): HTMLElement {
+export function createExperienceTimeline(records: ExperienceRecord[]): HTMLElement {
   const wrap = document.createElement('div');
   wrap.id = 'experience';
-
-  const heading = document.createElement('center');
-  const h2 = document.createElement('h2');
-  h2.textContent = 'EXPERIENCE';
-  heading.appendChild(h2);
-  wrap.appendChild(heading);
 
   const timeline = el('div', '');
   timeline.id = 'experience-timeline';
 
-  for (const location of groupRecords(EXPERIENCE_RECORDS)) {
+  for (const location of groupRecords(records)) {
     timeline.appendChild(buildLocation(location));
   }
 

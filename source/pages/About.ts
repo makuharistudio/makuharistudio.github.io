@@ -1,7 +1,7 @@
 import { Panel } from '../components/Panel.ts';
 import { LinkList } from '../components/LinkList.ts';
 import { CertificationList } from '../components/CertificationList.ts';
-import { ExperienceList } from '../components/ExperienceList.ts';
+import { createExperienceTimeline, type ExperienceRecord } from '../components/ExperienceList.ts';
 import { setOutlet } from '../components/Layout.ts';
 import { loadAll } from '../library/content.ts';
 
@@ -43,7 +43,79 @@ export function renderAbout(): void {
   content.appendChild(document.createElement('br'));
   content.appendChild(CertificationList());
   content.appendChild(document.createElement('br'));
-  content.appendChild(ExperienceList());
+
+  // Encrypted experience reveal button (Artcraft styled, other themes inherit basic styles)
+  const experienceBtnWrap = document.createElement('center');
+  const experienceBtn = document.createElement('button');
+  experienceBtn.id = 'experience-reveal-btn';
+  experienceBtn.textContent = 'EXPERIENCE';
+  experienceBtn.setAttribute('aria-expanded', 'false');
+  experienceBtnWrap.appendChild(experienceBtn);
+  content.appendChild(experienceBtnWrap);
+  content.appendChild(document.createElement('br'));
+
+  let experienceRendered = false;
+  experienceBtn.addEventListener('click', async () => {
+    if (experienceRendered) return;
+
+    experienceBtn.disabled = true;
+    const originalText = experienceBtn.textContent;
+
+    try {
+      const res = await fetch('/assets/work/ExperienceEncrypted.json');
+      if (!res.ok) throw new Error('Encrypted data not found');
+      const payload: { encrypted: string } = await res.json();
+
+      const enc = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        enc.encode(document.title),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveBits', 'deriveKey']
+      );
+      const combined = Uint8Array.from(atob(payload.encrypted), (c) => c.charCodeAt(0));
+      if (combined.length < 28) throw new Error('Invalid payload');
+      const salt = combined.slice(0, 16);
+      const iv = combined.slice(16, 28);
+      const ciphertext = combined.slice(28);
+
+      const key = await crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt,
+          iterations: 100000,
+          hash: 'SHA-256',
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt']
+      );
+
+      const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+      const decoder = new TextDecoder();
+      const jsonText = decoder.decode(plaintext);
+      const records: ExperienceRecord[] = JSON.parse(jsonText);
+
+      const timeline = createExperienceTimeline(records);
+      // Force visibility for themes that hide #experience by default (Artcraft)
+      timeline.style.display = 'block';
+      experienceBtnWrap.insertAdjacentElement('afterend', timeline);
+      experienceRendered = true;
+      experienceBtn.setAttribute('aria-expanded', 'true');
+      experienceBtn.textContent = 'EXPERIENCE';
+    } catch (err) {
+      const msg = document.createElement('p');
+      msg.style.cssText = 'text-align:center; color:var(--content-font-color); opacity:0.8;';
+      msg.textContent = 'Unable to reveal experience at this time.';
+      experienceBtnWrap.insertAdjacentElement('afterend', msg);
+      experienceBtn.textContent = originalText;
+    } finally {
+      experienceBtn.disabled = false;
+    }
+  });
+
   content.appendChild(document.createElement('br'));
 
   const creditsTitle = document.createElement('center');

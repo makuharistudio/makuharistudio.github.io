@@ -175,12 +175,12 @@
   --inline-code-bg: #cecdca;
   --inline-code-color: #666667;
 
-  --experience-line: rgba(203, 203, 200, 0.38);
-  --experience-node: #979797;
-  --experience-node-core: #f2f1ee;
+  --experience-line: var(--panel-line-hover);
+  --experience-node: var(--panel-border-color-hover);
+  --experience-node-core: var(--code-block-background);
   --experience-glow: transparent;
-  --experience-card-bg: rgba(255, 255, 255, 0.92);
-  --experience-card-border: rgba(203, 203, 200, 0.18);
+  --experience-card-bg: var(--panel-fill);
+  --experience-card-border: var(--panel-border-color);
   --experience-muted: rgba(102, 102, 103, 0.92);
   --experience-accent: #666667;
 
@@ -1112,6 +1112,36 @@ content pre code::-webkit-scrollbar-track { background-color: var(--code-scrollb
 
 #experience {
   display: none;
+}
+
+/* Experience reveal button styled to match section titles (ABOUT ME, Certifications, SITE CREDITS) */
+#experience-reveal-btn {
+  font-family: var(--title-font);
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--content-font-color);
+  line-height: 1.3;
+  background: transparent;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  padding: var(--sz-3) var(--sz-5);
+  cursor: pointer;
+  transition: color 0.1s ease, border-color 0.1s ease;
+}
+#experience-reveal-btn:hover,
+#experience-reveal-btn:focus-visible {
+  color: var(--button-font-color-hover);
+  border-color: var(--accent-strong);
+  outline: none;
+}
+#experience-reveal-btn:focus-visible {
+  outline: var(--outline-width) solid var(--accent-strong);
+  outline-offset: var(--outline-offset);
+}
+#experience-reveal-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
 #experience-timeline {

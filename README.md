@@ -153,6 +153,13 @@ See `memory-bank.md` for architecture, decisions, and current feature status.
 
 
 
+## Experience section
+
+Data for the Experience section is encrypted to block low-level actors like search engines, bulk AI training crawlers, casual scrapers and simple AI. But it is still vulnerable to manual human examination or targeted scrapers and agents.
+
+To create your data, open the `/source/assets/work/ExperienceEncryptor.html` file in a browser. Follow the instructions to fill out your experience information and create the `ExperienceEncrypted.json` file. It will autosave to your Downloads folder. Move it from there to the `/source/assets/work/` folder. Then follow Step 3 in the "Daily workflow" section above. Test the site by clicking the Experience title from the About page.
+
+
 ## Migration from React.js site
 
 The previous React.js iteration pushed built files from `dist` onto the `gh-pages` branch, source files to `main` branch, and GitHub Pages was configured to serve from the `gh-pages` branch.
