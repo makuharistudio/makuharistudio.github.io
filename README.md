@@ -21,6 +21,7 @@ I purged React based on my own experience **[moving from React Native to Kotlin]
 4. Clone repository, build then preview site
    ```
    mkdir -p ~/Projects
+   git clone git@github.com:makuharistudio/makuharistudio.github.io.git   <-- use this if you already have SSH setup
    git clone https://github.com/makuharistudio/makuharistudio.github.io.git
    cd makuharistudio.github.io
    chmod +x build.sh
