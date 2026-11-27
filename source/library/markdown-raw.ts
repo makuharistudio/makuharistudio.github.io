@@ -26,6 +26,7 @@ export const rawFiles: Record<string, string> = {
   'posts/2021-10-10.md': posts_2021_10_10,
   'posts/2021-10-03.md': posts_2021_10_03,
   'posts/2021-09-26.md': posts_2021_09_26,
+  'projects/2026-11-27.md': projects_2026_11_27,
   'projects/2026-05-18.md': projects_2026_05_18,
   'projects/2022-11-25.md': projects_2022_11_25,
   'projects/2022-10-26.md': projects_2022_10_26,
@@ -68,6 +69,7 @@ import posts_2021_10_17 from '../markdown/posts/2021-10-17.md';
 import posts_2021_10_10 from '../markdown/posts/2021-10-10.md';
 import posts_2021_10_03 from '../markdown/posts/2021-10-03.md';
 import posts_2021_09_26 from '../markdown/posts/2021-09-26.md';
+import projects_2026_11_27 from '../markdown/projects/2026-11-27.md';
 import projects_2026_05_18 from '../markdown/projects/2026-05-18.md';
 import projects_2022_11_25 from '../markdown/projects/2022-11-25.md';
 import projects_2022_10_26 from '../markdown/projects/2022-10-26.md';
